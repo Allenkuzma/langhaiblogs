@@ -1,3 +1,15 @@
 #程序端口号
 server:
   port: 80
+
+spring:
+  #数据模板引擎配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html
+    mode: HTML5
+

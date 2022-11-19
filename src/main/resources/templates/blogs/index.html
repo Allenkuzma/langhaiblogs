@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>浪海博客 ~ www.langhai.cc</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" content="浪海博客" />
+		<meta name="description" content="浪海博客" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="#intro">主页</a></li>
+							<li><a href="#one">博客</a></li>
+							<li><a href="#two">链接</a></li>
+							<li><a href="#three">联系</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<div class="inner">
+							<h1>浪海博客</h1>
+							<p>
+								<a href="" th:text="${session.user?.username}" id="userInfo"></a><br />
+								<span th:text="${byIdUserInfo?.getMotto()}" ></span><br />
+								<span th:if="${not #strings.isEmpty(byIdUserInfo?.getJob())}">
+									职业：<span th:text="${byIdUserInfo?.getJob()}"></span>
+									入职日期：<span th:text="${byIdUserInfo?.getJobDateString()}"></span>
+								</span>
+							</p>
+							<ul class="actions">
+								<li><a href="#one" class="button scrolly">了解更多</a></li>
+								<li><a href="/image" class="button scrolly">图库</a></li>
+								<li><a href="/plan/personal" class="button scrolly">个人空间</a></li>
+								<li><a href="/article/search" class="button scrolly">文章库</a></li>
+							</ul>
+						</div>
+					</section>
+
+				<!-- One -->
+					<section id="one" class="wrapper style2 spotlights">
+						<section>
+							<a href="#" class="image"><img src="/blogs/images/james01.jpg" alt="NBA球员詹姆斯" data-position="center center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>文章库</h2>
+									<p>技术与日常文章分享</p>
+									<ul class="actions">
+										<li><a href="/article" class="button">看看</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="/blogs/images/china001.jpg" alt="" data-position="top center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>技术文章</h2>
+									<p>技术分享 技术交流 </p>
+									<ul class="actions">
+										<li><a href="/langhaibk/skill" class="button">看看</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="/blogs/images/cat001.jpg" alt="" data-position="25% 25%" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>工作计划</h2>
+									<p>学习规划 工作计划</p>
+									<ul class="actions">
+										<li><a href="/langhaibk/work" class="button">看看</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+					</section>
+
+				<!-- Two -->
+					<section id="two" class="wrapper style3 fade-up">
+						<div class="inner">
+							<h2>浪海博客友情链接</h2>
+							<div class="features">
+								<section>
+									<span class="icon solid major fa-code"></span>
+									<h3>网址导航</h3>
+									<p><a href="/langhaigo">网址导航</a></p>
+								</section>
+								<section>
+									<span class="icon solid major fa-lock"></span>
+									<h3>浪海百宝箱</h3>
+									<p><a href="/">浪海百宝箱</a></p>
+								</section>
+								<section>
+									<span class="icon solid major fa-cog"></span>
+									<h3>预留</h3>
+									<p><a href="" target="_blank">预留</a></p>
+								</section>
+								<section>
+									<span class="icon solid major fa-desktop"></span>
+									<h3>友情链接</h3>
+									<p><a href="https://www.baidu.com" target="_blank">百度</a>：百度一下，你就知道。</p>
+								</section>
+								<section>
+									<span class="icon solid major fa-link"></span>
+									<h3>友情链接</h3>
+									<p><a href="https://www.bilibili.com/" target="_blank">B站</a>：bilibili是国内知名的视频弹幕网站。</p>
+								</section>
+								<section>
+									<span class="icon major fa-gem"></span>
+									<h3>合作伙伴</h3>
+									<p><a href="" target="_blank">预留</a></p>
+								</section>
+							</div>
+							<ul class="actions">
+								<li>
+									<p>
+										<span id="visitCount"></span>
+										<span>不要再叫我小皇帝，因为我已经登基了！</span>
+									</p>
+								</li>
+							</ul>
+						</div>
+					</section>
+
+				<!-- Three -->
+					<section id="three" class="wrapper style1 fade-up">
+						<div class="inner">
+							<h2>联系</h2>
+							<p>技术交流 QQ 676558206</p>
+							<div class="split style1">
+								<section>
+									<p id="sendMessageResult"></p>
+									<form method="post" action="" id="sendMessageForm">
+										<div class="fields">
+											<div class="field half">
+												<label for="name">昵称</label>
+												<input type="text" name="name" id="name" />
+											</div>
+											<div class="field half">
+												<label for="email">邮箱地址</label>
+												<input type="text" name="email" id="email" />
+											</div>
+											<div class="field">
+												<label for="message">反馈信息</label>
+												<textarea name="message" id="message" rows="5"></textarea>
+											</div>
+										</div>
+										<ul class="actions">
+											<li><input type="button" id="sendMessage" value="发送消息" /></li>
+										</ul>
+									</form>
+								</section>
+								<section>
+									<ul class="contact">
+										<li>
+											<h3>地址</h3>
+											<span>中国<br />
+											城市：南京<br />
+											</span>
+										</li>
+										<li>
+											<h3>邮箱</h3>
+											<a href="#">676558206@qq.com</a>
+										</li>
+										<li>
+											<h3>开发团队</h3>
+											<a href="/langhaibk/team.html">开发团队</a>
+										</li>
+										<li>
+											<h3>开发日志</h3>
+											<a href="/langhai/log">日志记录</a>
+										</li>
+									</ul>
+								</section>
+							</div>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; 浪海博客. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="/blogs/assets/js/jquery.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/blogs/assets/js/browser.min.js"></script>
+			<script src="/blogs/assets/js/breakpoints.min.js"></script>
+			<script src="/blogs/assets/js/util.js"></script>
+			<script src="/blogs/assets/js/main.js"></script>
+
+	</body>
+	<script>
+		$(function(){
+			//判断用户是否登录
+			if($("#userInfo").is(":empty")){
+				$("#userInfo").html("<span class=\"icon fa-smile-beam\"></span> 点击登录 ~ ");
+				$("#userInfo").prop("href", "/login");
+			}
+
+			$("#sendMessage").click(function () {
+				$.ajax({
+					url: "/contact/message",
+					async: true,
+					type: "POST",
+					data: $('#sendMessageForm').serialize(),
+					success: function (data) {
+						$("#sendMessageResult").html(data);
+						$("#sendMessageForm")[0].reset();
+					}
+				})
+			})
+
+			$.ajax({
+				url: "/visit",
+				async: true,
+				type: "GET",
+				success:function (data) {
+					$("#visitCount").html("今天访问人次" + data);
+				}
+			})
+		})
+	</script>
+</html>
