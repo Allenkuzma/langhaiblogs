@@ -201,7 +201,8 @@
 			<footer id="footer" class="wrapper style1-alt">
 				<div class="inner">
 					<ul class="menu">
-						<li>&copy; 浪海博客. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >源码地址</a></li></li>
 					</ul>
 				</div>
 			</footer>
@@ -221,30 +222,9 @@
 			//判断用户是否登录
 			if($("#userInfo").is(":empty")){
 				$("#userInfo").html("<span class=\"icon fa-smile-beam\"></span> 点击登录 ~ ");
-				$("#userInfo").prop("href", "/login");
+				$("#userInfo").prop("href", "/user/loginPage");
 			}
 
-			$("#sendMessage").click(function () {
-				$.ajax({
-					url: "/contact/message",
-					async: true,
-					type: "POST",
-					data: $('#sendMessageForm').serialize(),
-					success: function (data) {
-						$("#sendMessageResult").html(data);
-						$("#sendMessageForm")[0].reset();
-					}
-				})
-			})
-
-			$.ajax({
-				url: "/visit",
-				async: true,
-				type: "GET",
-				success:function (data) {
-					$("#visitCount").html("今天访问人次" + data);
-				}
-			})
 		})
 	</script>
 </html>
