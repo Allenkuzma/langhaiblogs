@@ -6,10 +6,10 @@
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>登录页面 - 浪海博客</title>
+		<title>注册页面 - 浪海博客</title>
 		<meta charset="utf-8" />
-		<meta name="keywords" content="浪海博客,登录页面" />
-		<meta name="description" content="浪海博客的登录页面。" />
+		<meta name="keywords" content="浪海博客,注册页面" />
+		<meta name="description" content="浪海博客的注册页面。" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
@@ -32,34 +32,45 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
-							<h1 class="major">登录页面</h1>
+							<h1 class="major">注册页面</h1>
 							<div class="split style1">
 								<section>
-									<form id="loginForm">
+									<form id="registerForm">
 										<div class="fields">
 											<div class="field half">
+												<label for="username">用户名（3到8位的数字和字母组合）</label>
 												<input type="text" id="username" name="username" placeholder="用户名" required="required"   />
 											</div>
 											<div class="field half">
+												<label for="password">用户密码（6到18位的字符组合）</label>
 												<input type="password" id="password" name="password" placeholder="用户密码" required="required"   />
 											</div>
 										</div>
 										<div class="fields">
 											<div class="field half">
-												<img src="/user/verifyCode" id="verifyCode" />
+												<label for="nickname">昵称（1到12位的字符组合）</label>
+												<input type="text" id="nickname" name="nickname" placeholder="昵称" required="required" />
 											</div>
 											<div class="field half">
+												<label for="email">邮箱地址（与账户进行绑定）</label>
+												<input type="text" id="email" name="email" placeholder="邮箱地址" required="required" />
+											</div>
+										</div>
+										<div class="fields">
+											<div class="field">
+												<p id="vCodeStatus"></p>
 												<input type="text" id="verifyCodeText" name="verifyCodeText" placeholder="验证码" required="required" />
 											</div>
 										</div>
 									</form>
-									<button id="loginVerify">登录</button>
+									<button id="registerVerify">注册</button>
 									<button id="reset">重置</button>
+									<button id="sendVerifyCode">获取验证码</button>
 								</section>
 								<section>
 									<ul class="contact">
 										<li>
-											<a href="/user/register">还没有账号，点击进行注册吧！！！</a>
+											<a href="/user/loginPage">已有账号，点击进行登录！！！</a>
 										</li>
 										<li>
 											欢迎使用浪海博客
@@ -68,12 +79,13 @@
 											规范网络发言 杜绝绝对自由
 										</li>
 										<li>
-											您发表的任何信息均由发布人负责,与本站无关,本站仅提供一个平台基础设施,本站仅提供正规服务,有权对违规信息审核下线或删除处理。
+											请妥善保管账户信息，避免泄露。
 										</li>
 									</ul>
 								</section>
 							</div>
 						</div>
+
 					</section>
 
 			</div>
@@ -100,8 +112,30 @@
 	</body>
 	<script>
 		$(function(){
-			//登录校验
-			$("#loginVerify").click(function () {
+			//发送邮箱验证码
+			$("#sendVerifyCode").click(function () {
+				var reg = new RegExp(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/);
+				var flag = reg.test($("#email").val());
+				if(flag == false){
+					$("#vCodeStatus").html("邮箱格式不正确");
+				}else {
+					$.ajax({
+						url: "/user/sendEmailCode",
+						async: true,
+						type: "POST",
+						data: {
+							email : $("#email").val()
+						},
+						success: function (data) {
+							$("#vCodeStatus").html(data);
+						}
+					})
+				}
+
+			})
+
+			//注册校验
+			$("#registerVerify").click(function () {
 				alert($("#username").val() + "~" + $("#password").val() + "~" + $("#verifyCodeText").val());
 			})
 

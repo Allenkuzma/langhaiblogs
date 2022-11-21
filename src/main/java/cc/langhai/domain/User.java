@@ -17,8 +17,12 @@ public class User {
 
     private String username;
 
+    private String nickname;
+
     private String password;
 
     private Date addTime;
+
+    private Date updateTime;
 
 }

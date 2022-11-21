@@ -13,3 +13,22 @@ spring:
     content-type: text/html
     mode: HTML5
 
+  #邮件发送配置
+  mail:
+    #配置SMTP的服务器地址
+    host: smtp.qq.com
+    #发送者的QQ邮箱
+    username:
+    #配置秘钥，授权码（不是QQ密码）
+    password:
+    #端口号配置
+    port: 587
+    #邮件的编码格式
+    default-encoding: utf-8
+    #配置SSL加密
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+        debug: false
+

@@ -38,6 +38,13 @@ public class LoginController {
         return "blogs/user/login";
     }
 
+    /**
+     * 生成验证码图片
+     *
+     * @param response
+     * @param session
+     * @throws IOException
+     */
     @GetMapping("/verifyCode")
     public void verifyCode(HttpServletResponse response, HttpSession session) throws IOException {
         //生成验证码图片
