@@ -127,7 +127,7 @@
 							email : $("#email").val()
 						},
 						success: function (data) {
-							$("#vCodeStatus").html(data);
+							$("#vCodeStatus").html(data.message);
 						}
 					})
 				}

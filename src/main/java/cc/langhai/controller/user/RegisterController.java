@@ -1,9 +1,15 @@
 package cc.langhai.controller.user;
 
+import cc.langhai.exception.BusinessException;
+import cc.langhai.response.ResultResponse;
+import cc.langhai.response.UserReturnCode;
+import cc.langhai.service.RegisterService;
 import cc.langhai.utils.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -17,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegisterController {
 
     @Autowired
-    private EmailUtil emailUtil;
+    private RegisterService registerService;
 
     /**
      * 跳转到 注册页面
@@ -36,9 +42,9 @@ public class RegisterController {
      */
     @PostMapping("/sendEmailCode")
     @ResponseBody
-    public String sendEmailCode(@RequestParam("email") String email){
-        emailUtil.send(email);
-        return "200";
+    public ResultResponse sendEmailCode(@RequestParam("email") String email, HttpServletRequest request){
+        registerService.sendEmailCode(email, request);
+        return ResultResponse.success(UserReturnCode.EMAIL_CODE_00000);
     }
 
 }

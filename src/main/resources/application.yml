@@ -1,3 +1,10 @@
+#浪海博客系统配置参数
+langhai:
+  blogs:
+    registerDayEmailCount: 20
+    registerIPEmailCount: 5
+
+
 #程序端口号
 server:
   port: 80
@@ -31,4 +38,14 @@ spring:
         smtp:
           socketFactoryClass: javax.net.ssl.SSLSocketFactory
         debug: false
+
+  #redis配置
+  redis:
+    database: 9
+    host:
+    password:
+    timeout: 20000
+    port: 6379
+
+
 

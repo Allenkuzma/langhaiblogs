@@ -1,9 +1,12 @@
 package cc.langhai.utils;
 
 
+import cc.langhai.exception.BusinessException;
+import cc.langhai.response.UserReturnCode;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -41,7 +44,11 @@ public class EmailUtil {
         //收件人的邮箱地址
         simpleMailMessage.setTo(email);
 
-        javaMailSender.send(simpleMailMessage);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        } catch (MailException e) {
+            throw new BusinessException(UserReturnCode.EMAIL_CODE_00001);
+        }
 
         return random;
     }
