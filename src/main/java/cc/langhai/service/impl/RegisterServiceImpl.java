@@ -1,12 +1,17 @@
 package cc.langhai.service.impl;
 
 import cc.langhai.config.system.SystemConfig;
+import cc.langhai.domain.User;
+import cc.langhai.domain.UserInfo;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.RegisterService;
+import cc.langhai.service.UserInfoService;
+import cc.langhai.service.UserService;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.EmailUtil;
 import cc.langhai.utils.IPUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +32,12 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SystemConfig systemConfig;
@@ -67,10 +78,25 @@ public class RegisterServiceImpl implements RegisterService {
             redisTemplate.opsForValue().set("email:register:" + nowDay, String.valueOf(integer + 1), 24, TimeUnit.HOURS);
         }
 
-        //TODO 检查用户信息邮箱是否被使用
-
+        // 检查用户信息邮箱是否被使用
+        UserInfo userInfo = userInfoService.getUserInfoByEmail(email);
+        if(ObjectUtil.isNotNull(userInfo)){
+            throw new BusinessException(UserReturnCode.USER_INFO_EXIST_EMAIL_00006);
+        }
 
         String send = emailUtil.send(email);
         redisTemplate.opsForValue().set("email:register:" + email, send, 5, TimeUnit.MINUTES);
+    }
+
+    @Override
+    public void verifyUsername(String username) {
+        if(StrUtil.isBlank(username)){
+            throw new BusinessException(UserReturnCode.USER_NAME_IS_NULL_00008);
+        }
+
+        User user = userService.getUserByUsername(username);
+        if(ObjectUtil.isNotNull(user)){
+            throw new BusinessException(UserReturnCode.USER_NAME_IS_NOT_NULL_00009);
+        }
     }
 }

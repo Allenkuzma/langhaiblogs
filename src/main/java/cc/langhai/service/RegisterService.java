@@ -17,4 +17,11 @@ public interface RegisterService {
      * @param request
      */
     void sendEmailCode(String email, HttpServletRequest request);
+
+    /**
+     * 校验用户名的唯一性
+     *
+     * @param username
+     */
+    void verifyUsername(String username);
 }

@@ -149,6 +149,21 @@
 				$("#verifyCode").attr("src", "/user/verifyCode?" + new Date().getTime());
 			})
 
+			// 用户名唯一校验
+			$("#username").blur(function (){
+				$.ajax({
+					url: "/user/verifyUsername",
+					async: true,
+					type: "POST",
+					data: {
+						username : $("#username").val()
+					},
+					success: function (data) {
+						$("#vCodeStatus").html(data.message);
+					}
+				})
+			})
+
 		})
 	</script>
 </html>

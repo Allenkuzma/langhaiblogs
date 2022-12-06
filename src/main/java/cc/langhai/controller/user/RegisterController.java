@@ -30,8 +30,8 @@ public class RegisterController {
      *
      * @return
      */
-    @GetMapping("/register")
-    public String register(){
+    @GetMapping("/registerPage")
+    public String registerPage(){
         return "blogs/user/register";
     }
 
@@ -45,6 +45,18 @@ public class RegisterController {
     public ResultResponse sendEmailCode(@RequestParam("email") String email, HttpServletRequest request){
         registerService.sendEmailCode(email, request);
         return ResultResponse.success(UserReturnCode.EMAIL_CODE_00000);
+    }
+
+    /**
+     * 校验用户名的唯一性
+     *
+     * @return
+     */
+    @PostMapping("/verifyUsername")
+    @ResponseBody
+    public ResultResponse verifyUsername(@RequestParam("username") String username){
+        registerService.verifyUsername(username);
+        return ResultResponse.success(UserReturnCode.USER_NAME_SINGLE_OK_00007);
     }
 
 }

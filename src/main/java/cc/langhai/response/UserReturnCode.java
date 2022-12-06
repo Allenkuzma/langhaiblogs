@@ -16,7 +16,15 @@ public enum UserReturnCode implements ReturnCode{
 
     REGISTER_IP_EMAIL_COUNT_00004(500, "当前IP24小时之内被暂时封禁，无法发送邮件。"),
 
-    REGISTER_EMAIL_NULL_00005(500, "接受者邮箱地址为空，无法发送邮件。"),
+    REGISTER_EMAIL_NULL_00005(500, "接收者邮箱地址为空，无法发送邮件。"),
+
+    USER_INFO_EXIST_EMAIL_00006(500, "该邮箱已经被用户注册过了。"),
+
+    USER_NAME_SINGLE_OK_00007(200, "用户名是可以被注册的。"),
+
+    USER_NAME_IS_NULL_00008(500, "用户名不能为空。"),
+
+    USER_NAME_IS_NOT_NULL_00009(500, "用户名已经被使用了。"),
     ;
 
     private Integer code;

@@ -10,7 +10,7 @@ server:
   port: 80
 
 spring:
-  #数据模板引擎配置
+  # 数据模板引擎配置
   thymeleaf:
     prefix: classpath:/templates/
     check-template-location: true
@@ -20,7 +20,7 @@ spring:
     content-type: text/html
     mode: HTML5
 
-  #邮件发送配置
+  # 邮件发送配置
   mail:
     #配置SMTP的服务器地址
     host: smtp.qq.com
@@ -39,13 +39,22 @@ spring:
           socketFactoryClass: javax.net.ssl.SSLSocketFactory
         debug: false
 
-  #redis配置
+  # redis配置
   redis:
     database: 9
     host:
     password:
     timeout: 20000
     port: 6379
+
+  # mysql数据库配置
+  datasource:
+    url: jdbc:mysql://x.x.x.x:3306/langhaiblogs?userUnicode=true&characterEncoding=utf8&useSSL=false
+    username:
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
 
 
 

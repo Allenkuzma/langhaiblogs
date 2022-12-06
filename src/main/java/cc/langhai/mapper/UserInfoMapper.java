@@ -1,0 +1,30 @@
+package cc.langhai.mapper;
+
+import cc.langhai.domain.UserInfo;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * 用户详情信息表Mapper
+ *
+ * @author langhai
+ * @date 2022-12-06 21:33
+ */
+@Mapper
+public interface UserInfoMapper {
+
+    /**
+     * 获取用户详情信息 用户id查询
+     *
+     * @param id
+     * @return
+     */
+    UserInfo getUserInfoById(Long id);
+
+    /**
+     * 获取用户详情信息 用户邮箱查询
+     *
+     * @param email
+     * @return
+     */
+    UserInfo getUserInfoByEmail(String email);
+}
