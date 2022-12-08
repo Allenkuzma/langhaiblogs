@@ -11,14 +11,24 @@ import cc.langhai.service.UserService;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.EmailUtil;
 import cc.langhai.utils.IPUtil;
+import cc.langhai.utils.StringUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.AES;
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
+import cn.hutool.crypto.symmetric.SymmetricCrypto;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -98,5 +108,74 @@ public class RegisterServiceImpl implements RegisterService {
         if(ObjectUtil.isNotNull(user)){
             throw new BusinessException(UserReturnCode.USER_NAME_IS_NOT_NULL_00009);
         }
+    }
+
+    @Override
+    @Transactional
+    public void register(String username, String password, String nickname, String email, String verifyCodeText) {
+
+        if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(nickname)
+                || StrUtil.isBlank(email) || StrUtil.isBlank(verifyCodeText)){
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_NULL_00011);
+        }
+
+        // 对用户名进行合法判断 用户名（3到8位的数字和字母组合）
+        if(username.length() > 8 || username.length() < 3){
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
+        }
+
+        if(!StringUtil.isAlphaNumeric(username)){
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
+        }
+
+        this.verifyUsername(username);
+
+        // 对用户密码进行合法校验 用户密码（6到18位的字符组合）
+        if(password.length() < 6 || password.length() > 18){
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
+        }
+        // 构建
+        SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, systemConfig.getSecret().getBytes());
+        // 加密为16进制表示
+        String encryptHexPassword = aes.encryptHex(password);
+
+        // 对昵称进行合法校验 昵称（1到12位的字符组合）
+        if(nickname.length() < 1 || nickname.length() > 12){
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
+        }
+
+        // 对邮箱地址合法校验
+        // 检查用户信息邮箱是否被使用
+        UserInfo userInfo = userInfoService.getUserInfoByEmail(email);
+        if(ObjectUtil.isNotNull(userInfo)){
+            throw new BusinessException(UserReturnCode.USER_INFO_EXIST_EMAIL_00006);
+        }
+
+        // 对验证码校验
+        String redisVerifyCodeText = redisTemplate.opsForValue().get("email:register:" + email);
+        if(StringUtils.isBlank(redisVerifyCodeText) || !verifyCodeText.equals(redisVerifyCodeText)){
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
+        }
+
+        // 当天注册机会限制 配置文件中registerDayUserCount可以配置
+        List<User> userListByDay = userService.getUserListByDay(DateUtil.getNowDay());
+        if(userListByDay.size() > systemConfig.getRegisterDayUserCount()){
+            throw new BusinessException(UserReturnCode.USER_REGISTER_DAY_COUNT_MAX_00013);
+        }
+
+        // 用户信息
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(encryptHexPassword);
+        user.setNickname(nickname);
+        user.setAddTime(new Date());
+        userService.insertUser(user);
+
+        // 用户详情信息
+        UserInfo userInfoSave = new UserInfo();
+        userInfoSave.setId(user.getId());
+        userInfoSave.setEmail(email);
+        userInfoService.insertUserInfo(userInfoSave);
+
     }
 }

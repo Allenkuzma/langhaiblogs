@@ -25,4 +25,15 @@ public class SystemConfig {
      */
     private Integer registerIPEmailCount;
 
+    /**
+     * AES算法秘钥 务必妥善保管
+     *
+     */
+    private String secret;
+
+    /**
+     * 用户当天注册上限数量
+     *
+     */
+    private Integer registerDayUserCount;
 }

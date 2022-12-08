@@ -24,4 +24,16 @@ public interface RegisterService {
      * @param username
      */
     void verifyUsername(String username);
+
+    /**
+     * 用户注册
+     *
+     * @param username
+     * @param password
+     * @param nickname
+     * @param email
+     * @param verifyCodeText
+     */
+    void register(String username, String password, String nickname, String email, String verifyCodeText);
+
 }

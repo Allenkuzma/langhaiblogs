@@ -136,12 +136,21 @@
 
 			//注册校验
 			$("#registerVerify").click(function () {
-				alert($("#username").val() + "~" + $("#password").val() + "~" + $("#verifyCodeText").val());
+				$.ajax({
+					url: "/user/register",
+					async: true,
+					type: "POST",
+					data: $('#registerForm').serialize(),
+					success: function (data) {
+						console.log(data.message)
+						console.log(data.code)
+					}
+				})
 			})
 
 			//清空表单数据
 			$("#reset").click(function () {
-				$("#loginForm")[0].reset();
+				$("#registerForm")[0].reset();
 			})
 
 			//验证码刷新

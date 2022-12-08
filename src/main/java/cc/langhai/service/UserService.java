@@ -2,6 +2,8 @@ package cc.langhai.service;
 
 import cc.langhai.domain.User;
 
+import java.util.List;
+
 /**
  * 用户表 service接口
  *
@@ -16,5 +18,20 @@ public interface UserService {
      * @return
      */
     User getUserByUsername(String username);
+
+    /**
+     * 查询用户信息 注册时间为当天
+     *
+     * @param date
+     * @return
+     */
+    List<User> getUserListByDay(String date);
+
+    /**
+     * 新增一个用户信息
+     *
+     * @return
+     */
+    Integer insertUser(User user);
 
 }

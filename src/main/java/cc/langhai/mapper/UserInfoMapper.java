@@ -27,4 +27,12 @@ public interface UserInfoMapper {
      * @return
      */
     UserInfo getUserInfoByEmail(String email);
+
+    /**
+     * 新增一条 用户详情信息
+     *
+     * @param userInfo
+     * @return
+     */
+    Integer insertUserInfo(UserInfo userInfo);
 }

@@ -59,4 +59,21 @@ public class RegisterController {
         return ResultResponse.success(UserReturnCode.USER_NAME_SINGLE_OK_00007);
     }
 
+    /**
+     * 用户注册
+     *
+     * @return
+     */
+    @PostMapping("/register")
+    @ResponseBody
+    public ResultResponse register(@RequestParam("username") String username,
+                                   @RequestParam("password") String password,
+                                   @RequestParam("nickname") String nickname,
+                                   @RequestParam("email") String email,
+                                   @RequestParam("verifyCodeText") String verifyCodeText){
+        registerService.register(username, password, nickname, email, verifyCodeText);
+        return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);
+    }
+
+
 }

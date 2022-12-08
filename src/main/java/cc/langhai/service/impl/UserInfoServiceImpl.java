@@ -30,4 +30,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         return userInfo;
     }
 
+    @Override
+    public Integer insertUserInfo(UserInfo userInfo) {
+        Integer integer = userInfoMapper.insertUserInfo(userInfo);
+        return integer;
+    }
+
 }

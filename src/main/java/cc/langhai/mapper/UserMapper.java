@@ -3,6 +3,8 @@ package cc.langhai.mapper;
 import cc.langhai.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 用户实体表 Mapper
  *
@@ -18,4 +20,19 @@ public interface UserMapper {
      * @return
      */
     User getUserByUsername(String username);
+
+    /**
+     * 查询用户信息 注册时间为当天
+     *
+     * @param date
+     * @return
+     */
+    List<User> getUserListByDay(String date);
+
+    /**
+     * 新增一个用户信息
+     *
+     * @return
+     */
+    Integer insertUser(User user);
 }

@@ -3,6 +3,8 @@ langhai:
   blogs:
     registerDayEmailCount: 20
     registerIPEmailCount: 5
+    registerDayUserCount: 5
+    secret: NB-20K-langhai-8
 
 
 #程序端口号

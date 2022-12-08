@@ -9,4 +9,12 @@
         select * from user where username = #{username}
     </select>
 
+    <select id="getUserListByDay" resultType="cc.langhai.domain.User">
+        select * from user where add_time like #{username}"%"
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into user(username, nickname, password, add_time) values(#{username}, #{nickname}, #{password}, #{addTime})
+    </insert>
+
 </mapper>

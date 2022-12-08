@@ -13,4 +13,7 @@
         select * from user_info where email = #{email}
     </select>
 
+    <insert id="insertUserInfo" >
+        insert into user_info(id, email) values(#{id}, #{email})
+    </insert>
 </mapper>

@@ -25,6 +25,14 @@ public enum UserReturnCode implements ReturnCode{
     USER_NAME_IS_NULL_00008(500, "用户名不能为空。"),
 
     USER_NAME_IS_NOT_NULL_00009(500, "用户名已经被使用了。"),
+
+    USER_REGISTER_SUCCESS_00010(200, "用户成功注册。"),
+
+    USER_REGISTER_PARAM_NULL_00011(500, "用户注册参数不能为空。"),
+
+    USER_REGISTER_PARAM_VERIFY_00012(500, "用户注册参数非法。"),
+
+    USER_REGISTER_DAY_COUNT_MAX_00013(500, "用户注册当天数量已经到达上限。"),
     ;
 
     private Integer code;
