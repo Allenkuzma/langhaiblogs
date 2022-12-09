@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -112,7 +113,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     @Transactional
-    public void register(String username, String password, String nickname, String email, String verifyCodeText) {
+    public void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session) {
 
         if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(nickname)
                 || StrUtil.isBlank(email) || StrUtil.isBlank(verifyCodeText)){
@@ -177,5 +178,39 @@ public class RegisterServiceImpl implements RegisterService {
         userInfoSave.setEmail(email);
         userInfoService.insertUserInfo(userInfoSave);
 
+        session.setAttribute("user", user);
+        session.setMaxInactiveInterval(60 * 60);
+    }
+
+    @Override
+    public void loginEnter(String username, String password, String verifyCodeText, HttpSession session) {
+        if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(verifyCodeText)){
+            throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_NULL_00015);
+        }
+
+        // 构建
+        SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, systemConfig.getSecret().getBytes());
+        //加密为16进制表示
+        String encryptHex = aes.encryptHex(password);
+        User user = userService.getUserByUsernameAndPassword(username, encryptHex);
+
+        if(ObjectUtil.isNull(user)){
+            throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_00016);
+        }
+
+        // 验证码判断
+        String verifyCode = (String) session.getAttribute("verifyCode");
+        if(StrUtil.isBlank(verifyCode) || !verifyCodeText.equalsIgnoreCase(verifyCode)){
+            throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_00016);
+        }
+
+        session.setAttribute("user", user);
+        // session有效期1个小时
+        session.setMaxInactiveInterval(60 * 60);
+    }
+
+    @Override
+    public void loginOut(HttpSession session) {
+        session.removeAttribute("user");
     }
 }

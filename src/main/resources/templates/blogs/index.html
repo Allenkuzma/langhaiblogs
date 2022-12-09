@@ -32,17 +32,15 @@
 
 		<!-- Wrapper -->
 			<div id="wrapper">
-
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 						<div class="inner">
 							<h1>浪海博客</h1>
 							<p>
-								<a href="" th:text="${session.user?.username}" id="userInfo"></a><br />
-								<span th:text="${byIdUserInfo?.getMotto()}" ></span><br />
-								<span th:if="${not #strings.isEmpty(byIdUserInfo?.getJob())}">
-									职业：<span th:text="${byIdUserInfo?.getJob()}"></span>
-									入职日期：<span th:text="${byIdUserInfo?.getJobDateString()}"></span>
+								<span th:if="${not #strings.isEmpty(session.user?.username)}" >当前用户：</span>
+								<a href="" th:text="${session.user?.nickname}" id="userInfo"></a><br />
+								<span th:if="${not #strings.isEmpty(session.user?.username)}">
+									<a href="javascript:void(0)" id="logout">安全退出</a><br />
 								</span>
 							</p>
 							<ul class="actions">
@@ -219,11 +217,27 @@
 	</body>
 	<script>
 		$(function(){
-			//判断用户是否登录
+			// 判断用户是否登录
 			if($("#userInfo").is(":empty")){
 				$("#userInfo").html("<span class=\"icon fa-smile-beam\"></span> 点击登录 ~ ");
 				$("#userInfo").prop("href", "/user/loginPage");
 			}
+
+			// 安全退出
+			$("#logout").click(function () {
+				$.ajax({
+					url: "/user/loginOut",
+					async: true,
+					type: "POST",
+					success: function (data) {
+						if(data.code == 200){
+							window.location.href = "/";
+						}else {
+
+						}
+					}
+				})
+			})
 
 		})
 	</script>

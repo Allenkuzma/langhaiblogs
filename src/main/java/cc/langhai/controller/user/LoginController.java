@@ -1,10 +1,13 @@
 package cc.langhai.controller.user;
 
+import cc.langhai.response.ResultResponse;
+import cc.langhai.response.UserReturnCode;
+import cc.langhai.service.RegisterService;
 import cc.langhai.utils.ImageVerifyCodeGenerator;
 import cn.hutool.core.util.ObjectUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +25,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class LoginController {
+
+    @Autowired
+    private RegisterService registerService;
 
     /**
      * 跳转到 登录 页面
@@ -54,5 +60,37 @@ public class LoginController {
         session.setAttribute("verifyCode", code);
         //图片验证码输出到响应流
         ImageIO.write(image, "PNG", response.getOutputStream());
+    }
+
+    /**
+     * 用户登录功能
+     *
+     * @param username
+     * @param password
+     * @param verifyCodeText
+     * @param session
+     * @return
+     */
+    @PostMapping("/loginEnter")
+    @ResponseBody
+    public ResultResponse loginEnter(@RequestParam("username") String username,
+                             @RequestParam("password") String password,
+                             @RequestParam("verifyCodeText") String verifyCodeText,
+                             HttpSession session){
+        registerService.loginEnter(username, password, verifyCodeText, session);
+        return ResultResponse.success(UserReturnCode.USER_LOGIN_ENTER_YES_00014);
+    }
+
+    /**
+     * 用户退出
+     *
+     * @param session
+     * @return
+     */
+    @PostMapping("/loginOut")
+    @ResponseBody
+    public ResultResponse loginOut(HttpSession session){
+        registerService.loginOut(session);
+        return ResultResponse.success(UserReturnCode.USER_LOGOUT_YES_00017);
     }
 }

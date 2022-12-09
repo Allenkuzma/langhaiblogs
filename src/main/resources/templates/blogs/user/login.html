@@ -35,6 +35,7 @@
 							<h1 class="major">登录页面</h1>
 							<div class="split style1">
 								<section>
+									<p id="vCodeStatus"></p>
 									<form id="loginForm">
 										<div class="fields">
 											<div class="field half">
@@ -102,7 +103,22 @@
 		$(function(){
 			//登录校验
 			$("#loginVerify").click(function () {
-				alert($("#username").val() + "~" + $("#password").val() + "~" + $("#verifyCodeText").val());
+				$.ajax({
+					url: "/user/loginEnter",
+					async: true,
+					type: "POST",
+					data: $('#loginForm').serialize(),
+					success: function (data) {
+						if(data.code == 200){
+							$("#vCodeStatus").html("登录成功，3秒后为你跳转到首页。");
+							setTimeout(function(){
+								window.location.href = "/";
+							}, 3000);
+						}else {
+							$("#vCodeStatus").html(data.message);
+						}
+					}
+				})
 			})
 
 			//清空表单数据

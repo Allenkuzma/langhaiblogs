@@ -35,4 +35,11 @@ public interface UserMapper {
      * @return
      */
     Integer insertUser(User user);
+
+    /**
+     * 获取用户信息 用户名称和用户密码查询
+     *
+     * @return
+     */
+    User getUserByUsernameAndPassword(String username, String password);
 }

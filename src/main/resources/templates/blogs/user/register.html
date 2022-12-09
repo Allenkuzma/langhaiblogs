@@ -142,8 +142,14 @@
 					type: "POST",
 					data: $('#registerForm').serialize(),
 					success: function (data) {
-						console.log(data.message)
-						console.log(data.code)
+						if(data.code == 200){
+							$("#vCodeStatus").html("注册成功，3秒后为你进行自动登录。");
+							setTimeout(function(){
+								window.location.href = "/";
+							}, 3000);
+						}else {
+							$("#vCodeStatus").html(data.message);
+						}
 					}
 				})
 			})

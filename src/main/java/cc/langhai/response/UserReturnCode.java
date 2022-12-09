@@ -33,6 +33,14 @@ public enum UserReturnCode implements ReturnCode{
     USER_REGISTER_PARAM_VERIFY_00012(500, "用户注册参数非法。"),
 
     USER_REGISTER_DAY_COUNT_MAX_00013(500, "用户注册当天数量已经到达上限。"),
+
+    USER_LOGIN_ENTER_YES_00014(200, "用户成功登录。"),
+
+    USER_LOGIN_PARAM_NULL_00015(500, "用户登录参数不能为空。"),
+
+    USER_LOGIN_PARAM_VERIFY_00016(500, "用户登录参数非法。"),
+
+    USER_LOGOUT_YES_00017(200, "用户成功退出。"),
     ;
 
     private Integer code;

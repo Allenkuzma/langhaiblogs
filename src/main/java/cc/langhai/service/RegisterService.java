@@ -1,6 +1,7 @@
 package cc.langhai.service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 用户注册相关 service接口
@@ -33,7 +34,24 @@ public interface RegisterService {
      * @param nickname
      * @param email
      * @param verifyCodeText
+     * @param session
      */
-    void register(String username, String password, String nickname, String email, String verifyCodeText);
+    void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session);
 
+    /**
+     * 用户登录
+     *
+     * @param username
+     * @param password
+     * @param verifyCodeText
+     * @param session
+     */
+    void loginEnter(String username, String password, String verifyCodeText, HttpSession session);
+
+    /**
+     * 用户退出
+     *
+     * @param session
+     */
+    void loginOut(HttpSession session);
 }
