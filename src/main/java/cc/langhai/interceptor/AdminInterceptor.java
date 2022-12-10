@@ -1,6 +1,7 @@
 package cc.langhai.interceptor;
 
 import cc.langhai.domain.User;
+import cc.langhai.service.RegisterService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,33 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AdminInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    private RegisterService registerService;
+
     /**
      * 在请求处理之前进行调用（Controller方法调用之前）
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         try {
-            //统一拦截（查询当前session是否存在user）(这里user会在每次登陆成功后，写入session)
+            // 统一拦截（查询当前session是否存在user）(这里user会在每次登陆成功后，写入session)
             User user = (User)request.getSession().getAttribute("user");
             if(ObjectUtil.isNotNull(user)){
                 UserContext.set(user);
                 return true;
             }
-            response.sendRedirect("/loginPage");
+
+            // 记住我功能实现登录
+            if(ObjectUtil.isNull(user)){
+                registerService.remember(request, request.getSession());
+                user = (User)request.getSession().getAttribute("user");
+                if(ObjectUtil.isNotNull(user)){
+                    UserContext.set(user);
+                    return true;
+                }
+            }
+
+            response.sendRedirect("/user/loginPage");
         } catch (Exception e) {
             e.printStackTrace();
         }

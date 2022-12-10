@@ -16,6 +16,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
@@ -26,10 +27,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -183,7 +187,8 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void loginEnter(String username, String password, String verifyCodeText, HttpSession session) {
+    public void loginEnter(String username, String password, String verifyCodeText,
+                           HttpSession session, String remember, HttpServletResponse response) {
         if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(verifyCodeText)){
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_NULL_00015);
         }
@@ -207,10 +212,58 @@ public class RegisterServiceImpl implements RegisterService {
         session.setAttribute("user", user);
         // session有效期1个小时
         session.setMaxInactiveInterval(60 * 60);
+
+        // 记住我功能
+        if("on".equals(remember)){
+            this.remember(username, response);
+        }
     }
 
     @Override
     public void loginOut(HttpSession session) {
         session.removeAttribute("user");
+    }
+
+    @Override
+    public void remember(String username, HttpServletResponse response) {
+        String md5 = DigestUtil.md5Hex(username + systemConfig.getSecret());
+        UUID uuid = UUID.randomUUID();
+        // 秘钥生成规则 MD5 + UUID
+        String cipher = uuid + md5;
+        Cookie cookie = new Cookie("userLoginCipher" + username, cipher);
+        cookie.setPath("/");
+        cookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(cookie);
+
+        // 存储到 redis 当中
+        redisTemplate.opsForValue().set("userLoginCipher" + username, cipher, 7 * 24 * 60, TimeUnit.MINUTES);
+    }
+
+    @Override
+    public void remember(HttpServletRequest request, HttpSession session) {
+        Cookie[] cookies = request.getCookies();
+        // 记住我的功能 校验信息cookie和redis当中是否一致
+        if(ObjectUtil.isNotNull(cookies)){
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().length() > 15){
+                    // cookie键的名字
+                    String subKey = cookie.getName().substring(0, 15);
+                    // 用户名
+                    String subName = cookie.getName().substring(15);
+                    if("userLoginCipher".equals(subKey)){
+                        String redis = redisTemplate.opsForValue().get(cookie.getName());
+                        if(cookie.getValue().equals(redis)){
+                            User user = userService.getUserByUsername(subName);
+                            if (ObjectUtil.isNull(session.getAttribute("user"))){
+                                session.setAttribute("user", user);
+                                // session有效期1个小时
+                                session.setMaxInactiveInterval(60 * 60);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

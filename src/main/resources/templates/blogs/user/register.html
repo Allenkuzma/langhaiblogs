@@ -112,7 +112,7 @@
 	</body>
 	<script>
 		$(function(){
-			//发送邮箱验证码
+			// 发送邮箱验证码
 			$("#sendVerifyCode").click(function () {
 				var reg = new RegExp(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/);
 				var flag = reg.test($("#email").val());
@@ -134,7 +134,7 @@
 
 			})
 
-			//注册校验
+			// 注册校验
 			$("#registerVerify").click(function () {
 				$.ajax({
 					url: "/user/register",
@@ -154,12 +154,12 @@
 				})
 			})
 
-			//清空表单数据
+			// 清空表单数据
 			$("#reset").click(function () {
 				$("#registerForm")[0].reset();
 			})
 
-			//验证码刷新
+			// 验证码刷新
 			$("#verifyCode").click(function (){
 				$("#verifyCode").attr("src", "/user/verifyCode?" + new Date().getTime());
 			})

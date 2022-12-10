@@ -1,6 +1,7 @@
 package cc.langhai.service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -45,8 +46,10 @@ public interface RegisterService {
      * @param password
      * @param verifyCodeText
      * @param session
+     * @param remember 记住我 on 开启此功能
+     * @param response
      */
-    void loginEnter(String username, String password, String verifyCodeText, HttpSession session);
+    void loginEnter(String username, String password, String verifyCodeText, HttpSession session, String remember, HttpServletResponse response);
 
     /**
      * 用户退出
@@ -54,4 +57,19 @@ public interface RegisterService {
      * @param session
      */
     void loginOut(HttpSession session);
+
+    /**
+     * 记住我功能 在cookie和redis存储信息用户信息
+     *
+     * @param username
+     * @param response
+     */
+    void remember(String username, HttpServletResponse response);
+
+    /**
+     * 记住我的功能实现 ~ 检验cookie和redis的用户信息是否同步
+     * @param request
+     * @param session
+     */
+    void remember(HttpServletRequest request, HttpSession session);
 }

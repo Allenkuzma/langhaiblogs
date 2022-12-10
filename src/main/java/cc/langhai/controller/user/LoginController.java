@@ -76,8 +76,9 @@ public class LoginController {
     public ResultResponse loginEnter(@RequestParam("username") String username,
                              @RequestParam("password") String password,
                              @RequestParam("verifyCodeText") String verifyCodeText,
-                             HttpSession session){
-        registerService.loginEnter(username, password, verifyCodeText, session);
+                             HttpSession session, HttpServletResponse response,
+                             String remember){
+        registerService.loginEnter(username, password, verifyCodeText, session, remember, response);
         return ResultResponse.success(UserReturnCode.USER_LOGIN_ENTER_YES_00014);
     }
 

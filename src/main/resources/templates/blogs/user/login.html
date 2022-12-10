@@ -53,6 +53,10 @@
 												<input type="text" id="verifyCodeText" name="verifyCodeText" placeholder="验证码" required="required" />
 											</div>
 										</div>
+										<div class="col-6 col-12-small">
+											<input type="checkbox" id="remember" name="remember">
+											<label for="remember">记住我（七天免登陆）</label>
+										</div>
 									</form>
 									<button id="loginVerify">登录</button>
 									<button id="reset">重置</button>
@@ -101,7 +105,7 @@
 	</body>
 	<script>
 		$(function(){
-			//登录校验
+			// 登录校验
 			$("#loginVerify").click(function () {
 				$.ajax({
 					url: "/user/loginEnter",
@@ -121,12 +125,12 @@
 				})
 			})
 
-			//清空表单数据
+			// 清空表单数据
 			$("#reset").click(function () {
 				$("#loginForm")[0].reset();
 			})
 
-			//验证码刷新
+			// 验证码刷新
 			$("#verifyCode").click(function (){
 				$("#verifyCode").attr("src", "/user/verifyCode?" + new Date().getTime());
 			})
