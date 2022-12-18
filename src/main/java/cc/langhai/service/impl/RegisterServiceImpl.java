@@ -8,10 +8,7 @@ import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.RegisterService;
 import cc.langhai.service.UserInfoService;
 import cc.langhai.service.UserService;
-import cc.langhai.utils.DateUtil;
-import cc.langhai.utils.EmailUtil;
-import cc.langhai.utils.IPUtil;
-import cc.langhai.utils.StringUtil;
+import cc.langhai.utils.*;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -258,6 +255,7 @@ public class RegisterServiceImpl implements RegisterService {
                                 session.setAttribute("user", user);
                                 // session有效期1个小时
                                 session.setMaxInactiveInterval(60 * 60);
+                                UserContext.set(user);
                             }
                             break;
                         }

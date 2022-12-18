@@ -23,11 +23,12 @@ public class LoginConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //注册TestInterceptor拦截器
+        // 注册TestInterceptor拦截器
         InterceptorRegistration registration = registry.addInterceptor(adminInterceptor());
 
         registration.addPathPatterns("/user/personalPage");
-        //添加不拦截路径
+        registration.addPathPatterns("/user/updateUserInfoPage");
+        // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",
                                          "/**/*.html",

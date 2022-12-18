@@ -6,7 +6,12 @@
 <mapper namespace="cc.langhai.mapper.UserMapper">
 
     <select id="getUserByUsername" resultType="cc.langhai.domain.User">
-        select * from user where username = #{username}
+        select
+            id, username, nickname, password, add_time, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show, update_time
+        from
+            user
+        where
+            username = #{username}
     </select>
 
     <select id="getUserListByDay" resultType="cc.langhai.domain.User">

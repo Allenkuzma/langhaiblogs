@@ -15,4 +15,12 @@ public class UserInfo {
 
     private String email;
 
+    private String motto;
+
+    /**
+     * 用户注册天数
+     *
+     */
+    private Long day;
+
 }

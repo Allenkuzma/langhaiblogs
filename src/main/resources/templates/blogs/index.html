@@ -39,6 +39,7 @@
 							<p>
 								<span th:if="${not #strings.isEmpty(session.user?.username)}" >当前用户：</span>
 								<a href="" th:text="${session.user?.nickname}" id="userInfo"></a><br />
+								<span th:text="${userInfo?.motto}" ></span><br />
 								<span th:if="${not #strings.isEmpty(session.user?.username)}">
 									<a href="javascript:void(0)" id="logout">安全退出</a><br />
 								</span>

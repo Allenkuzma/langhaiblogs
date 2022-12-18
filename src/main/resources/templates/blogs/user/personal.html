@@ -4,7 +4,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>个人空间 - 浪海博客</title>
 		<meta charset="utf-8" />
@@ -36,8 +36,46 @@
 						<div class="inner">
 							<h1 class="major">个人空间</h1>
 							<span class="image fit"><img src="/blogs/images/personal.jpg" alt="林书豪" /></span>
-							<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
-							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+							<div class="split style1">
+								<section>
+									<div>
+										<div >
+											昵称：<span th:text="${session.user?.nickname}"></span>
+										</div>
+										<div >
+											邮箱地址：<span th:text="${userInfo?.email}"></span>
+										</div>
+										<div >
+											注册时间：<span th:text="${session.user?.addTimeShow}"></span>
+										</div>
+										<div >
+											已经过去：<span th:text="${userInfo?.day} + '天啦'"></span>
+										</div>
+									</div>
+								</section>
+								<section>
+									<ul class="contact">
+										<li>
+											<h3>地址</h3>
+											<span>中国<br />
+											城市：南京<br />
+											</span>
+										</li>
+										<li>
+											<h3>邮箱</h3>
+											<a href="#">676558206@qq.com</a>
+										</li>
+										<li>
+											<h3>开发团队</h3>
+											<a href="/langhaibk/team.html">开发团队</a>
+										</li>
+										<li>
+											<h3>开发日志</h3>
+											<a href="/langhai/log">日志记录</a>
+										</li>
+									</ul>
+								</section>
+							</div>
 						</div>
 					</section>
 
@@ -62,5 +100,11 @@
 			<script src="/blogs/assets/js/util.js"></script>
 			<script src="/blogs/assets/js/main.js"></script>
 
+		<!-- 引入 layui.js -->
+		<script src="//unpkg.com/layui@2.7.6/dist/layui.js"></script>
+
+		<script>
+
+		</script>
 	</body>
 </html>
