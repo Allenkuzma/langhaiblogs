@@ -113,7 +113,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session) {
 
         if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(nickname)
@@ -217,8 +217,22 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void loginOut(HttpSession session) {
+    public void loginOut(HttpSession session, HttpServletResponse response) {
+        User user = (User) session.getAttribute("user");
+        if(ObjectUtil.isNull(user)){
+            return;
+        }
+
+        // 覆盖掉带秘钥的cookie
+        Cookie cookie = new Cookie("userLoginCipher" + user.getUsername(), "");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        // 删除session用户信息
         session.removeAttribute("user");
+
+        UserContext.set(null);
+        UserContext.remove();
     }
 
     @Override
@@ -255,8 +269,8 @@ public class RegisterServiceImpl implements RegisterService {
                                 session.setAttribute("user", user);
                                 // session有效期1个小时
                                 session.setMaxInactiveInterval(60 * 60);
-                                UserContext.set(user);
                             }
+                            UserContext.set(user);
                             break;
                         }
                     }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
@@ -90,8 +91,8 @@ public class LoginController {
      */
     @PostMapping("/loginOut")
     @ResponseBody
-    public ResultResponse loginOut(HttpSession session){
-        registerService.loginOut(session);
+    public ResultResponse loginOut(HttpSession session, HttpServletResponse response){
+        registerService.loginOut(session, response);
         return ResultResponse.success(UserReturnCode.USER_LOGOUT_YES_00017);
     }
 }

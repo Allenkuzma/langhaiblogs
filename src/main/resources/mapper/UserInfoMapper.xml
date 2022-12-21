@@ -16,4 +16,13 @@
     <insert id="insertUserInfo" >
         insert into user_info(id, email) values(#{id}, #{email})
     </insert>
+
+    <update id="updateUserInfo" >
+        update
+            user_info
+        set
+            motto = #{motto}
+        where
+            id = #{id}
+    </update>
 </mapper>

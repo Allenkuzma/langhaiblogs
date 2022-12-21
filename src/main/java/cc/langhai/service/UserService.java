@@ -41,4 +41,17 @@ public interface UserService {
      */
     User getUserByUsernameAndPassword(String username, String password);
 
+    /**
+     * 获取用户信息 id查询
+     *
+     * @return
+     */
+    User getUserById(Long id);
+
+    /**
+     * 更新用户信息
+     *
+     * @param user
+     */
+    void updateUser(User user);
 }

@@ -55,8 +55,9 @@ public interface RegisterService {
      * 用户退出
      *
      * @param session
+     * @param response
      */
-    void loginOut(HttpSession session);
+    void loginOut(HttpSession session, HttpServletResponse response);
 
     /**
      * 记住我功能 在cookie和redis存储信息用户信息

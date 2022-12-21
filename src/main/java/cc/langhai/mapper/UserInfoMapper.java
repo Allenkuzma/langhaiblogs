@@ -35,4 +35,12 @@ public interface UserInfoMapper {
      * @return
      */
     Integer insertUserInfo(UserInfo userInfo);
+
+    /**
+     * 更新 用户详情信息
+     *
+     * @param userInfo
+     */
+    void updateUserInfo(UserInfo userInfo);
+
 }

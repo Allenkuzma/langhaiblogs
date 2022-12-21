@@ -23,7 +23,30 @@
     </insert>
 
     <select id="getUserByUsernameAndPassword" resultType="cc.langhai.domain.User">
-        select * from user where username = #{username} and password = #{password}
+        select
+            id, username, nickname, password, add_time, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show, update_time
+        from
+            user
+        where
+            username = #{username} and password = #{password}
     </select>
+
+    <select id="getUserById" resultType="cc.langhai.domain.User">
+        select
+            id, username, nickname, password, add_time, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show, update_time
+        from
+            user
+        where
+            id = #{id}
+    </select>
+
+    <update id="updateUser" >
+        update
+            user
+        set
+            nickname = #{nickname}
+        where
+            id = #{id}
+    </update>
 
 </mapper>

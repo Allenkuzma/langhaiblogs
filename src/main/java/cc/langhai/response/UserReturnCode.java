@@ -41,6 +41,10 @@ public enum UserReturnCode implements ReturnCode{
     USER_LOGIN_PARAM_VERIFY_00016(500, "用户登录参数非法。"),
 
     USER_LOGOUT_YES_00017(200, "用户成功退出。"),
+
+    USER_PERSONAL_UPDATE_USER_INFO_YES_00018(200, "用户个人信息成功更新。"),
+
+    USER_PERSONAL_UPDATE_USER_INFO_PARAM_FAIL_00019(500, "用户个人信息参数校验失败。"),
     ;
 
     private Integer code;

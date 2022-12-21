@@ -1,9 +1,11 @@
 package cc.langhai.controller;
 
+import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
 import cc.langhai.service.RegisterService;
 import cc.langhai.service.UserInfoService;
 import cc.langhai.utils.UserContext;
+import cn.hutool.core.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +39,12 @@ public class IndexController {
         registerService.remember(httpRequest, session);
 
         // 存储用户详情信息
-        Long userId = UserContext.getUserId();
+        Long userId = null;
+        User user = (User) session.getAttribute("user");
+        if(ObjectUtil.isNotNull(user)){
+            userId = user.getId();
+        }
+
         UserInfo userInfo = userInfoService.getUserInfoById(userId);
         model.addAttribute("userInfo", userInfo);
 
