@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * 用户个人空间 service接口 实现类
@@ -51,6 +52,7 @@ public class PersonalServiceImpl implements PersonalService {
         User user = userService.getUserById(userId);
         if(!nickname.equals(user.getNickname())){
             user.setNickname(nickname);
+            user.setUpdateTime(new Date());
             userService.updateUser(user);
 
             session.setAttribute("user", user);
@@ -60,6 +62,7 @@ public class PersonalServiceImpl implements PersonalService {
         UserInfo userInfo = userInfoService.getUserInfoById(userId);
         if(!motto.equals(userInfo.getMotto())){
             userInfo.setMotto(motto);
+            userInfo.setUpdateTime(new Date());
             userInfoService.updateUserInfo(userInfo);
         }
     }

@@ -2,6 +2,8 @@ package cc.langhai.domain;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 用户详情信息表
  *
@@ -22,5 +24,7 @@ public class UserInfo {
      *
      */
     private Long day;
+
+    private Date updateTime;
 
 }

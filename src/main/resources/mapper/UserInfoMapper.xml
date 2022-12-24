@@ -21,7 +21,7 @@
         update
             user_info
         set
-            motto = #{motto}
+            motto = #{motto}, update_time = #{updateTime}
         where
             id = #{id}
     </update>

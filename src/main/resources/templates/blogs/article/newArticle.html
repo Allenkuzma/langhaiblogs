@@ -26,48 +26,29 @@
 
     <blockquote class="layui-elem-quote">
         本页面推荐使用 平板/电脑 进行操作。
+        <p id="issueResult" style="color: red"></p>
     </blockquote>
 
     <form class="layui-form" action="">
         <div class="layui-form-item">
             <label class="layui-form-label">文章标题</label>
             <div class="layui-input-block">
-                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入文章标题" class="layui-input">
+                <input type="text" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入文章标题" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">标签名字</label>
             <div class="layui-input-block">
-                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标签名字（新增）" class="layui-input">
+                <input type="text" id="content" name="content" lay-verify="title" autocomplete="off" placeholder="请输入标签名字（新增）" class="layui-input">
             </div>
         </div>
 
         <div class="layui-inline">
             <label class="layui-form-label">标签名字</label>
             <div class="layui-input-inline">
-                <select name="modules" lay-verify="required" lay-search="">
+                <select name="label-langhai" id="label-langhai" lay-verify="required" lay-search="">
                     <option value="">直接选择或搜索选择</option>
-                    <option value="1">layer</option>
-                    <option value="2">form</option>
-                    <option value="3">layim</option>
-                    <option value="4">element</option>
-                    <option value="5">laytpl</option>
-                    <option value="6">upload</option>
-                    <option value="7">laydate</option>
-                    <option value="8">laypage</option>
-                    <option value="9">flow</option>
-                    <option value="10">util</option>
-                    <option value="11">code</option>
-                    <option value="12">tree</option>
-                    <option value="13">layedit</option>
-                    <option value="14">nav</option>
-                    <option value="15">tab</option>
-                    <option value="16">table</option>
-                    <option value="17">select</option>
-                    <option value="18">checkbox</option>
-                    <option value="19">switch</option>
-                    <option value="20">radio</option>
                 </select>
             </div>
         </div>
@@ -75,7 +56,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">是否公开-默认不公开</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="close" lay-skin="switch" lay-text="公开|不公开">
+                <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
             </div>
         </div>
     </form>
@@ -83,6 +64,10 @@
     <div id="editor—wrapper">
         <div id="toolbar-container"><!-- 工具栏 --></div>
         <div id="editor-container"><!-- 编辑器 --></div>
+    </div>
+
+    <div class="layui-btn-container">
+        <button type="button" class="layui-btn layui-btn-radius" id="publish">发布文章</button>
     </div>
 
     <blockquote class="layui-elem-quote">
@@ -95,13 +80,49 @@
 <script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
 <script src="/blogs/assets/js/jquery.min.js"></script>
 <script>
+
+
+</script>
+<script th:inline="javascript">
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
     layui.use(['element', 'form'], function(){
         var element = layui.element;
         var form = layui.form;
 
-        //…
+        var label = [[${labelList}]];
+
+        for(var i = 0; i < label.length; i++){
+            $('#label-langhai').append('<option value=' + label[i] + '>'+ label[i] +'</option>');
+        }
+
+        form.render();
     });
+
+    $(function () {
+        $("#publish").on("click", function () {
+            $.ajax({
+                url: "/article/issue",
+                async: true,
+                type: "POST",
+                data: {"html": editor.getHtml(),
+                    "title": $("#title").val(),
+                    "content": $("#content").val(),
+                    "label": $("#label-langhai option:selected").text(),
+                    "publicShow": $("input[name='public']:checked").val()
+                },
+                success: function (data) {
+                    if(data.code == 200){
+                        $("#issueResult").html("发布成功，即将跳转到个人空间！");
+                        setTimeout(function(){
+                            window.location.href = "/user/personalPage";
+                        }, 3000);
+                    }else {
+                        $("#issueResult").text(data.message);
+                    }
+                }
+            })
+        });
+    })
 </script>
 <script>
     const { createEditor, createToolbar } = window.wangEditor
@@ -110,7 +131,7 @@
         placeholder: '欢迎使用浪海博客系统！！！',
         onChange(editor) {
             const html = editor.getHtml()
-            console.log('editor content', html)
+            // console.log('editor content', html)
             // 也可以同步到 <textarea>
         }
     }

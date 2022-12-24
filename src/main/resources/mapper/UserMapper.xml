@@ -44,7 +44,7 @@
         update
             user
         set
-            nickname = #{nickname}
+            nickname = #{nickname}, update_time = #{updateTime}
         where
             id = #{id}
     </update>

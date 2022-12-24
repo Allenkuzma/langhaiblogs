@@ -4,7 +4,7 @@ import cc.langhai.domain.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 用户详情信息表Mapper
+ * 用户详情信息表 Mapper
  *
  * @author langhai
  * @date 2022-12-06 21:33
