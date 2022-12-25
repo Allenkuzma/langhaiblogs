@@ -30,4 +30,10 @@ public class Article {
     private Date addTime;
 
     private Date updateTime;
+
+    /**
+     * 文章作者
+     *
+     */
+    private String author;
 }

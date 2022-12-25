@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>文章列表 - 浪海博客</title>
+  <meta name="keywords" content="浪海博客,文章列表" />
+  <meta name="description" content="浪海博客的文章列表页面。" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+
+</head>
+<body>
+  <ul class="layui-nav layui-bg-green" lay-filter="">
+    <li class="layui-nav-item"><a href="/">首页</a></li>
+    <li class="layui-nav-item layui-this"><a href="/article/articleListPage">文章列表</a></li>
+    <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
+    <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
+  </ul>
+
+  <blockquote class="layui-elem-quote">
+    展示所有发布的文章。
+    <p id="issueResult" style="color: red"></p>
+  </blockquote>
+
+  <table class="layui-hide" id="article" lay-filter="article"></table>
+
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+  </script>
+
+  <div id="demo7"></div>
+
+
+  <blockquote class="layui-elem-quote">
+    <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.个人网站 2021 ~ 2029年
+      <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >源码地址</a></li>
+  </blockquote>
+
+</body>
+<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script th:inline="none">
+  //注意：导航 依赖 element 模块，否则无法进行功能性操作
+  layui.use(['element', 'form', 'table', 'laypage'], function() {
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    var laypage = layui.laypage;
+
+    layer.msg('使用电脑展示更佳', {
+      closeBtn: 1,
+      icon: 6,
+      time: 3 * 1000,
+      offset: '21px'
+    });
+
+    table.render({
+      elem: '#article',
+      url: '/article/articleList',
+      cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'id', fixed: 'left', title: 'ID', sort: true}
+        ,{field:'title', title: '文章标题'}
+        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
+      ]],
+      page: false
+    })
+
+    function getCount() {
+      var count;
+      $.ajax({
+        url: "/article/articleList",
+        async: false,
+        type: "GET",
+        success: function (data) {
+          count = data.count;
+        }
+      })
+
+      return count;
+    }
+
+    // 分页完整功能
+    laypage.render({
+      elem: 'demo7'
+      ,count: getCount()
+      ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+      ,jump: function(obj){
+        console.log(obj.curr)
+        console.log(obj.limit)
+        table.render({
+          elem: '#article',
+          url: '/article/articleList?curr=' + obj.curr + '&limitArticle=' + obj.limit,
+          cols: [[
+            {type: 'checkbox', fixed: 'left'}
+            ,{field:'id', fixed: 'left', title: 'ID', sort: true, width:80,}
+            ,{field:'title', title: '文章标题', width:180,}
+            ,{field:'title', title: '文章标题', width:180,},
+            {field:'title', title: '文章标题', width:180,},
+            {field:'title', title: '文章标题', width:180,}
+            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
+          ]],
+          page: false
+        })
+      }
+    });
+
+    // 触发单元格工具事件
+    table.on('tool(article)', function(obj){ // 双击 toolDouble
+      var data = obj.data;
+      //console.log(obj)
+      if(obj.event === 'del'){
+        layer.confirm('真的删除行么', function(index){
+          obj.del();
+          layer.close(index);
+        });
+      } else if(obj.event === 'edit'){
+        layer.open({
+          title: '编辑',
+          type: 1,
+          area: ['80%','80%'],
+          content: '<div style="padding: 16px;">自定义表单元素</div>'
+        });
+      } else if(obj.event === 'look'){
+        window.location.href = "/"
+      }
+    });
+
+  })
+
+
+
+
+</script>
+</html>

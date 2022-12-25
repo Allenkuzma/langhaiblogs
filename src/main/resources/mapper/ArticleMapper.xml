@@ -27,4 +27,27 @@
             (#{userId}, #{labelId}, #{title}, #{html}, #{publicShow}, #{deleteFlag}, #{addTime})
     </insert>
 
+    <select id="getAllArticle" resultType="cc.langhai.domain.Article">
+        select
+            *
+        from
+            article
+        where
+            user_id = #{userId}
+          and
+            delete_flag = 0
+        order by add_time desc
+    </select>
+
+    <select id="getById" resultType="cc.langhai.domain.Article">
+        select
+            *
+        from
+            article
+        where
+            id = #{id}
+          and
+            delete_flag = 0
+    </select>
+
 </mapper>

@@ -60,5 +60,7 @@ spring:
 #    active: test
 
 
-
+#配置pagehelper的内容
+pagehelper:
+  helper-dialect: mysql
 

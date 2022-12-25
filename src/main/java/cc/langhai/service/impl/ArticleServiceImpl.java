@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * article service 实现类
@@ -86,5 +87,19 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDeleteFlag(0);
         article.setAddTime(new Date());
         articleMapper.insertArticle(article);
+    }
+
+    @Override
+    public List<Article> getAllArticle() {
+        Long userId = UserContext.getUserId();
+
+        List<Article> allArticle = articleMapper.getAllArticle(userId);
+        return allArticle;
+    }
+
+    @Override
+    public Article getById(Long id) {
+        Article article = articleMapper.getById(id);
+        return article;
     }
 }

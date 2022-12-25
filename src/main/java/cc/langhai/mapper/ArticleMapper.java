@@ -3,6 +3,8 @@ package cc.langhai.mapper;
 import cc.langhai.domain.Article;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 文章表 Mapper
  *
@@ -24,4 +26,20 @@ public interface ArticleMapper {
      *
      */
     void insertArticle(Article article);
+
+    /**
+     * 获取用户发布的所有文章
+     *
+     * @return
+     */
+    List<Article> getAllArticle(Long userId);
+
+    /**
+     * 获取一篇文章
+     *
+     * @param id
+     * @return
+     */
+    Article getById(Long id);
+
 }
