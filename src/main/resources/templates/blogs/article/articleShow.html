@@ -6,10 +6,10 @@
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>文章展示TODO - 浪海博客</title>
+		<title th:text="${article.title} + ' ~ 浪海博客'">文章详情内容 - 浪海博客</title>
 		<meta charset="utf-8" />
-		<meta name="keywords" content="浪海博客,个人空间" />
-		<meta name="description" content="浪海博客的个人空间。" />
+		<meta name="keywords" th:content="${article.title} + ',浪海博客,' + ${article.author}" />
+		<meta name="description" th:content="${article.author} + '编写的' + ${article.title}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
@@ -22,7 +22,7 @@
 				<nav>
 					<ul>
 						<li><a href="/">主页</a></li>
-						<li><a href="/user/personalPage" class="active">个人空间</a></li>
+						<li><a href="/user/personalPage" >个人空间</a></li>
 						<li><a href="javascript:void(0)" id="loginOut">安全退出</a></li>
 					</ul>
 				</nav>
@@ -34,11 +34,19 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
-							<h1 class="major">个人空间</h1>
+							<h1 class="major" th:text="${article.title} + ' ~ ' + ${article.author}"></h1>
 							<span class="image fit"><img src="/blogs/images/personal.jpg" alt="林书豪" /></span>
-							<div th:utext="${article.html}">
+							<section>
+								<div th:text="${article.addTimeShow}"></div>
+								<div>
+									<span th:text="${article.title}"></span>
+									<span th:text="'浪海值：' + ${article.heat} + '度'"></span><br />
+									<span th:text="'文章标签：' + ${article.labelContent}"></span>
+								</div>
+								<div th:utext="${article.html}">
 
-							</div>
+								</div>
+							</section>
 						</div>
 					</section>
 

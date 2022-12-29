@@ -10,14 +10,18 @@ import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.service.ArticleService;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.UserContext;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * article service 实现类
@@ -33,6 +37,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private LabelMapper labelMapper;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -100,6 +107,48 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article getById(Long id) {
         Article article = articleMapper.getById(id);
+        return article;
+    }
+
+    @Override
+    public List<Article> getArticleHeat(List<Article> articleList) {
+        if(CollectionUtil.isNotEmpty(articleList)){
+            for (Article article : articleList) {
+                // 获取文章热度值
+                String heat = redisTemplate.opsForValue().get("article" + article.getAuthor() + article.getId());
+
+                if(StrUtil.isBlank(heat)){
+                    // 存储到redis当中
+                    redisTemplate.opsForValue().set("article" + article.getAuthor() + article.getId(),
+                            "1", 7 * 24 * 60, TimeUnit.MINUTES);
+                    article.setHeat("1");
+                }else {
+                    article.setHeat(heat);
+                }
+            }
+        }
+
+        return articleList;
+    }
+
+    @Override
+    public Article getArticleHeat(Article article) {
+        if(ObjectUtil.isNotNull(article)){
+            String heat = redisTemplate.opsForValue().get("article" + article.getAuthor() + article.getId());
+
+            if(StrUtil.isBlank(heat)){
+                // 存储到redis当中
+                redisTemplate.opsForValue().set("article" + article.getAuthor() + article.getId(),
+                        "1", 7 * 24 * 60, TimeUnit.MINUTES);
+                article.setHeat("1");
+            }else {
+                Long heatLong = Long.valueOf(heat);
+                Long heatLater = heatLong + 1;
+                redisTemplate.opsForValue().set("article" + article.getAuthor() + article.getId(),
+                        heatLater.toString(), 7 * 24 * 60, TimeUnit.MINUTES);
+                article.setHeat(heatLater.toString());
+            }
+        }
         return article;
     }
 }

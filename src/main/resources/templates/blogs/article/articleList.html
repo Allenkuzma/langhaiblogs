@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>文章列表 - 浪海博客</title>
@@ -22,16 +22,51 @@
     <p id="issueResult" style="color: red"></p>
   </blockquote>
 
-  <table class="layui-hide" id="article" lay-filter="article"></table>
+  <!--<table class="layui-hide" id="article" lay-filter="article"></table>
 
   <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
-  </script>
+  </script>-->
+
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12" th:each="article : ${allArticle}">
+      <div class="layui-panel">
+        <div style="padding: 30px;">
+          <div style="padding: 30px;" class="layui-row">
+            <div class="layui-col-xs6" th:text="'文章标题：' + ${article.title}"></div>
+            <div class="layui-col-xs6" style="text-align:right;">
+              <button type="button" class="layui-btn layui-btn-normal layui-btn-radius">
+                <a th:href="'/article/articleShow?id=' + ${article.id}">查看文章详情</a>
+              </button>
+            </div>
+          </div>
+          <div style="padding: 30px;" class="layui-row">
+            <div class="layui-col-xs6" th:text="'文章作者：' + ${article.author}"></div>
+            <div class="layui-col-xs6" style="text-align:right;">
+              <button type="button" class="layui-btn layui-btn-danger layui-btn-radius">
+                <a th:href="'/article/articleShow?id=' + ${article.id}">删除文章</a>
+              </button>
+            </div>
+          </div>
+          <div style="padding: 30px;" class="layui-row">
+            <div class="layui-col-xs6">
+              <span th:text="'文章日期：' + ${article.addTimeShow}"></span><br />
+              <span th:text="'浪海值：' + ${article.heat}"></span>
+            </div>
+            <div class="layui-col-xs6" style="text-align:right;">
+              <button type="button" class="layui-btn layui-btn-danger layui-btn-radius">
+                <a th:href="'/article/articleShow?id=' + ${article.id}">删除文章</a>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="demo7"></div>
-
 
   <blockquote class="layui-elem-quote">
     <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.个人网站 2021 ~ 2029年
@@ -41,7 +76,7 @@
 </body>
 <script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
 <script src="/blogs/assets/js/jquery.min.js"></script>
-<script th:inline="none">
+<script >
   //注意：导航 依赖 element 模块，否则无法进行功能性操作
   layui.use(['element', 'form', 'table', 'laypage'], function() {
     var element = layui.element;
@@ -56,18 +91,7 @@
       offset: '21px'
     });
 
-    table.render({
-      elem: '#article',
-      url: '/article/articleList',
-      cols: [[
-        {type: 'checkbox', fixed: 'left'}
-        ,{field:'id', fixed: 'left', title: 'ID', sort: true}
-        ,{field:'title', title: '文章标题'}
-        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
-      ]],
-      page: false
-    })
-
+    // 获取文章数量 用来做分页处理
     function getCount() {
       var count;
       $.ajax({
@@ -86,31 +110,19 @@
     laypage.render({
       elem: 'demo7'
       ,count: getCount()
+      ,curr: [[${curr}]]
       ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-      ,jump: function(obj){
-        console.log(obj.curr)
-        console.log(obj.limit)
-        table.render({
-          elem: '#article',
-          url: '/article/articleList?curr=' + obj.curr + '&limitArticle=' + obj.limit,
-          cols: [[
-            {type: 'checkbox', fixed: 'left'}
-            ,{field:'id', fixed: 'left', title: 'ID', sort: true, width:80,}
-            ,{field:'title', title: '文章标题', width:180,}
-            ,{field:'title', title: '文章标题', width:180,},
-            {field:'title', title: '文章标题', width:180,},
-            {field:'title', title: '文章标题', width:180,}
-            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
-          ]],
-          page: false
-        })
+      ,jump: function(obj, first){
+        if(!first){
+          window.location.href = '/article/articleListPage?curr=' + obj.curr + '&limitArticle=' + obj.limit
+        }
       }
     });
 
     // 触发单元格工具事件
-    table.on('tool(article)', function(obj){ // 双击 toolDouble
+    /*table.on('tool(article)', function(obj){ // 双击 toolDouble
       var data = obj.data;
-      //console.log(obj)
+      // console.log(obj)
       if(obj.event === 'del'){
         layer.confirm('真的删除行么', function(index){
           obj.del();
@@ -124,14 +136,49 @@
           content: '<div style="padding: 16px;">自定义表单元素</div>'
         });
       } else if(obj.event === 'look'){
-        window.location.href = "/"
+        window.location.href = "/article/articleShow?id=" + data.id
       }
-    });
+    });*/
 
   })
+</script>
+<script th:inline="none">
+  // 分页完整功能 表格版本
+  /*laypage.render({
+    elem: 'demo7'
+    ,count: getCount()
+    ,curr: [${curr}]
+    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+    ,jump: function(obj, first){
+      console.log(obj.curr)
+      console.log(obj.limit)
+      table.render({
+        elem: '#article',
+        url: '/article/articleList?curr=' + obj.curr + '&limitArticle=' + obj.limit,
+        cols: [[
+          {type: 'checkbox', fixed: 'left'}
+          ,{field:'id', fixed: 'left', title: 'ID', sort: true, width:80,}
+          ,{field:'title', title: '文章标题', width:180,}
+          ,{field:'title', title: '文章标题', width:180,},
+          {field:'title', title: '文章标题', width:180,},
+          {field:'title', title: '文章标题', width:180,}
+          ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
+        ]],
+        page: false
+      })
+    }
+  });*/
 
-
-
-
+  /*table.render({
+      elem: '#article',
+      url: '/article/articleList',
+      cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'id', fixed: 'left', title: 'ID', sort: true}
+        ,{field:'title', title: '文章标题'}
+        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
+      ]],
+      page: false
+    })*/
 </script>
 </html>

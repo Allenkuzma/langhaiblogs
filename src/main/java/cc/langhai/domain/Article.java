@@ -36,4 +36,22 @@ public class Article {
      *
      */
     private String author;
+
+    /**
+     * 用来展示新增时间 yyyy-MM-dd HH:mm:ss
+     *
+     */
+    private String addTimeShow;
+
+    /**
+     * 文章热度
+     *
+     */
+    private String heat;
+
+    /**
+     * 文章标签
+     *
+     */
+    private String labelContent;
 }

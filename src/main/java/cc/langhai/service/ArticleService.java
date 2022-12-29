@@ -37,4 +37,22 @@ public interface ArticleService {
      * @return
      */
     Article getById(Long id);
+
+    /**
+     * 获取文章热度
+     * 使用场景：个人空间文章列表的时候使用
+     *
+     * @param articleList
+     * @return
+     */
+    List<Article> getArticleHeat(List<Article> articleList);
+
+    /**
+     * 获取文章热度并且增加一个热度
+     * 使用场景：某一篇文章展示的时候使用
+     *
+     * @param article
+     * @return
+     */
+    Article getArticleHeat(Article article);
 }

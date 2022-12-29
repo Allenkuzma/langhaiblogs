@@ -192,7 +192,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         // 构建
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, systemConfig.getSecret().getBytes());
-        //加密为16进制表示
+        // 加密为16进制表示
         String encryptHex = aes.encryptHex(password);
         User user = userService.getUserByUsernameAndPassword(username, encryptHex);
 

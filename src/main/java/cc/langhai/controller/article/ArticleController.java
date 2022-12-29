@@ -87,8 +87,18 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/articleListPage")
-    public String articleListPage(HttpSession session, Model model){
+    public String articleListPage(HttpSession session, Model model,
+                                  @RequestParam(defaultValue = "1") Integer curr,
+                                  @RequestParam(defaultValue = "10") Integer limitArticle){
+        // 开启分页助手
+        PageHelper.startPage(curr, limitArticle);
 
+        List<Article> allArticle = articleService.getAllArticle();
+        List<Article> articleHeat = articleService.getArticleHeat(allArticle);
+
+
+        model.addAttribute("allArticle", articleHeat);
+        model.addAttribute("curr", curr);
         return "blogs/article/articleList";
     }
 
@@ -130,14 +140,10 @@ public class ArticleController {
      */
     @GetMapping("/articleShow")
     public String articleShow(Long id, Model model){
-
-        // 设置文章作者
         Article article = articleService.getById(id);
-        Long userArticleId = article.getUserId();
-        User userArticle = userService.getUserById(userArticleId);
-        article.setAuthor(userArticle.getUsername());
+        Article articleHeat = articleService.getArticleHeat(article);
 
-        model.addAttribute("article", article);
+        model.addAttribute("article", articleHeat);
         return "blogs/article/articleShow";
     }
 }

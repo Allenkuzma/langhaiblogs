@@ -40,7 +40,7 @@ public class PersonalController {
      * @return
      */
     @GetMapping("/personalPage")
-    public String loginPage(HttpSession session, Model model){
+    public String personalPage(HttpSession session, Model model){
         // 将用户详情信息存储到 model中
         User user = UserContext.get();
         UserInfo userInfo = userInfoService.getUserInfoById(user.getId());

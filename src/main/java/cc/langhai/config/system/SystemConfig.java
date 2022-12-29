@@ -17,11 +17,13 @@ public class SystemConfig {
 
     /**
      * 允许系统当天发送邮箱验证码最大次数
+     *
      */
     private Integer registerDayEmailCount;
 
     /**
      * 允许该ip24小时之内发送邮箱验证码次数
+     *
      */
     private Integer registerIPEmailCount;
 
