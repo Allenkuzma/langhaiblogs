@@ -53,7 +53,7 @@ public class ArticleController {
     public String newArticlePage(HttpSession session, Model model){
         List<Label> labelList = labelService.getAllLabelByUser();
 
-        //arrayList 用来存储文章标签的内容
+        // arrayList 用来存储文章标签的内容
         List<String> collect = labelList.stream().map(label -> label.getContent()).collect(Collectors.toList());
         model.addAttribute("labelList", collect);
 
@@ -139,11 +139,77 @@ public class ArticleController {
      *                          不匹配 页面 langhaibk/index
      */
     @GetMapping("/articleShow")
-    public String articleShow(Long id, Model model){
+    public String articleShow(Long id, Model model, HttpSession session){
         Article article = articleService.getById(id);
+        if(ObjectUtil.isNull(article)){
+            return "blogs/user/login";
+        }
         Article articleHeat = articleService.getArticleHeat(article);
 
-        model.addAttribute("article", articleHeat);
-        return "blogs/article/articleShow";
+        boolean judgeShow = articleService.judgeShow(session, article);
+        if(judgeShow){
+            model.addAttribute("article", articleHeat);
+            return "blogs/article/articleShow";
+        }
+
+
+        return "blogs/user/login";
+    }
+
+    /**
+     * 跳转到文章编辑页面
+     *
+     * @return
+     */
+    @GetMapping("/updateArticlePage")
+    public String updateArticlePage(HttpSession session, Model model, Long id){
+        if(ObjectUtil.isNull(id)){
+            return "blogs/user/login";
+        }
+
+        // 查询要更新的文章
+        Article article = articleService.getById(id);
+        model.addAttribute("article", article);
+
+        List<Label> labelList = labelService.getAllLabelByUser();
+        // arrayList 用来存储文章标签的内容
+        List<String> collect = labelList.stream().map(label -> label.getContent()).collect(Collectors.toList());
+        model.addAttribute("labelList", collect);
+
+        return "blogs/article/updateArticle";
+    }
+
+    /**
+     * 场景：用户更新文章，保存到数据库。
+     *
+     * @param content          新增文章标签
+     * @param label            使用存在的文章标签
+     * @param publicShow       文章是否公开： 公开/不公开
+     * @param title            文章标题
+     * @param html             文章内容html形式
+     * @return 数据 200代表成功 其他代表失败
+     */
+    @PostMapping("/updateArticle")
+    @ResponseBody
+    public ResultResponse updateArticle(String title,
+                                String content,
+                                String publicShow,
+                                String html,
+                                String label, Long id){
+        articleService.updateArticle(title, content, publicShow, html, label, id);
+        return ResultResponse.success(ArticleReturnCode.ARTICLE_UPDATE_OK_00003);
+    }
+
+    /**
+     * 场景：用户逻辑删除文章，保存到数据库。
+     *
+     * @param id
+     * @return 数据 200代表成功 其他代表失败
+     */
+    @PostMapping("/deleteArticle")
+    @ResponseBody
+    public ResultResponse deleteArticle(Long id){
+        articleService.deleteArticle(id);
+        return ResultResponse.success(ArticleReturnCode.ARTICLE_DELETE_OK_00005);
     }
 }

@@ -33,6 +33,9 @@ public class LoginConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/article/issue");
         registration.addPathPatterns("/article/articleListPage");
         registration.addPathPatterns("/article/articleList");
+        registration.addPathPatterns("/article/updateArticlePage");
+        registration.addPathPatterns("/article/updateArticle");
+        registration.addPathPatterns("/article/deleteArticle");
         // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",

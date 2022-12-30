@@ -46,7 +46,7 @@
             <div class="layui-col-xs6" th:text="'文章作者：' + ${article.author}"></div>
             <div class="layui-col-xs6" style="text-align:right;">
               <button type="button" class="layui-btn layui-btn-danger layui-btn-radius">
-                <a th:href="'/article/articleShow?id=' + ${article.id}">删除文章</a>
+                <a class="delBtn" href="javascript:void(0)" th:id="${article.id}">删除文章</a>
               </button>
             </div>
           </div>
@@ -56,8 +56,8 @@
               <span th:text="'浪海值：' + ${article.heat}"></span>
             </div>
             <div class="layui-col-xs6" style="text-align:right;">
-              <button type="button" class="layui-btn layui-btn-danger layui-btn-radius">
-                <a th:href="'/article/articleShow?id=' + ${article.id}">删除文章</a>
+              <button type="button" class="layui-btn layui-btn-warm layui-btn-radius">
+                <a th:href="'/article/updateArticlePage?id=' + ${article.id}">编辑文章</a>
               </button>
             </div>
           </div>
@@ -139,6 +139,40 @@
         window.location.href = "/article/articleShow?id=" + data.id
       }
     });*/
+
+    // 删除文章
+    $("body").on("click", ".delBtn", function(){
+      var delId = this.id;
+      layer.confirm('真的删除行么', function(index){
+        $.ajax({
+          url: "/article/deleteArticle",
+          async: true,
+          type: "POST",
+          data: {"id": delId},
+          success: function (data) {
+            if(data.code == 200){
+              layer.msg('文章已经被永久删除', {
+                closeBtn: 1,
+                icon: 6,
+                time: 3 * 1000,
+                offset: '21px'
+              });
+              setTimeout(function(){
+                window.location.href = "/user/personalPage";
+              }, 2000);
+            }else {
+              layer.msg(data.message, {
+                closeBtn: 1,
+                icon: 2,
+                time: 3 * 1000,
+                offset: '21px'
+              });
+            }
+          }
+        })
+        layer.close(index);
+      });
+    })
 
   })
 </script>

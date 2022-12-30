@@ -2,6 +2,7 @@ package cc.langhai.service;
 
 import cc.langhai.domain.Article;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -55,4 +56,32 @@ public interface ArticleService {
      * @return
      */
     Article getArticleHeat(Article article);
+
+    /**
+     * 判断文章是否具有访问权限
+     *
+     * @param session
+     * @param article
+     * @return
+     */
+    boolean judgeShow(HttpSession session, Article article);
+
+    /**
+     * 用户更新文章，保存到数据库。
+     *
+     * @param title
+     * @param content
+     * @param publicShow
+     * @param html
+     * @param label
+     * @param id
+     */
+    void updateArticle(String title, String content, String publicShow, String html, String label, Long id);
+
+    /**
+     * 用户逻辑删除文章，保存到数据库。
+     *
+     * @param id
+     */
+    void deleteArticle(Long id);
 }

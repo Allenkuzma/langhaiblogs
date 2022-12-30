@@ -42,4 +42,17 @@ public interface ArticleMapper {
      */
     Article getById(Long id);
 
+    /**
+     * 更新文章信息
+     *
+     * @param article
+     */
+    void updateArticle(Article article);
+
+    /**
+     * 对文章进行逻辑删除
+     *
+     * @param article
+     */
+    void deleteArticle(Article article);
 }

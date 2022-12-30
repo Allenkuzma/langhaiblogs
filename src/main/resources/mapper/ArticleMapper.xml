@@ -32,7 +32,7 @@
             a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") as add_time_show
         FROM
             article AS a
-        LEFT JOIN
+        INNER JOIN
             user AS u
         ON
             a.user_id = #{userId}
@@ -57,5 +57,28 @@
             AND
             a.label_id = l.id
     </select>
+
+    <update id="updateArticle" >
+        update
+            article
+        set
+            label_id = #{labelId},
+            title = #{title},
+            html = #{html},
+            public_show = #{publicShow},
+            update_time = #{updateTime}
+        where
+            id = #{id}
+    </update>
+
+    <update id="deleteArticle" >
+        update
+            article
+        set
+            delete_flag = #{deleteFlag},
+            update_time = #{updateTime}
+        where
+            id = #{id}
+    </update>
 
 </mapper>

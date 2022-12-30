@@ -3,6 +3,7 @@ package cc.langhai.service.impl;
 import cc.langhai.config.constant.ArticleConstant;
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
+import cc.langhai.domain.User;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
@@ -19,6 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -150,5 +152,109 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         return article;
+    }
+
+    @Override
+    public boolean judgeShow(HttpSession session, Article article) {
+        // 文章如果是公开的 则直接放行
+        Integer publicShow = article.getPublicShow();
+        if(Integer.valueOf(1).equals(publicShow)){
+            return true;
+        }
+
+        // 文章如果是不公开的 则需要判断是否是作者本人
+        User user = (User) session.getAttribute("user");
+        if(ObjectUtil.isNull(user)){
+            return false;
+        }
+
+        Long userId = article.getUserId();
+        if(userId.equals(user.getId())){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateArticle(String title, String content, String publicShow, String html, String label, Long id) {
+        // 标题不能为空 文章内容不能为空
+        if(StrUtil.isBlank(title) || StrUtil.isBlank(html) || ObjectUtil.isNull(id)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
+        }
+
+        // 查询是否有此文章
+        Article article = articleMapper.getById(id);
+        if(ObjectUtil.isNull(article)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
+        }
+
+        Long userId = UserContext.getUserId();
+
+        // 文章是否有权限操作
+        Long userIdArticle = article.getUserId();
+        if(!userId.equals(userIdArticle)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
+        }
+
+        // 判断标签是新增还是使用原来的标签
+        if(StrUtil.isBlank(label) && StrUtil.isBlank(content)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
+        }
+
+        if(StrUtil.isBlank(content) && "直接选择或搜索选择".equals(label)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
+        }
+
+        Label labelMysql = null;
+        // 新增标签
+        if(StrUtil.isNotBlank(content)){
+            labelMysql = new Label();
+            labelMysql.setUserId(userId);
+            labelMysql.setAddTime(new Date());
+            labelMysql.setContent(content);
+            labelMapper.insertLabel(labelMysql);
+        }
+
+        // 使用原来的标签
+        if(StrUtil.isBlank(content) && StrUtil.isNotBlank(label)){
+            labelMysql = labelMapper.getLabelByUserAndContent(userId, label);
+        }
+
+        // 将文章更新到数据库
+        article.setLabelId(labelMysql.getId());
+        article.setTitle(title);
+        article.setHtml(html);
+        article.setPublicShow("on".equals(publicShow) ? 1 : 0);
+        article.setUpdateTime(new Date());
+        articleMapper.updateArticle(article);
+    }
+
+    @Override
+    public void deleteArticle(Long id) {
+        // 文章id不能为空
+        if(ObjectUtil.isNull(id)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_DELETE_PARAM_FAIL_00006);
+        }
+
+        // 查询是否有此文章
+        Article article = articleMapper.getById(id);
+        if(ObjectUtil.isNull(article)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_DELETE_PARAM_FAIL_00006);
+        }
+
+        Long userId = UserContext.getUserId();
+        // 文章是否有权限操作
+        Long userIdArticle = article.getUserId();
+        if(!userId.equals(userIdArticle)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_DELETE_PARAM_FAIL_00006);
+        }
+
+        // 对文章进行逻辑删除
+        article.setDeleteFlag(1);
+        article.setUpdateTime(new Date());
+        articleMapper.deleteArticle(article);
+
     }
 }
