@@ -173,6 +173,9 @@ public class RegisterServiceImpl implements RegisterService {
         user.setAddTime(new Date());
         userService.insertUser(user);
 
+        // 用户信息注册时间前端显示填充
+        user.setAddTimeShow(cn.hutool.core.date.DateUtil.format(user.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
+
         // 用户详情信息
         UserInfo userInfoSave = new UserInfo();
         userInfoSave.setId(user.getId());

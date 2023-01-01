@@ -38,6 +38,8 @@
             a.user_id = #{userId}
           AND
             a.delete_flag = 0
+          AND
+            a.user_id = u.id
         ORDER BY a.add_time DESC
     </select>
 
@@ -56,6 +58,8 @@
             a.delete_flag = 0
             AND
             a.label_id = l.id
+            AND
+            a.user_id = u.id
     </select>
 
     <update id="updateArticle" >
