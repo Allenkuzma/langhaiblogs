@@ -107,9 +107,16 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.3</version>
         </dependency>
+        <!-- minio 相关依赖 -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>3.0.10</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>langhaiblogs~2023-01-03</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

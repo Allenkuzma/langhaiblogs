@@ -56,6 +56,12 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
 #  profiles:
 #    active: test
 
@@ -63,4 +69,10 @@ spring:
 #配置pagehelper的内容
 pagehelper:
   helper-dialect: mysql
+
+# minio 文件存储配置信息
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
 

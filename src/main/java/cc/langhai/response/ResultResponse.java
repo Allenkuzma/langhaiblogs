@@ -53,6 +53,16 @@ public class ResultResponse<T> {
     }
 
     /**
+     * 响应成功 带响应数据
+     *
+     * @return
+     * @param <T>
+     */
+    public static <T> ResultResponse<T> success(ReturnCode returnCode, T object){
+        return new ResultResponse<>(returnCode.getCode(), returnCode.getMessage(), object);
+    }
+
+    /**
      * 响应失败 不带响应数据
      *
      * @return

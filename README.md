@@ -18,6 +18,13 @@ thymeleaf 数据模板引擎
 版权/引用声明  
 浪海博客系统的主要前端模板来自html5up.net网站。  
 
-java工具集 hutool   
+java工具集 hutool     
+
+基本组件：  
+关系型数据库 MySQL  
+非关系型数据库 Redis  
+图片存储服务器 minio
+
+
 
 注意：大牛勿扰！！！

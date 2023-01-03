@@ -1,6 +1,7 @@
 package cc.langhai.service.impl;
 
 import cc.langhai.config.constant.ArticleConstant;
+import cc.langhai.config.constant.LabelConstant;
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.domain.User;
@@ -8,7 +9,9 @@ import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
 import cc.langhai.response.ArticleReturnCode;
+import cc.langhai.response.LabelReturnCode;
 import cc.langhai.service.ArticleService;
+import cc.langhai.service.LabelService;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.collection.CollectionUtil;
@@ -39,6 +42,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private LabelMapper labelMapper;
+
+    @Autowired
+    private LabelService labelService;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -74,11 +80,7 @@ public class ArticleServiceImpl implements ArticleService {
         Label labelMysql = null;
         // 新增标签
         if(StrUtil.isNotBlank(content)){
-            labelMysql = new Label();
-            labelMysql.setUserId(userId);
-            labelMysql.setAddTime(new Date());
-            labelMysql.setContent(content);
-            labelMapper.insertLabel(labelMysql);
+            labelMysql = labelService.verifyAddLabel(content);
         }
 
         // 使用原来的标签
@@ -210,11 +212,7 @@ public class ArticleServiceImpl implements ArticleService {
         Label labelMysql = null;
         // 新增标签
         if(StrUtil.isNotBlank(content)){
-            labelMysql = new Label();
-            labelMysql.setUserId(userId);
-            labelMysql.setAddTime(new Date());
-            labelMysql.setContent(content);
-            labelMapper.insertLabel(labelMysql);
+            labelMysql = labelService.verifyAddLabel(content);
         }
 
         // 使用原来的标签

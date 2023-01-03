@@ -19,4 +19,11 @@ public interface LabelService {
      * @return
      */
     List<Label> getAllLabelByUser();
+
+    /**
+     * 新增标签的时候 进行校验
+     *
+     * @param content
+     */
+    Label verifyAddLabel(String content);
 }

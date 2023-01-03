@@ -134,6 +134,33 @@
             const html = editor.getHtml()
             // console.log('editor content', html)
             // 也可以同步到 <textarea>
+        },
+        MENU_CONF: {
+            uploadImage: {
+                server: '/minio/upload/wangEditor',
+
+                fieldName: 'file',
+
+                onSuccess(file, res) {
+                    if(res.errno == 0 ){
+                        layer.msg('文件上传成功', {
+                            closeBtn: 1,
+                            icon: 6,
+                            time: 3 * 1000,
+                            offset: '21px'
+                        });
+                        return
+                    }else {
+                        layer.msg('文件上传失败', {
+                            closeBtn: 1,
+                            icon: 2,
+                            time: 3 * 1000,
+                            offset: '21px'
+                        });
+                        return
+                    }
+                }
+            }
         }
     }
 
@@ -153,8 +180,6 @@
         mode: 'default', // or 'simple'
     })
 
-    $(function () {
-        editor.getHtml()
-    })
+
 </script>
 </html>

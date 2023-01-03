@@ -143,7 +143,7 @@
     // 删除文章
     $("body").on("click", ".delBtn", function(){
       var delId = this.id;
-      layer.confirm('真的删除行么', function(index){
+      layer.confirm('真的删除行此文章嘛', function(index){
         $.ajax({
           url: "/article/deleteArticle",
           async: true,
