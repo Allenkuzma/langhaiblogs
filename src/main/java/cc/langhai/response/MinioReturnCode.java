@@ -14,6 +14,10 @@ public enum MinioReturnCode implements ReturnCode{
 
     MINIO_UPLOAD_NULL_00002(500, "图片不能是空的。"),
 
+    MINIO_DELETE_OK_00003(200, "图片删除成功。"),
+
+    MINIO_DELETE_FAIL_00004(500, "图片删除失败。"),
+
     ;
 
     private Integer code;

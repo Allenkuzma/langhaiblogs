@@ -104,5 +104,22 @@ public class MinioUtils {
     }
 
 
+    /**
+     * 删除文件
+     *
+     * @param bucketName
+     * @param objectName
+     */
+    @SneakyThrows
+    public void deleteFile(String bucketName, String objectName){
+        if(imageService.power(objectName)){
+            client.removeObject(bucketName, objectName);
+            imageService.delete(objectName);
+        }else {
+            throw new BusinessException(MinioReturnCode.MINIO_DELETE_FAIL_00004);
+        }
+    }
+
+
 }
  

@@ -25,5 +25,17 @@ public class Image {
 
     private Date addTime;
 
+    /**
+     * 前端展示图片地址
+     *
+     */
+    private String url;
+
+    /**
+     * 用来展示新增时间 yyyy-MM-dd HH:mm:ss
+     *
+     */
+    private String addTimeShow;
+
 
 }

@@ -29,4 +29,19 @@ public interface ImageMapper {
      * @param image
      */
     void insertImage(Image image);
+
+    /**
+     * 获取单张图片
+     *
+     * @param objectName
+     * @return
+     */
+    Image getImageByMinioName(String objectName);
+
+    /**
+     * 删除图片
+     *
+     * @param objectName
+     */
+    void deleteImage(String objectName);
 }

@@ -126,7 +126,7 @@ public class MinioController {
             if(ObjectUtil.isNotNull(outputStream)){
                 outputStream.close();
             }
-        } catch (Exception ex) {
+        } catch (Exception exception) {
             response.setHeader("Content-type", "text/html;charset=UTF-8");
             String data = "文件下载失败";
             OutputStream ps = response.getOutputStream();
@@ -145,17 +145,17 @@ public class MinioController {
      * @param name
      * @return
      */
-    /*@DeleteMapping("/delete")
+    @DeleteMapping("/delete")
     @ResponseBody
-    public String delete(String name) {
+    public ResultResponse delete(String name) {
         try {
-            MinioClient minioClient = new MinioClient(minioProp.getEndpoint(), minioProp.getAccessKey(), minioProp.getSecretKey());
-            minioClient.removeObject("product", name);
+            minioUtils.deleteFile("product", name);
         } catch (Exception e) {
-            return "删除失败"+e.getMessage();
+            return ResultResponse.fail(MinioReturnCode.MINIO_DELETE_FAIL_00004);
         }
-        return "删除成功";
-    }*/
+
+        return ResultResponse.success(MinioReturnCode.MINIO_DELETE_OK_00003);
+    }
 
 }
  

@@ -6,7 +6,12 @@
 <mapper namespace="cc.langhai.mapper.ImageMapper">
 
     <select id="getAllImageByUser" resultType="cc.langhai.domain.Image">
-        select * from image where user_id = #{userId}
+        select
+            *, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show
+        from
+            image
+        where
+            user_id = #{userId}
     </select>
 
     <insert id="insertImage" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -15,5 +20,18 @@
         values
             (#{fileName}, #{minioName}, #{fileSize}, #{userId}, #{addTime})
     </insert>
+
+    <select id="getImageByMinioName" resultType="cc.langhai.domain.Image">
+        select
+            *, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show
+        from
+            image
+        where
+            minio_name = #{minioName}
+    </select>
+
+    <delete id="deleteImage">
+        DELETE FROM image WHERE minio_name = #{minioName}
+    </delete>
 
 </mapper>
