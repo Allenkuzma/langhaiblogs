@@ -65,11 +65,13 @@
 						<tr>
 							<th>日期</th>
 							<th>文件名字</th>
+							<th>地址</th>
 							<th>操作</th>
 						</tr>
 						<tr th:each="image : ${list}">
 							<td th:text="${image.addTimeShow}"></td>
 							<td th:text="${image.fileName}"></td>
+							<td th:text="${image.url}"></td>
 							<td><a class="deleteImage" href="javascript:void(0)" th:id="${image.minioName}">删除此图片</a></td>
 						</tr>
 					</table>

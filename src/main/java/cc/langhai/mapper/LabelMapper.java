@@ -37,4 +37,33 @@ public interface LabelMapper {
      */
     Label getLabelByUserAndContent(Long userId, String content);
 
+    /**
+     * 查找标签
+     *
+     * @param id
+     * @return
+     */
+    Label getLabelById(Long id);
+
+    /**
+     * 查询标签下是否存在文章
+     *
+     * @param label
+     * @return
+     */
+    List<Label> selectArticleByLabel(Label label);
+
+    /**
+     * 删除标签
+     *
+     * @param label
+     */
+    void deleteLabel(Label label);
+
+    /**
+     * 更新标签
+     *
+     * @param label
+     */
+    void updateLabel(Label label);
 }

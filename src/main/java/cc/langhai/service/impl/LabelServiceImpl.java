@@ -7,6 +7,7 @@ import cc.langhai.mapper.LabelMapper;
 import cc.langhai.response.LabelReturnCode;
 import cc.langhai.service.LabelService;
 import cc.langhai.utils.UserContext;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,48 @@ public class LabelServiceImpl implements LabelService {
         labelMapper.insertLabel(label);
 
         return label;
+    }
+
+    @Override
+    public void deleteLabel(Long id) {
+        Long userId = UserContext.getUserId();
+
+        // 判断标签是否有权限操作
+        Label label = labelMapper.getLabelById(id);
+        if(ObjectUtil.isNull(label)){
+            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+        }
+
+        if(!label.getUserId().equals(userId)){
+            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+        }
+
+        // 判断标签下是否存在文章
+        List<Label> labelList = labelMapper.selectArticleByLabel(label);
+        if(CollectionUtil.isNotEmpty(labelList)){
+            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+        }
+
+        labelMapper.deleteLabel(label);
+    }
+
+    @Override
+    public void updateLabel(Long id, String content) {
+        Long userId = UserContext.getUserId();
+
+        // 判断标签是否有权限操作
+        Label label = labelMapper.getLabelById(id);
+        if(ObjectUtil.isNull(label)){
+            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+        }
+
+        if(!label.getUserId().equals(userId)){
+            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+        }
+
+        label.setContent(content);
+        label.setUpdateTime(new Date());
+        labelMapper.updateLabel(label);
     }
 
 }

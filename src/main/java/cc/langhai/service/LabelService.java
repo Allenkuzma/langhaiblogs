@@ -26,4 +26,19 @@ public interface LabelService {
      * @param content
      */
     Label verifyAddLabel(String content);
+
+    /**
+     * 删除标签
+     *
+     * @param id
+     */
+    void deleteLabel(Long id);
+
+    /**
+     * 更新标签
+     *
+     * @param id
+     * @param content
+     */
+    void updateLabel(Long id, String content);
 }
