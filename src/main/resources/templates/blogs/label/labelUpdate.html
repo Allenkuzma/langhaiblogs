@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>标签更新 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,标签更新" />
+    <meta name="description" content="浪海博客的标签更新页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+</head>
+<body>
+
+    <form class="layui-form" action="">
+            <div class="layui-form-item">
+                   <label class="layui-form-label">标签内容</label>
+                    <div class="layui-input-block">
+                            <input type="text" th:value="${content}" id="contentUpdate" name="content" lay-verify="content" autocomplete="off" placeholder="请输入标签内容" class="layui-input">
+                    </div>
+               </div>
+           <div>
+               <div>
+                   <input type="text" th:value="${id}" id="idUpdate" hidden="hidden" >
+               </div>
+           </div>
+    <div class="layui-form-item">
+            <div class="layui-input-block">
+                 <button class="layui-btn" id="update" lay-submit lay-filter="formDemoUpdate">立即提交</button>
+                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+          </div>
+    </form>
+
+</body>
+<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script>
+    $(function() {
+        $("#update").click(function () {
+            // 执行更新的操作ajax
+            $.ajax({
+                cache: true,
+                type: "post",
+                url: "/label/updateLabel",
+                data: {
+                    "content": $("#contentUpdate").val(),
+                    "id": $("#idUpdate").val()
+                },
+                async: false,
+                success: function () {
+                    window.parent.location.href = "/label/labelPage";
+                }
+            })
+        })
+    })
+</script>
+</html>

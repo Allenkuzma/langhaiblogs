@@ -3,6 +3,7 @@ package cc.langhai.exception;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.response.ReturnCode;
 import cc.langhai.response.SystemReturnCode;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,11 @@ public class GlobalExceptionHandler {
             return new ResultResponse(returnCode.getCode(), returnCode.getMessage(), null);
         }
 
+        if(exception instanceof MethodArgumentNotValidException){
+            MethodArgumentNotValidException validException = (MethodArgumentNotValidException) exception;
+            return new ResultResponse(SystemReturnCode.SYSTEM_UNKNOWN_00000.getCode(),
+                    validException.getBindingResult().getAllErrors().get(0).getDefaultMessage(), null);
+        }
         return new ResultResponse(SystemReturnCode.SYSTEM_UNKNOWN_00000.getCode(),
                 SystemReturnCode.SYSTEM_UNKNOWN_00000.getMessage(), null);
     }

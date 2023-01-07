@@ -88,11 +88,17 @@ public class LabelServiceImpl implements LabelService {
         // 判断标签是否有权限操作
         Label label = labelMapper.getLabelById(id);
         if(ObjectUtil.isNull(label)){
-            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+            throw new BusinessException(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
         }
 
         if(!label.getUserId().equals(userId)){
-            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+            throw new BusinessException(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
+        }
+
+        // 判断更新的标签是否存在
+        Label labelByUserAndContent = labelMapper.getLabelByUserAndContent(userId, content);
+        if(ObjectUtil.isNotNull(labelByUserAndContent)){
+            throw new BusinessException(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
         }
 
         label.setContent(content);

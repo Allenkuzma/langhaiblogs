@@ -238,6 +238,30 @@
 				})
 			})
 
+			// 用户反馈信息
+			$("#sendMessage").click(function () {
+				$.ajax({
+					url: "/message/message",
+					async: true,
+					type: "POST",
+					contentType : "application/json",
+					dataType : "json",
+					data: JSON.stringify({
+						"name":  $("#name").val(),
+						"email": $("#email").val(),
+						"message": $("#message").val()
+					}),
+					success: function (data) {
+						if(data.code == 200){
+							$("#sendMessageResult").html(data.message);
+							$("#sendMessageForm")[0].reset();
+						}else {
+							$("#sendMessageResult").html(data.message);
+						}
+					}
+				})
+			})
+
 		})
 	</script>
 </html>

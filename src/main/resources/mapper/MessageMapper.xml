@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.langhai.mapper.MessageMapper">
+
+    <select id="list" resultType="cc.langhai.domain.Message">
+        select
+            *
+        from
+            message
+        where
+            ip = #{ip}
+        and
+            add_time &gt;= #{beginDate}
+        and
+            add_time &lt;= #{endDate}
+    </select>
+
+    <select id="sum" resultType="cc.langhai.domain.Message">
+        select
+            *
+        from
+            message
+        where
+            add_time &gt;= #{beginDate}
+          and
+            add_time &lt;= #{endDate}
+    </select>
+
+    <insert id="insertMessage" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into
+            message(name, email, message, ip, add_time)
+        values
+            (#{name}, #{email}, #{message}, #{ip}, #{addTime})
+    </insert>
+
+</mapper>

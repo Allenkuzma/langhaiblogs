@@ -85,34 +85,12 @@
         case 'addLabel':
           layer.open({
             title: '新增标签',
-            type: 1,
-            area: ['60%','60%'],
-            content: '<form class="layui-form" action="">\n' +
-                    '        <div class="layui-form-item">\n' +
-                    '            <label class="layui-form-label">标签内容</label>\n' +
-                    '            <div class="layui-input-block">\n' +
-                    '                <input type="text" id="content" name="content" lay-verify="content" autocomplete="off" placeholder="请输入标签内容" class="layui-input">\n' +
-                    '            </div>\n' +
-                    '        </div>\n' +
-                    '\n' +
-                    '<div class="layui-form-item">\n' +
-                    '    <div class="layui-input-block">\n' +
-                    '      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>\n' +
-                    '      <button type="reset" class="layui-btn layui-btn-primary">重置</button>\n' +
-                    '    </div>\n' +
-                    '  </div>' +
-                    '    </form>',
-            end: function (){
-              refresh()
-            }
+            type: 2,
+            content: '/label/labelAddPage'
           });
           break;
       };
     });
-
-    function refresh(){
-      window.location.href = "/label/labelPage"
-    }
 
     // 触发单元格工具事件
     table.on('tool(label)', function(obj){ // 双击 toolDouble
@@ -133,78 +111,26 @@
               success: function (data) {
                 if(data.code == 200){
                   layer.close(index);
+                  obj.del();
+                  $("#issueResult").html(data.message);
                 }else {
-                  layer.msg(data.message, {
-                    closeBtn: 1,
-                    icon: 6,
-                    time: 3 * 1000,
-                    offset: '21px'
-                  });
+                  layer.close(index);
+                  $("#issueResult").html("删除失败标签，有可能是标签下存在发表的文章。");
                 }
               }
             })
-          },
-          end: function (){
-            refresh()
           }
         });
       } else if(obj.event === 'edit'){
         layer.open({
-          title: '编辑',
-          type: 1,
-          area: ['80%','80%'],
-          content: '<form class="layui-form" action="">\n' +
-                  '        <div class="layui-form-item">\n' +
-                  '            <label class="layui-form-label">标签内容</label>\n' +
-                  '            <div class="layui-input-block">\n' +
-                  '                <input type="text" value="' + data.content + '" id="contentUpdate" name="content" lay-verify="content" autocomplete="off" placeholder="请输入标签内容" class="layui-input">\n' +
-                  '            </div>\n' +
-                  '        </div>\n' +
-                  '        <div>\n' +
-                  '            <div>\n' +
-                  '                <input type="text" value="' + data.id + '" id="idUpdate" hidden="hidden" >\n' +
-                  '            </div>\n' +
-                  '        </div>\n' +
-                  '\n' +
-                  '<div class="layui-form-item">\n' +
-                  '    <div class="layui-input-block">\n' +
-                  '      <button class="layui-btn" lay-submit lay-filter="formDemoUpdate">立即提交</button>\n' +
-                  '      <button type="reset" class="layui-btn layui-btn-primary">重置</button>\n' +
-                  '    </div>\n' +
-                  '  </div>' +
-                  '    </form>'
+          title: '编辑标签',
+          type: 2,
+          content: '/label/labelUpdatePage?id=' + data.id + "&content=" + data.content
         });
       } else if(obj.event === 'look'){
         console.log("ok")
       }
     });
-
-    // 提交
-    form.on('submit(formDemo)', function(data){
-      $.ajax({
-        url: "/label/addLabel",
-        async: true,
-        type: "POST",
-        data: {
-          "content": $("#content").val()
-        }
-      })
-    });
-
-    // 提交更新
-    form.on('submit(formDemoUpdate)', function(data){
-      $.ajax({
-        url: "/label/updateLabel",
-        async: true,
-        type: "POST",
-        data: {
-          "content": $("#contentUpdate").val(),
-          "id": $("#idUpdate").val()
-        }
-      })
-    });
-
-
 
   })
 </script>

@@ -47,6 +47,31 @@ public class LabelController {
     }
 
     /**
+     * 跳转到 标签新增页面
+     *
+     * @return
+     */
+    @GetMapping("/labelAddPage")
+    public String labelAddPage(HttpSession session, Model model){
+
+
+        return "blogs/label/labelAdd";
+    }
+
+    /**
+     * 跳转到 标签更新页面
+     *
+     * @return
+     */
+    @GetMapping("/labelUpdatePage")
+    public String labelUpdatePage(Long id, Model model, String content){
+
+        model.addAttribute("id", id);
+        model.addAttribute("content", content);
+        return "blogs/label/labelUpdate";
+    }
+
+    /**
      * 获取 标签 列表页面数据
      *
      * @return
