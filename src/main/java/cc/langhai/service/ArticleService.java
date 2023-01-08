@@ -1,8 +1,11 @@
 package cc.langhai.service;
 
 import cc.langhai.domain.Article;
+import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -84,4 +87,19 @@ public interface ArticleService {
      * @param id
      */
     void deleteArticle(Long id);
+
+    /**
+     * 文章搜索功能
+     *
+     * @return
+     */
+    PageInfo<Article> search(Integer page, Integer size, String searchArticleStr);
+
+    /**
+     * 文章搜索功能 用于ES搜索引擎
+     *
+     * @return
+     */
+    HashMap<String, Object> searchES(Integer page, Integer size, String searchArticleStr) throws IOException;
+
 }

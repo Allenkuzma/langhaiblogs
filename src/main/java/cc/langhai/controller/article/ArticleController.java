@@ -20,7 +20,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -211,5 +213,50 @@ public class ArticleController {
     public ResultResponse deleteArticle(Long id){
         articleService.deleteArticle(id);
         return ResultResponse.success(ArticleReturnCode.ARTICLE_DELETE_OK_00005);
+    }
+
+    /**
+     * 跳转到 文章 搜索页面
+     *
+     * @return
+     */
+    @GetMapping("/articleSearchPage")
+    public String articleSearchPage(HttpSession session, Model model,
+                                  @RequestParam(defaultValue = "1") Integer page,
+                                  @RequestParam(defaultValue = "10") Integer size,
+                                    String searchArticleStr){
+        PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr);
+
+        model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("pages", pageInfo.getPages());
+        model.addAttribute("search", searchArticleStr);
+        return "blogs/article/articleSearch";
+    }
+
+
+    /**
+     * 跳转到 文章 搜索页面 用于ES搜索引擎
+     * 如果没有es搜索引擎组件 直接注释掉即可
+     * 还需要用到mq组件 所以需要安装 elasticSearch 和 rabbitMQ
+     *
+     * @return
+     */
+    @GetMapping("/articleSearchESPage")
+    public String articleSearchESPage(HttpSession session, Model model,
+                                    @RequestParam(defaultValue = "1") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer size,
+                                    String searchArticleStr) throws IOException {
+        HashMap<String, Object> hashMap = articleService.searchES(page, size, searchArticleStr);
+
+        List<Article> list = (List<Article>) hashMap.get("list");
+        Long pages = (Long) hashMap.get("pages");
+        model.addAttribute("list", articleService.getArticleHeat(list));
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("pages", pages);
+        model.addAttribute("search", searchArticleStr);
+        return "blogs/article/articleSearchES";
     }
 }

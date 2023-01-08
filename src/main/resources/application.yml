@@ -76,3 +76,10 @@ minio:
   accessKey: minioadmin
   secretKey: minioadmin
 
+# 配置es相关信息
+es:
+  ip: 127.0.0.1
+  port: 9200
+  userName: xxx
+  password: xxx
+

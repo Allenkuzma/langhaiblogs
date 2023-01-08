@@ -17,14 +17,27 @@ import cc.langhai.utils.UserContext;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +61,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -254,5 +270,66 @@ public class ArticleServiceImpl implements ArticleService {
         article.setUpdateTime(new Date());
         articleMapper.deleteArticle(article);
 
+    }
+
+    @Override
+    public PageInfo<Article> search(Integer page, Integer size, String searchArticleStr) {
+        // 开启分页助手
+        PageHelper.startPage(page, size);
+
+        List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow(searchArticleStr);
+        PageInfo<Article> pageInfo = new PageInfo<>(allArticlePublicShow);
+
+        return pageInfo;
+    }
+
+    @Override
+    public HashMap<String, Object> searchES(Integer page, Integer size, String searchArticleStr) throws IOException {
+        // 1.准备Request
+        SearchRequest request = new SearchRequest("langhaiblogs");
+        // 2.准备DSL
+        // 2.1.query
+        if(StrUtil.isNotBlank(searchArticleStr)){
+            request.source()
+                    .query(QueryBuilders.multiMatchQuery(searchArticleStr, "title", "author", "labelContent"));
+        }else {
+            request.source()
+                    .query(QueryBuilders.matchAllQuery());
+        }
+        // 2.2.分页 from、size
+        request.source().from((page - 1) * size).size(size);
+        // 3.发送请求
+        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+        // 4.解析响应
+        return handleResponse(response, size);
+    }
+
+    /**
+     * 处理搜索结果
+     *
+     * @param response
+     */
+    private HashMap<String, Object> handleResponse(SearchResponse response, Integer size) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        ArrayList<Article> articles = new ArrayList<>();
+
+        // 4.解析响应
+        SearchHits searchHits = response.getHits();
+        // 4.1.获取总条数
+        long total = searchHits.getTotalHits().value;
+        // 4.2.文档数组
+        SearchHit[] hits = searchHits.getHits();
+        // 4.3.遍历
+        for (SearchHit hit : hits) {
+            // 获取文档source
+            String json = hit.getSourceAsString();
+            // 反序列化
+            Article article = JSON.parseObject(json, Article.class);
+            articles.add(article);
+        }
+
+        hashMap.put("list", articles);
+        hashMap.put("pages", (total + size - 1) / size);
+        return hashMap;
     }
 }

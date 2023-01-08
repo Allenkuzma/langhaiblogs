@@ -55,4 +55,11 @@ public interface ArticleMapper {
      * @param article
      */
     void deleteArticle(Article article);
+
+    /**
+     * 获取用户发布的所有文章
+     *
+     * @return
+     */
+    List<Article> getAllArticlePublicShow(String searchArticleStr);
 }
