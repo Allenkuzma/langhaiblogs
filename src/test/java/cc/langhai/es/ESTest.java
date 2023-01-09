@@ -12,6 +12,9 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -177,5 +180,35 @@ public class ESTest {
             Article article = JSON.parseObject(json, Article.class);
             System.out.println("article = " + article);
         }
+    }
+
+    /**
+     * id 查询文档
+     * @throws IOException
+     */
+    @Test
+    void testGetDocumentById() throws IOException {
+        // 1.准备Request
+        GetRequest request = new GetRequest("langhaiblogs", "30");
+        // 2.发送请求，得到响应
+        GetResponse response = client.get(request, RequestOptions.DEFAULT);
+        // 3.解析响应结果
+        String json = response.getSourceAsString();
+
+        Article article = JSON.parseObject(json, Article.class);
+        System.out.println(article);
+    }
+
+    /**
+     * 删除文档 id
+     *
+     * @throws IOException
+     */
+    @Test
+    void testDeleteDocument() throws IOException {
+        // 1.准备Request
+        DeleteRequest request = new DeleteRequest("langhaiblogs", "30");
+        // 2.发送请求
+        client.delete(request, RequestOptions.DEFAULT);
     }
 }

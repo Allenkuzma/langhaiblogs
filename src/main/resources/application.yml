@@ -62,6 +62,13 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
 
+  rabbitmq:
+    host: 127.0.0.1 # 主机名
+    port: 5672 # 端口
+    virtual-host: / # 虚拟主机
+    username: xxx # 用户名
+    password: xxx # 密码
+
 #  profiles:
 #    active: test
 

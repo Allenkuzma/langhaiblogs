@@ -7,23 +7,24 @@
 实际效果以代码为准（演示站点是以前的版本） 联系方式QQ：676558206
 
 部分页面截图  
-![](/images/登录页面截图.png)
+![登录页面截图](./images/登录页面截图.png)
 
 部署方式：
 
 技术选型：  
 springboot 后端快速构建框架  
-thymeleaf 数据模板引擎
+thymeleaf 数据模板引擎  
+hutool java工具集
 
 版权/引用声明  
 浪海博客系统的主要前端模板来自html5up.net网站。  
 
-java工具集 hutool     
-
 基本组件：  
 关系型数据库 MySQL  
 非关系型数据库 Redis  
-图片存储服务器 minio
+图片存储服务器 minio  
+搜索引擎(可选) elasticSearch  
+消息队列（可选）rabbitMQ   <a href="https://langhai.cc/article/articleShow?id=33">rabbitMQ所有说明</a>
 
 
 

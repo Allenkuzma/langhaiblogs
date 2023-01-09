@@ -8,6 +8,7 @@ import cc.langhai.domain.User;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
+import cc.langhai.mq.config.MqConstants;
 import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.response.LabelReturnCode;
 import cc.langhai.service.ArticleService;
@@ -28,6 +29,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -114,6 +119,12 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDeleteFlag(0);
         article.setAddTime(new Date());
         articleMapper.insertArticle(article);
+
+        // 公开的文章
+        if(article.getPublicShow().equals(1)){
+            // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
+            rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
+        }
     }
 
     @Override
@@ -243,6 +254,10 @@ public class ArticleServiceImpl implements ArticleService {
         article.setPublicShow("on".equals(publicShow) ? 1 : 0);
         article.setUpdateTime(new Date());
         articleMapper.updateArticle(article);
+
+
+        // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
+        rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
     }
 
     @Override
@@ -270,6 +285,10 @@ public class ArticleServiceImpl implements ArticleService {
         article.setUpdateTime(new Date());
         articleMapper.deleteArticle(article);
 
+        if(article.getPublicShow().equals(1)){
+            // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
+            rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_DELETE_KEY, article.getId());
+        }
     }
 
     @Override
