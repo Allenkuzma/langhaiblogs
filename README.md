@@ -1,4 +1,5 @@
-浪海博客
+浪海博客   
+[english](./README-EN.md)  
 
 简介：
 浪海博客，一个基于SpirngBoot快速构建的单体架构项目，部署简单方便，适用于个人博客系统搭建。
@@ -9,7 +10,9 @@
 部分页面截图  
 ![登录页面截图](./images/登录页面截图.png)
 
-部署方式：
+部署方式：[详细说明](https://langhai.cc/article/articleShow?id=38)  
+linux ==>> nohup java -jar langhai-blogs.jar > langhai.log &  
+windows ==>> java -jar langhai-blogs.jar
 
 技术选型：  
 springboot 后端快速构建框架  
@@ -25,7 +28,3 @@ hutool java工具集
 图片存储服务器 minio  
 搜索引擎(可选) elasticSearch  
 消息队列（可选）rabbitMQ   <a href="https://langhai.cc/article/articleShow?id=33">rabbitMQ所有说明</a>
-
-
-
-注意：大牛勿扰！！！
