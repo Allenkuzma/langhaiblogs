@@ -4,6 +4,7 @@ import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.response.LabelReturnCode;
 import cc.langhai.response.ResultResponse;
+import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -31,6 +32,9 @@ public class LabelController {
 
     @Autowired
     private LabelService labelService;
+
+    @Autowired
+    private ArticleService articleService;
 
     /**
      * 跳转到 标签管理页面
@@ -137,6 +141,29 @@ public class LabelController {
         }
         labelService.updateLabel(id, content);
         return ResultResponse.success(LabelReturnCode.LABEL_UPDATE_SUCCESS_00005);
+    }
+
+    /**
+     * 跳转到用户该标签下所有的文章页面
+     *
+     * @return
+     */
+    @GetMapping("/articleLabelPage")
+    public String articleLabelPage(HttpSession session, Model model,
+                                    @RequestParam(defaultValue = "1") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer size,
+                                    Long id){
+        PageInfo<Article> pageInfo = labelService.article(page, size, id);
+
+        model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("pages", pageInfo.getPages());
+        model.addAttribute("search", id);
+
+        Label label = labelService.getById(id);
+        model.addAttribute("label", label);
+        return "blogs/label/articleLabel";
     }
 
 }

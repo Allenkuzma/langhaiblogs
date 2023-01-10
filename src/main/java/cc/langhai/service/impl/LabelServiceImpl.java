@@ -1,6 +1,7 @@
 package cc.langhai.service.impl;
 
 import cc.langhai.config.constant.LabelConstant;
+import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.LabelMapper;
@@ -9,6 +10,8 @@ import cc.langhai.service.LabelService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -104,6 +107,35 @@ public class LabelServiceImpl implements LabelService {
         label.setContent(content);
         label.setUpdateTime(new Date());
         labelMapper.updateLabel(label);
+    }
+
+    @Override
+    public PageInfo<Article> article(Integer page, Integer size, Long id) {
+        Long userId = UserContext.getUserId();
+
+        // 判断标签是否有权限操作
+        Label label = labelMapper.getLabelById(id);
+        if(ObjectUtil.isNull(label)){
+            throw new BusinessException(LabelReturnCode.LABEL_ARTICLE_FAIL_00007);
+        }
+
+        if(!label.getUserId().equals(userId)){
+            throw new BusinessException(LabelReturnCode.LABEL_ARTICLE_FAIL_00007);
+        }
+
+        // 开启分页助手
+        PageHelper.startPage(page, size);
+
+        List<Article> articleList = labelMapper.article(id);
+        PageInfo<Article> pageInfo = new PageInfo<>(articleList);
+
+        return pageInfo;
+    }
+
+    @Override
+    public Label getById(Long id) {
+        Label label = labelMapper.getLabelById(id);
+        return label;
     }
 
 }

@@ -1,5 +1,6 @@
 package cc.langhai.mapper;
 
+import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -66,4 +67,12 @@ public interface LabelMapper {
      * @param label
      */
     void updateLabel(Label label);
+
+    /**
+     * 用户该标签下所有的文章
+     *
+     * @param id
+     * @return
+     */
+    List<Article> article(Long id);
 }

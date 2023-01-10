@@ -21,6 +21,8 @@ public enum LabelReturnCode implements ReturnCode{
 
     LABEL_UPDATE_FAIL_00006(500, "标签更新失败。"),
 
+    LABEL_ARTICLE_FAIL_00007(500, "标签下所有的文章查询失败。"),
+
     ;
 
     private Integer code;

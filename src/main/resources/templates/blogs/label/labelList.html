@@ -131,7 +131,7 @@
           content: '/label/labelUpdatePage?id=' + data.id + "&content=" + data.content
         });
       } else if(obj.event === 'look'){
-        console.log("ok")
+        window.location.href = "/label/articleLabelPage?id=" + data.id
       }
     });
 

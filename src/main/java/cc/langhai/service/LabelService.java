@@ -1,6 +1,8 @@
 package cc.langhai.service;
 
+import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -41,4 +43,22 @@ public interface LabelService {
      * @param content
      */
     void updateLabel(Long id, String content);
+
+    /**
+     * 用户该标签下所有的文章
+     *
+     * @param page
+     * @param size
+     * @param id
+     * @return
+     */
+    PageInfo<Article> article(Integer page, Integer size, Long id);
+
+    /**
+     * id获取标签内容
+     *
+     * @param id
+     * @return
+     */
+    Label getById(Long id);
 }
