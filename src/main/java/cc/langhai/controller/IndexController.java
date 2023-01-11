@@ -1,5 +1,6 @@
 package cc.langhai.controller;
 
+import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
 import cc.langhai.service.RegisterService;
@@ -48,6 +49,17 @@ public class IndexController {
         UserInfo userInfo = userInfoService.getUserInfoById(userId);
         model.addAttribute("userInfo", userInfo);
 
+        return "blogs/index";
+    }
+
+    /**
+     * 权限测试方法
+     *
+     * @return
+     */
+    @GetMapping("/auth")
+    @RequestAuthority(value = {"admin", "vip", "svip"})
+    public String auth(){
         return "blogs/index";
     }
 }

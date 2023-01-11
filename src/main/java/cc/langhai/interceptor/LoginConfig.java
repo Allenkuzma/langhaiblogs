@@ -24,7 +24,7 @@ public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册TestInterceptor拦截器
-        InterceptorRegistration registration = registry.addInterceptor(adminInterceptor());
+        InterceptorRegistration registration = registry.addInterceptor(adminInterceptor()).order(1);
 
         registration.addPathPatterns("/user/personalPage");
         registration.addPathPatterns("/user/updateUserInfoPage");
@@ -49,6 +49,7 @@ public class LoginConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/label/labelAddPage");
         registration.addPathPatterns("/label/labelUpdatePage");
         registration.addPathPatterns("/label/articleLabelPage");
+        registration.addPathPatterns("/auth");
         // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",

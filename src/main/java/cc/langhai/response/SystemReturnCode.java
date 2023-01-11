@@ -8,7 +8,9 @@ package cc.langhai.response;
  */
 public enum SystemReturnCode implements ReturnCode{
 
-    SYSTEM_UNKNOWN_00000(500, "系统未知错误，请联系管理员。")
+    SYSTEM_UNKNOWN_00000(500, "系统未知错误，请联系管理员。"),
+
+    SYSTEM_AUTH_00001(500, "您的权限不足，请联系管理员。")
     ;
 
     private Integer code;
