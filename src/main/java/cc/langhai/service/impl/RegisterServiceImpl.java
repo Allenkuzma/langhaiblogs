@@ -4,6 +4,7 @@ import cc.langhai.config.system.SystemConfig;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
 import cc.langhai.exception.BusinessException;
+import cc.langhai.listener.LonginUserSessionConfig;
 import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.RegisterService;
 import cc.langhai.service.UserInfoService;
@@ -209,6 +210,25 @@ public class RegisterServiceImpl implements RegisterService {
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_00016);
         }
 
+        // 判断其他地方是否登录
+        // 删除当前登录用户已绑定的HttpSession map中的remove方法返回删除value值
+        HttpSession sessionMap = LonginUserSessionConfig.USER_SESSION.remove(username);
+
+        if (sessionMap != null){
+            // 删除已登录的sessionId绑定的用户
+            // sessionMap.removeAttribute("user");
+            sessionMap.invalidate();
+
+            // 当前session销毁时删除当前session绑定的用户信息
+            // 同时删除当前session绑定用户的HttpSession
+            LonginUserSessionConfig.SESSION_ID_USER.remove(session.getId());
+        }
+
+        // 添加用户与HttpSession的绑定
+        LonginUserSessionConfig.USER_SESSION.put(username, session);
+        // 添加sessionId和用户的绑定
+        LonginUserSessionConfig.SESSION_ID_USER.put(session.getId(), username);
+
         session.setAttribute("user", user);
         // session有效期1个小时
         session.setMaxInactiveInterval(60 * 60);
@@ -269,6 +289,25 @@ public class RegisterServiceImpl implements RegisterService {
                         if(cookie.getValue().equals(redis)){
                             User user = userService.getUserByUsername(subName);
                             if (ObjectUtil.isNull(session.getAttribute("user"))){
+                                // 判断其他地方是否登录
+                                // 删除当前登录用户已绑定的HttpSession map中的remove方法返回删除value值
+                                HttpSession sessionMap = LonginUserSessionConfig.USER_SESSION.remove(user.getUsername());
+
+                                if (sessionMap != null){
+                                    // 删除已登录的sessionId绑定的用户
+                                    // sessionMap.removeAttribute("user");
+                                    sessionMap.invalidate();
+
+                                    // 当前session销毁时删除当前session绑定的用户信息
+                                    // 同时删除当前session绑定用户的HttpSession
+                                    LonginUserSessionConfig.SESSION_ID_USER.remove(session.getId());
+                                }
+
+                                // 添加用户与HttpSession的绑定
+                                LonginUserSessionConfig.USER_SESSION.put(user.getUsername(), session);
+                                // 添加sessionId和用户的绑定
+                                LonginUserSessionConfig.SESSION_ID_USER.put(session.getId(), user.getUsername());
+
                                 session.setAttribute("user", user);
                                 // session有效期1个小时
                                 session.setMaxInactiveInterval(60 * 60);

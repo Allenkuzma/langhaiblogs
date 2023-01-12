@@ -69,6 +69,7 @@ public interface RegisterService {
 
     /**
      * 记住我的功能实现 ~ 检验cookie和redis的用户信息是否同步
+     *
      * @param request
      * @param session
      */
