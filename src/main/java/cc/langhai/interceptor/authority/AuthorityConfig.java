@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * 权限拦截器配置
  *
  * @author langhai
- * @date 2022-11-20 17:09
+ * @date 2023-01-11 21:15
  */
 @Configuration
 public class AuthorityConfig implements WebMvcConfigurer {
@@ -26,7 +26,8 @@ public class AuthorityConfig implements WebMvcConfigurer {
         // 注册TestInterceptor拦截器
         InterceptorRegistration registration = registry.addInterceptor(securityInterceptor()).order(2);
 
-        registration.addPathPatterns("/auth");
+        registration.addPathPatterns("/links/linksListPage");
+        registration.addPathPatterns("/links/linksList");
         // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",

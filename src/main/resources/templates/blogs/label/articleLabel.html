@@ -46,6 +46,7 @@
 									<th>查看内容</th>
 									<th>浪海值</th>
 									<th>作者</th>
+									<th>编辑</th>
 								</tr>
 								<tr th:each="article : ${list}">
 									<td th:text="${article.addTimeShow}"></td>
@@ -53,6 +54,7 @@
 									<td><a th:href="'/article/articleShow?id=' + ${article.id}" target="_blank">查看详细内容</a></td>
 									<td th:text="${article.heat} + '度'"></td>
 									<td th:text="${article.author}"></td>
+									<td><a th:href="'/article/updateArticlePage?id=' + ${article.id}" target="_blank">编辑内容</a></td>
 								</tr>
 							</table>
 							<div>

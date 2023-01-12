@@ -1,11 +1,12 @@
 package cc.langhai.controller;
 
 import cc.langhai.config.annotation.RequestAuthority;
+import cc.langhai.domain.Links;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
+import cc.langhai.service.LinksService;
 import cc.langhai.service.RegisterService;
 import cc.langhai.service.UserInfoService;
-import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * 首页控制器
@@ -29,6 +31,9 @@ public class IndexController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private LinksService linksService;
 
     /**
      * 跳转到 浪海博客 首页
@@ -49,17 +54,11 @@ public class IndexController {
         UserInfo userInfo = userInfoService.getUserInfoById(userId);
         model.addAttribute("userInfo", userInfo);
 
+        // 首页超链接
+        List<Links> linksList = linksService.list();
+        model.addAttribute("linksList", linksList);
+
         return "blogs/index";
     }
 
-    /**
-     * 权限测试方法
-     *
-     * @return
-     */
-    @GetMapping("/auth")
-    @RequestAuthority(value = {"admin", "vip", "svip"})
-    public String auth(){
-        return "blogs/index";
-    }
 }

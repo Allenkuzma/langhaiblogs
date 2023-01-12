@@ -48,7 +48,9 @@ public class SecurityInterceptor implements HandlerInterceptor {
                 if(ObjectUtil.isNull(user)){
                     throw new BusinessException(SystemReturnCode.SYSTEM_AUTH_00001);
                 }
-                user.setRole("admin1");
+                if(user.getUsername().equals("langhai")){
+                    user.setRole("admin");
+                }
                 // 获得注解的值（权限）
                 String[] values = annotation.value();
                 for (int i = 0; i < values.length; i++) {

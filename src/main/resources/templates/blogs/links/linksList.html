@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>友情链接管理 - 浪海博客</title>
+  <meta name="keywords" content="浪海博客,友情链接管理" />
+  <meta name="description" content="浪海博客的友情链接管理。" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+
+</head>
+<body>
+  <ul class="layui-nav layui-bg-green" lay-filter="">
+    <li class="layui-nav-item"><a href="/">首页</a></li>
+    <li class="layui-nav-item layui-this"><a href="/links/linksListPage">友情链接管理</a></li>
+    <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
+    <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
+    <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
+    <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
+  </ul>
+
+  <blockquote class="layui-elem-quote">
+    在这里可以管理你的所有的友情链接。最多可以设置六个友情链接。
+    <p id="issueResult" style="color: red"></p>
+  </blockquote>
+
+  <table class="layui-hide" id="links" lay-filter="links"></table>
+
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+  </script>
+
+  <script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-sm" lay-event="addLabel">新增标签</button>
+    </div>
+  </script>
+
+
+  <blockquote class="layui-elem-quote">
+    <ul class="menu">
+      <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+      <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
+      <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+    </ul>
+  </blockquote>
+
+</body>
+<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script th:inline="none">
+  //注意：导航 依赖 element 模块，否则无法进行功能性操作
+  layui.use(['element', 'form', 'table', 'laypage'], function() {
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    var laypage = layui.laypage;
+
+    layer.msg('使用电脑展示更佳', {
+      closeBtn: 1,
+      icon: 6,
+      time: 3 * 1000,
+      offset: '21px'
+    });
+
+    table.render({
+      elem: '#links',
+      url: '/links/linksList',
+      toolbar: '#toolbarDemo',
+      cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'id', fixed: 'left', title: 'ID', sort: true}
+        ,{field:'title', title: 'h3标签内容', width:180}
+        ,{field:'href', title: '超链接地址', width:180}
+        ,{field:'name', title: '网站名字', width:180}
+        ,{field:'description', title: '描述', width:180}
+        ,{field:'addTime', title: '新增时间', width:180}
+        ,{field:'updateTime', title: '修改时间', width:180}
+        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
+      ]],
+      page: false
+    })
+
+    // 工具栏事件
+    table.on('toolbar(label)', function(obj){
+      var id = obj.config.id;
+      var checkStatus = table.checkStatus(id);
+      var othis = lay(this);
+      switch(obj.event){
+        case 'addLabel':
+          layer.open({
+            title: '新增友情链接',
+            type: 2,
+            content: '/label/labelAddPage'
+          });
+          break;
+      };
+    });
+
+    // 触发单元格工具事件
+    table.on('tool(label)', function(obj){ // 双击 toolDouble
+      var data = obj.data;
+      // console.log(obj)
+      if(obj.event === 'del'){
+        layer.open({
+          title: "删除标签",
+          content: '确定要删除这个标签',
+          yes: function(index, layero){
+            $.ajax({
+              url: "/label/deleteLabel",
+              async: true,
+              type: "POST",
+              data: {
+                "id": data.id
+              },
+              success: function (data) {
+                if(data.code == 200){
+                  layer.close(index);
+                  obj.del();
+                  $("#issueResult").html(data.message);
+                }else {
+                  layer.close(index);
+                  $("#issueResult").html("删除失败标签，有可能是标签下存在发表的文章。");
+                }
+              }
+            })
+          }
+        });
+      } else if(obj.event === 'edit'){
+        layer.open({
+          title: '编辑标签',
+          type: 2,
+          content: '/label/labelUpdatePage?id=' + data.id + "&content=" + data.content
+        });
+      } else if(obj.event === 'look'){
+        window.location.href = "/label/articleLabelPage?id=" + data.id
+      }
+    });
+
+  })
+</script>
+<script >
+
+
+</script>
+</html>

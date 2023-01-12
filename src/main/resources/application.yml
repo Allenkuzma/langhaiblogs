@@ -90,3 +90,7 @@ es:
   userName: xxx
   password: xxx
 
+logging:
+  level:
+    root: info
+

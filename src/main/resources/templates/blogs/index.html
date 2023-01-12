@@ -98,33 +98,51 @@
 							<div class="features">
 								<section>
 									<span class="icon solid major fa-code"></span>
-									<h3>网址导航</h3>
-									<p><a href="/langhaigo">网址导航</a></p>
+									<h3 th:text="${linksList.get(0).title}"></h3>
+									<p>
+										<a th:href="${linksList.get(0).href}" target="_blank" th:text="${linksList.get(0).name}"></a>
+										<span th:text="'：' + ${linksList.get(0).description}"></span>
+									</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-lock"></span>
-									<h3>浪海百宝箱</h3>
-									<p><a href="/">浪海百宝箱</a></p>
+									<h3 th:text="${linksList.get(1).title}"></h3>
+									<p>
+										<a th:href="${linksList.get(1).href}" target="_blank" th:text="${linksList.get(1).name}"></a>
+										<span th:text="'：' + ${linksList.get(1).description}"></span>
+									</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-cog"></span>
-									<h3>预留</h3>
-									<p><a href="" target="_blank">预留</a></p>
+									<h3 th:text="${linksList.get(2).title}"></h3>
+									<p>
+										<a th:href="${linksList.get(2).href}" target="_blank" th:text="${linksList.get(2).name}"></a>
+										<span th:text="'：' + ${linksList.get(2).description}"></span>
+									</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-desktop"></span>
-									<h3>友情链接</h3>
-									<p><a href="https://www.baidu.com" target="_blank">百度</a>：百度一下，你就知道。</p>
+									<h3 th:text="${linksList.get(3).title}"></h3>
+									<p>
+										<a th:href="${linksList.get(3).href}" target="_blank" th:text="${linksList.get(3).name}"></a>
+										<span th:text="'：' + ${linksList.get(3).description}"></span>
+									</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-link"></span>
-									<h3>友情链接</h3>
-									<p><a href="https://www.bilibili.com/" target="_blank">B站</a>：bilibili是国内知名的视频弹幕网站。</p>
+									<h3 th:text="${linksList.get(4).title}"></h3>
+									<p>
+										<a th:href="${linksList.get(4).href}" target="_blank" th:text="${linksList.get(4).name}"></a>
+										<span th:text="'：' + ${linksList.get(4).description}"></span>
+									</p>
 								</section>
 								<section>
 									<span class="icon major fa-gem"></span>
-									<h3>合作伙伴</h3>
-									<p><a href="" target="_blank">预留</a></p>
+									<h3 th:text="${linksList.get(5).title}"></h3>
+									<p>
+										<a th:href="${linksList.get(5).href}" target="_blank" th:text="${linksList.get(5).name}"></a>
+										<span th:text="'：' + ${linksList.get(5).description}"></span>
+									</p>
 								</section>
 							</div>
 							<ul class="actions">
