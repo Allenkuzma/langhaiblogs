@@ -10,7 +10,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
  * @author langhai
  * @date 2022-11-19 16:01
  */
-
 @ServletComponentScan
 @SpringBootApplication
 public class BlogsApplication {

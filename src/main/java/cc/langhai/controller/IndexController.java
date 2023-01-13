@@ -1,6 +1,7 @@
 package cc.langhai.controller;
 
 import cc.langhai.config.annotation.RequestAuthority;
+import cc.langhai.config.constant.LinksConstant;
 import cc.langhai.domain.Links;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
@@ -56,6 +57,14 @@ public class IndexController {
 
         // 首页超链接
         List<Links> linksList = linksService.list();
+        if(linksList.size() < LinksConstant.LINKS_COUNT_ALL){
+            for (int i = 0; i < LinksConstant.LINKS_COUNT_ALL - linksList.size(); i++) {
+                Links links = new Links();
+                links.setTitle("请在系统中填充满六个友情链接");
+                links.setDescription("请在系统中填充满六个友情链接");
+                linksList.add(links);
+            }
+        }
         model.addAttribute("linksList", linksList);
 
         return "blogs/index";

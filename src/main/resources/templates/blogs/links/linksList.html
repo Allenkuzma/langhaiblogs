@@ -22,6 +22,7 @@
   <blockquote class="layui-elem-quote">
     在这里可以管理你的所有的友情链接。最多可以设置六个友情链接。
     <p id="issueResult" style="color: red"></p>
+    <p th:text="${message}" style="color: red"></p>
   </blockquote>
 
   <table class="layui-hide" id="links" lay-filter="links"></table>
@@ -34,7 +35,7 @@
 
   <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm" lay-event="addLabel">新增标签</button>
+      <button class="layui-btn layui-btn-sm" lay-event="addLinks">新增友情链接</button>
     </div>
   </script>
 
@@ -84,32 +85,32 @@
     })
 
     // 工具栏事件
-    table.on('toolbar(label)', function(obj){
+    table.on('toolbar(links)', function(obj){
       var id = obj.config.id;
       var checkStatus = table.checkStatus(id);
       var othis = lay(this);
       switch(obj.event){
-        case 'addLabel':
+        case 'addLinks':
           layer.open({
             title: '新增友情链接',
             type: 2,
-            content: '/label/labelAddPage'
+            content: '/links/linksAddPage'
           });
           break;
       };
     });
 
     // 触发单元格工具事件
-    table.on('tool(label)', function(obj){ // 双击 toolDouble
+    table.on('tool(links)', function(obj){ // 双击 toolDouble
       var data = obj.data;
       // console.log(obj)
       if(obj.event === 'del'){
         layer.open({
-          title: "删除标签",
-          content: '确定要删除这个标签',
+          title: "删除友情链接",
+          content: '确定要删除这个友情链接',
           yes: function(index, layero){
             $.ajax({
-              url: "/label/deleteLabel",
+              url: "/links/deleteLinks",
               async: true,
               type: "POST",
               data: {
@@ -122,7 +123,7 @@
                   $("#issueResult").html(data.message);
                 }else {
                   layer.close(index);
-                  $("#issueResult").html("删除失败标签，有可能是标签下存在发表的文章。");
+                  $("#issueResult").html(data.message);
                 }
               }
             })

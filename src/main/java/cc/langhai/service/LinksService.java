@@ -10,4 +10,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2022-01-12 13:09
  */
 public interface LinksService extends IService<Links> {
+
+    /**
+     * 管理员添加友情链接
+     *
+     * @param links
+     */
+    void addLinks(Links links);
+
+    /**
+     * 管理员删除友情链接
+     *
+     * @param id
+     */
+    void deleteLinks(Long id);
+
 }

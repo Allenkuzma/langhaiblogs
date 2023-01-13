@@ -4,7 +4,9 @@ import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.domain.Links;
+import cc.langhai.domain.Message;
 import cc.langhai.response.LabelReturnCode;
+import cc.langhai.response.LinksReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
@@ -16,6 +18,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -42,21 +45,25 @@ public class LinksController {
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/linksListPage")
-    public String linksListPage(HttpSession session, Model model){
+    public String linksListPage(String message, Model model){
 
+        if(StrUtil.isNotBlank(message)){
+            model.addAttribute("message", message);
+        }
         return "blogs/links/linksList";
     }
 
     /**
-     * 跳转到 标签新增页面
+     * 跳转到 友情链接新增页面
      *
      * @return
      */
-    @GetMapping("/labelAddPage")
-    public String labelAddPage(HttpSession session, Model model){
+    @RequestAuthority(value = {"admin"})
+    @GetMapping("/linksAddPage")
+    public String linksAddPage(HttpSession session, Model model){
 
 
-        return "blogs/label/labelAdd";
+        return "blogs/links/linksAdd";
     }
 
     /**
@@ -95,38 +102,42 @@ public class LinksController {
     }
 
     /**
-     * 新增标签
+     * 新增友情链接
      *
      * @return
-     *//*
-    @PostMapping("/addLabel")
+     */
+    @PostMapping("/addLinks")
+    @RequestAuthority(value = {"admin"})
     @ResponseBody
-    public ResultResponse addLabel(String content, Model model){
-        if(StrUtil.isBlank(content)){
-            return ResultResponse.fail(LabelReturnCode.LABEL_ADD_FAIL_00002);
+    public ResultResponse addLinks(@RequestBody @Validated Links links, Model model){
+        if(ObjectUtil.isNull(links)){
+            return ResultResponse.fail(LinksReturnCode.LINKS_ADD_FAIL_00002);
         }
-        labelService.verifyAddLabel(content);
 
-        return ResultResponse.success(LabelReturnCode.LABEL_ADD_SUCCESS_00001);
+        linksService.addLinks(links);
+
+        return ResultResponse.success(LinksReturnCode.LINKS_ADD_SUCCESS_00001);
     }
 
 
-    *//**
-     * 删除标签
+    /**
+     * 删除友情链接
      *
      * @return
-     *//*
-    @PostMapping("/deleteLabel")
+     */
+    @PostMapping("/deleteLinks")
+    @RequestAuthority(value = {"admin"})
     @ResponseBody
-    public ResultResponse deleteLabel(Long id, Model model){
+    public ResultResponse deleteLinks(Long id, Model model){
         if(ObjectUtil.isNull(id)){
-            return ResultResponse.fail(LabelReturnCode.LABEL_DELETE_FAIL_00004);
+            return ResultResponse.fail(LinksReturnCode.LINKS_DELETE_FAIL_00004);
         }
-        labelService.deleteLabel(id);
-        return ResultResponse.success(LabelReturnCode.LABEL_DELETE_SUCCESS_00003);
+
+        linksService.deleteLinks(id);
+        return ResultResponse.success(LinksReturnCode.LINKS_DELETE_SUCCESS_00003);
     }
 
-    *//**
+    /**
      * 更新标签
      *
      * @return

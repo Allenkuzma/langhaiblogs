@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -23,15 +24,19 @@ public class Links {
     private Long id;
 
     @TableField("title")
+    @NotBlank(message = "h3标签内容不能为空")
     private String title;
 
     @TableField("href")
+    @NotBlank(message = "超链接地址不能为空")
     private String href;
 
     @TableField("name")
+    @NotBlank(message = "网站名字不能为空")
     private String name;
 
     @TableField("description")
+    @NotBlank(message = "网站描述不能为空")
     private String description;
 
     @TableField("add_time")
