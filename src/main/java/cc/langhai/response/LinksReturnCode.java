@@ -17,6 +17,10 @@ public enum LinksReturnCode implements ReturnCode{
 
     LINKS_DELETE_FAIL_00004(500, "友情链接删除失败。"),
 
+    LINKS_UPDATE_SUCCESS_00005(200, "友情链接更新成功。"),
+
+    LINKS_UPDATE_FAIL_00006(500, "友情链接更新失败。"),
+
     ;
 
     private Integer code;

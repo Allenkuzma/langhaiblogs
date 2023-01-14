@@ -145,7 +145,7 @@
     </dependencies>
 
     <build>
-        <finalName>langhaiblogs~2023-01-13</finalName>
+        <finalName>langhaiblogs~2023-01-14</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

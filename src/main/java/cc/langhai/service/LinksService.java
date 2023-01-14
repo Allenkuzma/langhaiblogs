@@ -25,4 +25,10 @@ public interface LinksService extends IService<Links> {
      */
     void deleteLinks(Long id);
 
+    /**
+     * 管理员更新友情链接
+     *
+     * @param links
+     */
+    void updateLinks(Links links);
 }

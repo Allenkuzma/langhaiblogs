@@ -6,6 +6,8 @@ import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.LinksMapper;
 import cc.langhai.response.LinksReturnCode;
 import cc.langhai.service.LinksService;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,12 @@ public class LinksServiceImpl extends ServiceImpl<LinksMapper, Links> implements
     @Override
     public void deleteLinks(Long id) {
         this.removeById(id);
+    }
+
+    @Override
+    public void updateLinks(Links links) {
+
+        this.updateById(links);
     }
 
 }

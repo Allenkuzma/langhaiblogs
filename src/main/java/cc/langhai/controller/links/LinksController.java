@@ -5,6 +5,7 @@ import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.domain.Links;
 import cc.langhai.domain.Message;
+import cc.langhai.exception.BusinessException;
 import cc.langhai.response.LabelReturnCode;
 import cc.langhai.response.LinksReturnCode;
 import cc.langhai.response.ResultResponse;
@@ -67,18 +68,22 @@ public class LinksController {
     }
 
     /**
-     * 跳转到 标签更新页面
+     * 跳转到 友情链接更新页面
      *
      * @return
      */
-    /*@GetMapping("/labelUpdatePage")
-    public String labelUpdatePage(Long id, Model model, String content){
+    @GetMapping("/linksUpdatePage")
+    @RequestAuthority(value = {"admin"})
+    public String linksUpdatePage(Long id, Model model){
+        if(ObjectUtil.isNull(id)){
+            throw new BusinessException(LinksReturnCode.LINKS_UPDATE_FAIL_00006);
+        }
 
-        model.addAttribute("id", id);
-        model.addAttribute("content", content);
-        return "blogs/label/labelUpdate";
+        Links links = linksService.getById(id);
+        model.addAttribute("links", links);
+        return "blogs/links/linksUpdate";
     }
-*/
+
     /**
      * 获取 友情链接 列表页面数据
      *
@@ -87,7 +92,7 @@ public class LinksController {
     @RequestAuthority(value = {"admin"})
     @GetMapping("/linksList")
     @ResponseBody
-    public JSONObject articleList(HttpSession session, Model model) throws InterruptedException {
+    public JSONObject linksList(HttpSession session, Model model) throws InterruptedException {
         JSONObject jsonObject = new JSONObject();
 
         List<Links> linksList = linksService.list();
@@ -138,20 +143,18 @@ public class LinksController {
     }
 
     /**
-     * 更新标签
+     * 更新友情链接
      *
      * @return
-     *//*
-    @PostMapping("/updateLabel")
+     */
+    @PostMapping("/updateLinks")
+    @RequestAuthority(value = {"admin"})
     @ResponseBody
-    public ResultResponse updateLabel(Long id, Model model, String content){
-        if(ObjectUtil.isNull(id) || StrUtil.isBlank(content)){
-            return ResultResponse.fail(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
-        }
-        labelService.updateLabel(id, content);
-        return ResultResponse.success(LabelReturnCode.LABEL_UPDATE_SUCCESS_00005);
+    public ResultResponse updateLinks(@RequestBody @Validated Links links, Model model){
+
+        linksService.updateLinks(links);
+        return ResultResponse.success(LinksReturnCode.LINKS_UPDATE_SUCCESS_00005);
     }
-    */
 
 }
  
