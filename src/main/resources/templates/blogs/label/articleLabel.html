@@ -47,6 +47,7 @@
 									<th>浪海值</th>
 									<th>作者</th>
 									<th>编辑</th>
+									<th>删除</th>
 								</tr>
 								<tr th:each="article : ${list}">
 									<td th:text="${article.addTimeShow}"></td>
@@ -55,6 +56,7 @@
 									<td th:text="${article.heat} + '度'"></td>
 									<td th:text="${article.author}"></td>
 									<td><a th:href="'/article/updateArticlePage?id=' + ${article.id}" target="_blank">编辑内容</a></td>
+									<td><a class="delBtn" href="javascript:void(0)" th:id="${article.getId()}">删除内容</a></td>
 								</tr>
 							</table>
 							<div>
@@ -127,6 +129,28 @@
 					window.location.href = "/label/articleLabelPage?page=" + $("#pageInput").val() + "&id=" + $("#labelId").attr("value");
 				}else {
 					alert("输入页数有误！！！")
+				}
+			})
+
+			// 删除文章
+			$("body").on("click", ".delBtn", function(){
+				if (confirm("文章数据将被永久删除！！！")) {
+					$.ajax({
+						url: "/article/deleteArticle",
+						async: true,
+						type: "POST",
+						data: {"id": this.id},
+						success: function (data) {
+							if(data.code == 200){
+								alert("数据已经被永久删除");
+								setTimeout(function(){
+									window.location.href = "/label/articleLabelPage" + "?id=" + $("#labelId").attr("value");;
+								}, 10);
+							}else {
+								alert(data.message);
+							}
+						}
+					})
 				}
 			})
 		})

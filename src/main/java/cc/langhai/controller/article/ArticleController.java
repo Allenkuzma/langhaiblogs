@@ -3,6 +3,7 @@ package cc.langhai.controller.article;
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.domain.User;
+import cc.langhai.dto.ArticleDTO;
 import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.ArticleService;
@@ -17,6 +18,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -52,7 +54,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/newArticlePage")
-    public String newArticlePage(HttpSession session, Model model){
+    public String newArticlePage(Model model){
         List<Label> labelList = labelService.getAllLabelByUser();
 
         // arrayList 用来存储文章标签的内容
@@ -65,21 +67,12 @@ public class ArticleController {
     /**
      * 场景：用户发布文章，保存到数据库。
      *
-     * @param content          新增文章标签
-     * @param label            使用存在的文章标签
-     * @param publicShow       文章是否公开： 公开/不公开
-     * @param title            文章标题
-     * @param html             文章内容html形式
      * @return 数据 200代表成功 其他代表失败
      */
     @PostMapping("/issue")
     @ResponseBody
-    public ResultResponse issue(String title,
-                                String content,
-                                String publicShow,
-                                String html,
-                                String label){
-        articleService.issue(title, content, publicShow, html, label);
+    public ResultResponse issue(@RequestBody @Validated ArticleDTO articleDTO){
+        articleService.issue(articleDTO);
         return ResultResponse.success(ArticleReturnCode.ARTICLE_ISSUE_OK_00000);
     }
 
@@ -89,7 +82,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/articleListPage")
-    public String articleListPage(HttpSession session, Model model,
+    public String articleListPage(Model model,
                                   @RequestParam(defaultValue = "1") Integer curr,
                                   @RequestParam(defaultValue = "10") Integer limitArticle){
         // 开启分页助手
@@ -97,7 +90,6 @@ public class ArticleController {
 
         List<Article> allArticle = articleService.getAllArticle();
         List<Article> articleHeat = articleService.getArticleHeat(allArticle);
-
 
         model.addAttribute("allArticle", articleHeat);
         model.addAttribute("curr", curr);
@@ -111,8 +103,7 @@ public class ArticleController {
      */
     @GetMapping("/articleList")
     @ResponseBody
-    public JSONObject articleList(HttpSession session, Model model,
-                                  @RequestParam(defaultValue = "1") Integer curr,
+    public JSONObject articleList(@RequestParam(defaultValue = "1") Integer curr,
                                   @RequestParam(defaultValue = "10") Integer limitArticle){
         JSONObject jsonObject = new JSONObject();
 
@@ -121,11 +112,9 @@ public class ArticleController {
         List<Article> allArticle = articleService.getAllArticle();
 
         jsonObject.put("code", 0);
-
         jsonObject.put("data", allArticle);
 
         PageInfo<Article> pageInfo = new PageInfo<>(allArticle);
-
         jsonObject.put("count", pageInfo.getTotal());
         return jsonObject;
     }
@@ -135,10 +124,10 @@ public class ArticleController {
      * 跳转到展示文章详细内容的页面
      *
      * @param   id 文章id
-     * @return 文章公开的情况下，页面 langhaibk/article/article-show。
+     * @return 文章公开的情况下，页面 blogs/article/articleShow。
      *         文章不公开的情况下，验证当前用户与文章作者是否匹配。
-     *                          匹配 页面 langhaibk/article/article-show
-     *                          不匹配 页面 langhaibk/index
+     *                          匹配 页面 blogs/article/articleShow
+     *                          不匹配 页面 blogs/user/login
      */
     @GetMapping("/articleShow")
     public String articleShow(Long id, Model model, HttpSession session){
@@ -154,7 +143,6 @@ public class ArticleController {
             return "blogs/article/articleShow";
         }
 
-
         return "blogs/user/login";
     }
 
@@ -164,7 +152,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/updateArticlePage")
-    public String updateArticlePage(HttpSession session, Model model, Long id){
+    public String updateArticlePage(Model model, Long id){
         if(ObjectUtil.isNull(id)){
             return "blogs/user/login";
         }
@@ -184,21 +172,13 @@ public class ArticleController {
     /**
      * 场景：用户更新文章，保存到数据库。
      *
-     * @param content          新增文章标签
-     * @param label            使用存在的文章标签
-     * @param publicShow       文章是否公开： 公开/不公开
-     * @param title            文章标题
-     * @param html             文章内容html形式
+     * @param articleDTO
      * @return 数据 200代表成功 其他代表失败
      */
     @PostMapping("/updateArticle")
     @ResponseBody
-    public ResultResponse updateArticle(String title,
-                                String content,
-                                String publicShow,
-                                String html,
-                                String label, Long id){
-        articleService.updateArticle(title, content, publicShow, html, label, id);
+    public ResultResponse updateArticle(@RequestBody @Validated ArticleDTO articleDTO){
+        articleService.updateArticle(articleDTO);
         return ResultResponse.success(ArticleReturnCode.ARTICLE_UPDATE_OK_00003);
     }
 
@@ -221,7 +201,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/articleSearchPage")
-    public String articleSearchPage(HttpSession session, Model model,
+    public String articleSearchPage(Model model,
                                   @RequestParam(defaultValue = "1") Integer page,
                                   @RequestParam(defaultValue = "10") Integer size,
                                     String searchArticleStr){
@@ -244,7 +224,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/articleSearchESPage")
-    public String articleSearchESPage(HttpSession session, Model model,
+    public String articleSearchESPage(Model model,
                                     @RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "10") Integer size,
                                     String searchArticleStr) throws IOException {

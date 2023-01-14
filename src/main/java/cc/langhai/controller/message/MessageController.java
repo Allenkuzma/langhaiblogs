@@ -40,7 +40,7 @@ public class MessageController {
      */
     @PostMapping("/message")
     @ResponseBody
-    public ResultResponse message(HttpServletRequest request,@RequestBody @Validated Message message){
+    public ResultResponse message(HttpServletRequest request, @RequestBody @Validated Message message){
 
         messageService.save(message, request);
 

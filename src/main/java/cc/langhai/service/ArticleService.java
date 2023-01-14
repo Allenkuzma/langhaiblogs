@@ -1,6 +1,7 @@
 package cc.langhai.service;
 
 import cc.langhai.domain.Article;
+import cc.langhai.dto.ArticleDTO;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpSession;
@@ -19,13 +20,9 @@ public interface ArticleService {
     /**
      * 用户发布文章，保存到数据库。
      *
-     * @param title
-     * @param content
-     * @param publicShow
-     * @param html
-     * @param label
+     * @param articleDTO
      */
-    void issue(String title, String content, String publicShow, String html, String label);
+    void issue(ArticleDTO articleDTO);
 
     /**
      * 获取用户发布的所有文章
@@ -72,14 +69,9 @@ public interface ArticleService {
     /**
      * 用户更新文章，保存到数据库。
      *
-     * @param title
-     * @param content
-     * @param publicShow
-     * @param html
-     * @param label
-     * @param id
+     * @param articleDTO
      */
-    void updateArticle(String title, String content, String publicShow, String html, String label, Long id);
+    void updateArticle(ArticleDTO articleDTO);
 
     /**
      * 用户逻辑删除文章，保存到数据库。
@@ -91,6 +83,9 @@ public interface ArticleService {
     /**
      * 文章搜索功能
      *
+     * @param size
+     * @param page
+     * @param searchArticleStr
      * @return
      */
     PageInfo<Article> search(Integer page, Integer size, String searchArticleStr);
@@ -98,6 +93,9 @@ public interface ArticleService {
     /**
      * 文章搜索功能 用于ES搜索引擎
      *
+     * @param size
+     * @param page
+     * @param searchArticleStr
      * @return
      */
     HashMap<String, Object> searchES(Integer page, Integer size, String searchArticleStr) throws IOException;

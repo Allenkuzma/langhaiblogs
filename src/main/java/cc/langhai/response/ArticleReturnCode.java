@@ -19,7 +19,9 @@ public enum ArticleReturnCode implements ReturnCode{
 
     ARTICLE_DELETE_OK_00005(200, "文章逻辑删除成功"),
 
-    ARTICLE_DELETE_PARAM_FAIL_00006(500, "文章删除参数校验失败。"),
+    ARTICLE_PARAM_FAIL_00006(500, "文章参数校验失败。"),
+
+    ARTICLE_PERMISSION_FAIL_00007(500, "权限校验不足。")
     ;
 
     private Integer code;

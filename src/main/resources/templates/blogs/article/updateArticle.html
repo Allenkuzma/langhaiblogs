@@ -23,6 +23,7 @@
         <li class="layui-nav-item layui-this"><a th:href="'/article/updateArticlePage?id=' + ${article.id}">编辑文章</a></li>
         <li class="layui-nav-item"><a href="/article/newArticlePage">发表新文章</a></li>
         <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
+        <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
         <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
     </ul>
 
@@ -117,13 +118,15 @@
                 url: "/article/updateArticle",
                 async: true,
                 type: "POST",
-                data: {"html": editor.getHtml(),
+                contentType : "application/json",
+                dataType : "json",
+                data: JSON.stringify({"html": editor.getHtml(),
                     "title": $("#title").val(),
                     "content": $("#content").val(),
                     "label": $("#label-langhai option:selected").text(),
                     "publicShow": $("input[name='public']:checked").val(),
                     "id": [[${article.id}]]
-                },
+                }),
                 success: function (data) {
                     if(data.code == 200){
                         $("#issueResult").html("文章更新成功，即将跳转到个人空间！");

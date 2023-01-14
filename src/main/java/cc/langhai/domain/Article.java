@@ -2,6 +2,7 @@ package cc.langhai.domain;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -19,8 +20,10 @@ public class Article {
 
     private Long labelId;
 
+    @NotBlank(message = "文章标题不能为空")
     private String title;
 
+    @NotBlank(message = "文章内容不能为空")
     private String html;
 
     private Integer publicShow;

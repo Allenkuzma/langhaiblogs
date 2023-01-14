@@ -5,6 +5,7 @@ import cc.langhai.config.constant.LabelConstant;
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.domain.User;
+import cc.langhai.dto.ArticleDTO;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
@@ -30,6 +31,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -72,12 +74,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void issue(String title, String content, String publicShow, String html, String label) {
-        // 标题不能为空 文章内容不能为空
-        if(StrUtil.isBlank(title) || StrUtil.isBlank(html)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_PARAM_FAIL_00001);
-        }
-
+    public void issue(ArticleDTO articleDTO) {
         Long userId = UserContext.getUserId();
 
         // 当天发布文章次数限制
@@ -89,33 +86,15 @@ public class ArticleServiceImpl implements ArticleService {
             throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_COUNT_DAY_FAIL_00002);
         }
 
-        // 判断标签是新增还是使用原来的标签
-        if(StrUtil.isBlank(label) && StrUtil.isBlank(content)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_PARAM_FAIL_00001);
-        }
-
-        if(StrUtil.isBlank(content) && "直接选择或搜索选择".equals(label)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_PARAM_FAIL_00001);
-        }
-
-        Label labelMysql = null;
-        // 新增标签
-        if(StrUtil.isNotBlank(content)){
-            labelMysql = labelService.verifyAddLabel(content);
-        }
-
-        // 使用原来的标签
-        if(StrUtil.isBlank(content) && StrUtil.isNotBlank(label)){
-            labelMysql = labelMapper.getLabelByUserAndContent(userId, label);
-        }
+        // 标签处理
+        Label labelMysql = this.labelHandle(articleDTO.getLabel(), articleDTO.getContent());
 
         // 将文章保存到数据库
         Article article = new Article();
+        BeanUtils.copyProperties(articleDTO, article);
         article.setUserId(userId);
         article.setLabelId(labelMysql.getId());
-        article.setTitle(title);
-        article.setHtml(html);
-        article.setPublicShow("on".equals(publicShow) ? 1 : 0);
+        article.setPublicShow("on".equals(articleDTO.getPublicShow()) ? 1 : 0);
         article.setDeleteFlag(0);
         article.setAddTime(new Date());
         articleMapper.insertArticle(article);
@@ -207,54 +186,24 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateArticle(String title, String content, String publicShow, String html, String label, Long id) {
-        // 标题不能为空 文章内容不能为空
-        if(StrUtil.isBlank(title) || StrUtil.isBlank(html) || ObjectUtil.isNull(id)){
+    public void updateArticle(ArticleDTO articleDTO) {
+        // 更新的文章id不能为空
+        if(ObjectUtil.isNull(articleDTO.getId())){
             throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
         }
-
-        // 查询是否有此文章
-        Article article = articleMapper.getById(id);
-        if(ObjectUtil.isNull(article)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
-        }
-
-        Long userId = UserContext.getUserId();
 
         // 文章是否有权限操作
-        Long userIdArticle = article.getUserId();
-        if(!userId.equals(userIdArticle)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
-        }
+        Article article = this.articlePermission(articleDTO.getId());
 
-        // 判断标签是新增还是使用原来的标签
-        if(StrUtil.isBlank(label) && StrUtil.isBlank(content)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
-        }
-
-        if(StrUtil.isBlank(content) && "直接选择或搜索选择".equals(label)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
-        }
-
-        Label labelMysql = null;
-        // 新增标签
-        if(StrUtil.isNotBlank(content)){
-            labelMysql = labelService.verifyAddLabel(content);
-        }
-
-        // 使用原来的标签
-        if(StrUtil.isBlank(content) && StrUtil.isNotBlank(label)){
-            labelMysql = labelMapper.getLabelByUserAndContent(userId, label);
-        }
+        // 标签处理
+        Label labelMysql = this.labelHandle(articleDTO.getLabel(), articleDTO.getContent());
 
         // 将文章更新到数据库
+        BeanUtils.copyProperties(articleDTO, article);
         article.setLabelId(labelMysql.getId());
-        article.setTitle(title);
-        article.setHtml(html);
-        article.setPublicShow("on".equals(publicShow) ? 1 : 0);
+        article.setPublicShow("on".equals(articleDTO.getPublicShow()) ? 1 : 0);
         article.setUpdateTime(new Date());
         articleMapper.updateArticle(article);
-
 
         // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
         rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
@@ -262,23 +211,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void deleteArticle(Long id) {
-        // 文章id不能为空
-        if(ObjectUtil.isNull(id)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_DELETE_PARAM_FAIL_00006);
-        }
-
-        // 查询是否有此文章
-        Article article = articleMapper.getById(id);
-        if(ObjectUtil.isNull(article)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_DELETE_PARAM_FAIL_00006);
-        }
-
-        Long userId = UserContext.getUserId();
         // 文章是否有权限操作
-        Long userIdArticle = article.getUserId();
-        if(!userId.equals(userIdArticle)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_DELETE_PARAM_FAIL_00006);
-        }
+        Article article = this.articlePermission(id);
 
         // 对文章进行逻辑删除
         article.setDeleteFlag(1);
@@ -350,5 +284,65 @@ public class ArticleServiceImpl implements ArticleService {
         hashMap.put("list", articles);
         hashMap.put("pages", (total + size - 1) / size);
         return hashMap;
+    }
+
+    /**
+     * 判断文章是否有权限操作
+     *
+     * @param id 文章实体类id
+     */
+    private Article articlePermission(Long id){
+        // 文章id不能为空
+        if(ObjectUtil.isNull(id)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+        }
+
+        Article article = articleMapper.getById(id);
+        if(ObjectUtil.isNull(article)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+        }
+
+        Long userId = UserContext.getUserId();
+
+        // 文章是否有权限操作
+        Long userIdArticle = article.getUserId();
+        if(!userId.equals(userIdArticle)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_PERMISSION_FAIL_00007);
+        }
+
+        return article;
+    }
+
+    /**
+     * 标签处理 判断是否要新增标签 还是使用原来的标签
+     *
+     * @param label 下拉框选择标签
+     * @param content 新增标签内容
+     * @return
+     */
+    private Label labelHandle(String label, String content){
+        Long userId = UserContext.getUserId();
+
+        // 判断标签是新增还是使用原来的标签
+        if(StrUtil.isBlank(label) && StrUtil.isBlank(content)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+        }
+
+        if(StrUtil.isBlank(content) && "直接选择或搜索选择".equals(label)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+        }
+
+        Label labelMysql = null;
+        // 新增标签
+        if(StrUtil.isNotBlank(content)){
+            labelMysql = labelService.verifyAddLabel(content);
+        }
+
+        // 使用原来的标签
+        if(StrUtil.isBlank(content) && StrUtil.isNotBlank(label)){
+            labelMysql = labelMapper.getLabelByUserAndContent(userId, label);
+        }
+
+        return labelMysql;
     }
 }
