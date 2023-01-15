@@ -24,6 +24,18 @@ hutool java工具集
 
 基本组件：  
 关系型数据库 MySQL  
+
+```sql
+/* 
+	导入langhaiblogs/sql/langhaiblogs.sql之后需要填充默认数据。
+	新增角色 注意和代码保持一致 cc.langhai.config.constant.RoleConstant
+*/
+INSERT INTO role VALUES(1, 'admin', NOW(), NULL);
+INSERT INTO role VALUES(2, 'user', NOW(), NULL);
+INSERT INTO role VALUES(3, 'vip', NOW(), NULL);
+
+```
+
 非关系型数据库 Redis  
 图片存储服务器 minio  
 搜索引擎(可选) elasticSearch  

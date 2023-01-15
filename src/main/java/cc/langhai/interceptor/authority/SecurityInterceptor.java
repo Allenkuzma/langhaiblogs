@@ -1,11 +1,14 @@
 package cc.langhai.interceptor.authority;
 
 import cc.langhai.config.annotation.RequestAuthority;
+import cc.langhai.domain.Role;
 import cc.langhai.domain.User;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.response.SystemReturnCode;
+import cc.langhai.service.RoleService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.ObjectUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,6 +23,9 @@ import java.lang.reflect.Method;
  * @date 2023-01-11 21:15
  */
 public class SecurityInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -44,18 +50,15 @@ public class SecurityInterceptor implements HandlerInterceptor {
             RequestAuthority annotation = method.getAnnotation(RequestAuthority.class);
             if (annotation != null) {
                 // 得到当前登录人的权限,判断请求的权限是否包含在内
-                User user = UserContext.get();
-                if(ObjectUtil.isNull(user)){
+                Role role = roleService.getRole();
+                if(ObjectUtil.isNull(role)){
                     throw new BusinessException(SystemReturnCode.SYSTEM_AUTH_00001);
-                }
-                if(user.getUsername().equals("langhai")){
-                    user.setRole("admin");
                 }
                 // 获得注解的值（权限）
                 String[] values = annotation.value();
                 for (int i = 0; i < values.length; i++) {
                     String value = values[i];
-                    if(value.equals(user.getRole())){
+                    if(value.equals(role.getName())){
                         flag = true;
                     }
                 }

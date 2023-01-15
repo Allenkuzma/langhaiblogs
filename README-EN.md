@@ -26,6 +26,18 @@ The main front-end template of Langhai blog system comes from the html5up.net we
 
 Basic components:  
 Relational database MySQL  
+
+```sql
+/* 
+	After importing langhaibologs/sql/langhaibologs.sql, you need to fill in the default data.
+	The new role should be consistent with the code cc.langhai.config.constant.RoleConstant
+*/
+INSERT INTO role VALUES(1, 'admin', NOW(), NULL);
+INSERT INTO role VALUES(2, 'user', NOW(), NULL);
+INSERT INTO role VALUES(3, 'vip', NOW(), NULL);
+
+```
+
 Non-relational database Redis  
 Picture storage server minio  
 Search engine (optional) elasticSearch  

@@ -1,14 +1,15 @@
 package cc.langhai.service.impl;
 
+import cc.langhai.config.constant.RoleConstant;
 import cc.langhai.config.system.SystemConfig;
+import cc.langhai.domain.Role;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
+import cc.langhai.domain.UserRole;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.listener.LonginUserSessionConfig;
 import cc.langhai.response.UserReturnCode;
-import cc.langhai.service.RegisterService;
-import cc.langhai.service.UserInfoService;
-import cc.langhai.service.UserService;
+import cc.langhai.service.*;
 import cc.langhai.utils.*;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -57,6 +58,12 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private EmailUtil emailUtil;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Override
     public void sendEmailCode(String email, HttpServletRequest request) {
@@ -182,6 +189,13 @@ public class RegisterServiceImpl implements RegisterService {
         userInfoSave.setId(user.getId());
         userInfoSave.setEmail(email);
         userInfoService.insertUserInfo(userInfoSave);
+
+        // 用户角色填充
+        Role role = roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getName, RoleConstant.USER));
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getId());
+        userRole.setRoleId(role.getId());
+        userRoleService.save(userRole);
 
         session.setAttribute("user", user);
         session.setMaxInactiveInterval(60 * 60);
