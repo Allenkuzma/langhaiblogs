@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>开发日志记录 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,开发日志记录" />
+    <meta name="description" content="浪海博客的开发日志记录。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+</head>
+<body>
+    <ul class="layui-nav layui-bg-green" lay-filter="">
+        <li class="layui-nav-item"><a href="/">首页</a></li>
+        <li class="layui-nav-item layui-this"><a href="/devLog/devLogPage">开发日志记录</a></li>
+        <li class="layui-nav-item"><a href="/article/newArticlePage">发表新文章</a></li>
+        <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
+        <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
+        <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
+    </ul>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>开发时间线：大事记</legend>
+    </fieldset>
+
+    <ul class="layui-timeline">
+        <li class="layui-timeline-item" th:each="devLog : ${list}">
+            <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">
+                    <span th:text="${devLog.title}"></span>
+                    <span th:text="${devLog.content}"></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <blockquote class="layui-elem-quote">
+        <ul class="menu">
+            <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+            <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
+            <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+        </ul>
+    </blockquote>
+
+</body>
+<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script>
+
+
+</script>
+<script th:inline="javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'form'], function(){
+        var element = layui.element;
+        var form = layui.form;
+
+
+    });
+
+    $(function () {
+
+    })
+</script>
+</html>

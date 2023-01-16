@@ -80,7 +80,7 @@ public class ArticleServiceImpl implements ArticleService {
         // 当天发布文章次数限制
         String nowDay = DateUtil.getNowDay();
         Integer dayCount = articleMapper.getDayCount(userId, nowDay + " 00:00:00",
-                nowDay + " 24:00:00");
+                nowDay + " 23:59:59");
 
         if(dayCount >= ArticleConstant.ARTICLE_COUNT_TODAY){
             throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_COUNT_DAY_FAIL_00002);

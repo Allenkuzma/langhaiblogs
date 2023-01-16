@@ -63,7 +63,6 @@ public class LinksController {
     @GetMapping("/linksAddPage")
     public String linksAddPage(HttpSession session, Model model){
 
-
         return "blogs/links/linksAdd";
     }
 
@@ -98,11 +97,8 @@ public class LinksController {
         List<Links> linksList = linksService.list();
 
         jsonObject.put("code", 0);
-
         jsonObject.put("data", linksList);
-
         jsonObject.put("count", linksList.size());
-
         return jsonObject;
     }
 
@@ -120,7 +116,6 @@ public class LinksController {
         }
 
         linksService.addLinks(links);
-
         return ResultResponse.success(LinksReturnCode.LINKS_ADD_SUCCESS_00001);
     }
 
@@ -151,7 +146,6 @@ public class LinksController {
     @RequestAuthority(value = {"admin"})
     @ResponseBody
     public ResultResponse updateLinks(@RequestBody @Validated Links links, Model model){
-
         linksService.updateLinks(links);
         return ResultResponse.success(LinksReturnCode.LINKS_UPDATE_SUCCESS_00005);
     }

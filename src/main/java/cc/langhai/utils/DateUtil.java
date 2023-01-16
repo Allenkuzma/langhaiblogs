@@ -36,7 +36,7 @@ public class DateUtil {
         String date = format.split(" ")[0];
         String[] strings = new String[2];
         strings[0] = date + " 00:00:00";
-        strings[1] = date + " 24:00:00";
+        strings[1] = date + " 23:59:59";
         return strings;
     }
 }
