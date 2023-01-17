@@ -1,6 +1,7 @@
 package cc.langhai.service;
 
 import cc.langhai.domain.User;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author langhai
  * @date 2022-12-06 22:16
  */
-public interface UserService {
+public interface UserService extends IService<User> {
 
     /**
      * 获取用户信息 用户名称查询
@@ -54,4 +55,12 @@ public interface UserService {
      * @param user
      */
     void updateUser(User user);
+
+    /**
+     * 获取所有用户信息
+     *
+     * @return
+     */
+    List<User> getUserList();
+
 }

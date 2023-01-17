@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>标签管理 - 浪海博客</title>
-  <meta name="keywords" content="浪海博客,标签管理" />
-  <meta name="description" content="浪海博客的标签管理页面。" />
+  <title>用户授权页面 - 浪海博客</title>
+  <meta name="keywords" content="浪海博客,用户授权" />
+  <meta name="description" content="浪海博客的用户授权页面。" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
 
@@ -12,30 +12,34 @@
 <body>
   <ul class="layui-nav layui-bg-green" lay-filter="">
     <li class="layui-nav-item"><a href="/">首页</a></li>
-    <li class="layui-nav-item layui-this"><a href="/label/labelPage">标签管理</a></li>
+    <li class="layui-nav-item layui-this"><a href="/userRole/userRolePage">用户授权</a></li>
+    <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
     <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
     <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
     <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
   </ul>
 
   <blockquote class="layui-elem-quote">
-    在这里可以管理你的所有标签内容。如果标签下存在发表的文章，会删除失败。
+    在这里管理员可以给用户授权
     <p id="issueResult" style="color: red"></p>
   </blockquote>
 
-  <table class="layui-hide" id="label" lay-filter="label"></table>
+  <table class="layui-hide" id="userRole" lay-filter="userRole"></table>
 
   <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>-->
+    <a class="layui-btn layui-btn-xs" lay-event="role">授权</a>
   </script>
 
   <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
+    <!--<div class="layui-btn-container">
       <button class="layui-btn layui-btn-sm" lay-event="addLabel">新增标签</button>
-    </div>
+    </div>-->
   </script>
+
+  <div id="paging"></div>
 
   <blockquote class="layui-elem-quote">
     <ul class="menu">
@@ -64,15 +68,15 @@
     });
 
     table.render({
-      elem: '#label',
-      url: '/label/labelList',
+      elem: '#userRole',
+      url: '/userRole/userRoleList',
       toolbar: '#toolbarDemo',
       cols: [[
         {type: 'checkbox', fixed: 'left'}
         ,{field:'id', fixed: 'left', title: 'ID', sort: true}
-        ,{field:'content', title: '标签内容', width:180}
+        ,{field:'username', title: '用户昵称', width:180}
         ,{field:'addTimeShow', title: '新增时间', width:180}
-        ,{field:'updateTimeShow', title: '修改时间', width:180}
+        ,{field:'role', title: '角色', width:180}
         ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
       ]],
       page: true
@@ -95,7 +99,7 @@
     });
 
     // 触发单元格工具事件
-    table.on('tool(label)', function(obj){ // 双击 toolDouble
+    table.on('tool(userRole)', function(obj){ // 双击 toolDouble
       var data = obj.data;
       // console.log(obj)
       if(obj.event === 'del'){
@@ -129,15 +133,14 @@
           type: 2,
           content: '/label/labelUpdatePage?id=' + data.id + "&content=" + data.content
         });
-      } else if(obj.event === 'look'){
-        window.location.href = "/label/articleLabelPage?id=" + data.id
+      } else if(obj.event === 'role'){
+        layer.open({
+          title: '用户角色重新授权',
+          type: 2,
+          content: '/userRole/userRoleUpdatePage?id=' + data.id
+        });
       }
     });
-
   })
-</script>
-<script >
-
-
 </script>
 </html>

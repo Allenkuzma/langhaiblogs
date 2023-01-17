@@ -7,7 +7,6 @@
   <meta name="description" content="浪海博客的文章列表页面。" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
-
 </head>
 <body>
   <ul class="layui-nav layui-bg-green" lay-filter="">
@@ -33,40 +32,30 @@
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md12" th:each="article : ${allArticle}">
       <div class="layui-panel">
-        <div style="padding: 30px;">
-          <div style="padding: 30px;" class="layui-row">
-            <div class="layui-col-xs6" th:text="'文章标题：' + ${article.title}"></div>
-            <div class="layui-col-xs6" style="text-align:right;">
-              <button type="button" class="layui-btn layui-btn-normal layui-btn-radius">
-                <a th:href="'/article/articleShow?id=' + ${article.id}">查看文章详情</a>
-              </button>
-            </div>
+        <div style="padding: 30px;" class="layui-row">
+          <div class="layui-col-xs12">
+            <div th:text="'文章标题：' + ${article.title}"></div>
+            <div th:text="'文章作者：' + ${article.author}"></div>
+            <div th:text="'文章日期：' + ${article.addTimeShow}"></div>
+            <div th:text="'浪海值：' + ${article.heat}"></div>
           </div>
-          <div style="padding: 30px;" class="layui-row">
-            <div class="layui-col-xs6" th:text="'文章作者：' + ${article.author}"></div>
-            <div class="layui-col-xs6" style="text-align:right;">
-              <button type="button" class="layui-btn layui-btn-danger layui-btn-radius">
-                <a class="delBtn" href="javascript:void(0)" th:id="${article.id}">删除文章</a>
-              </button>
-            </div>
-          </div>
-          <div style="padding: 30px;" class="layui-row">
-            <div class="layui-col-xs6">
-              <span th:text="'文章日期：' + ${article.addTimeShow}"></span><br />
-              <span th:text="'浪海值：' + ${article.heat}"></span>
-            </div>
-            <div class="layui-col-xs6" style="text-align:right;">
-              <button type="button" class="layui-btn layui-btn-warm layui-btn-radius">
-                <a th:href="'/article/updateArticlePage?id=' + ${article.id}">编辑文章</a>
-              </button>
-            </div>
+          <div class="layui-col-xs12" style="text-align:right;">
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius">
+              <a th:href="'/article/articleShow?id=' + ${article.id}" target="_blank">查看文章详情</a>
+            </button>
+            <button type="button" class="layui-btn layui-btn-danger layui-btn-radius">
+              <a class="delBtn" href="javascript:void(0)" th:id="${article.id}">删除文章</a>
+            </button>
+            <button type="button" class="layui-btn layui-btn-warm layui-btn-radius">
+              <a th:href="'/article/updateArticlePage?id=' + ${article.id}" target="_blank">编辑文章</a>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="demo7"></div>
+  <div id="paging"></div>
 
   <blockquote class="layui-elem-quote">
     <ul class="menu">
@@ -111,7 +100,7 @@
 
     // 分页完整功能
     laypage.render({
-      elem: 'demo7'
+      elem: 'paging'
       ,count: getCount()
       ,curr: [[${curr}]]
       ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']

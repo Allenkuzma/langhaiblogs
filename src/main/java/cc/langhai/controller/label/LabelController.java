@@ -42,10 +42,7 @@ public class LabelController {
      * @return
      */
     @GetMapping("/labelPage")
-    public String labelPage(HttpSession session, Model model){
-        List<Label> labelList = labelService.getAllLabelByUser();
-
-        model.addAttribute("labelList", labelList);
+    public String labelPage(){
 
         return "blogs/label/labelList";
     }
@@ -56,8 +53,7 @@ public class LabelController {
      * @return
      */
     @GetMapping("/labelAddPage")
-    public String labelAddPage(HttpSession session, Model model){
-
+    public String labelAddPage(){
 
         return "blogs/label/labelAdd";
     }
@@ -69,7 +65,6 @@ public class LabelController {
      */
     @GetMapping("/labelUpdatePage")
     public String labelUpdatePage(Long id, Model model, String content){
-
         model.addAttribute("id", id);
         model.addAttribute("content", content);
         return "blogs/label/labelUpdate";
@@ -82,17 +77,17 @@ public class LabelController {
      */
     @GetMapping("/labelList")
     @ResponseBody
-    public JSONObject articleList(HttpSession session, Model model) throws InterruptedException {
+    public JSONObject labelList(@RequestParam(defaultValue = "1") Integer page,
+                                @RequestParam(defaultValue = "10") Integer limit){
         JSONObject jsonObject = new JSONObject();
+        PageHelper.startPage(page, limit);
 
         List<Label> labelList = labelService.getAllLabelByUser();
+        PageInfo<Label> labelPageInfo = new PageInfo<>(labelList);
 
         jsonObject.put("code", 0);
-
         jsonObject.put("data", labelList);
-
-        jsonObject.put("count", labelList.size());
-
+        jsonObject.put("count", labelPageInfo.getTotal());
         return jsonObject;
     }
 

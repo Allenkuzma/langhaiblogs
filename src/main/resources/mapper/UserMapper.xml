@@ -49,4 +49,19 @@
             id = #{id}
     </update>
 
+    <select id="getUserList" resultType="cc.langhai.domain.User">
+        SELECT
+            u.*, DATE_FORMAT(u.`add_time`, "%Y-%m-%d %H:%i:%s") AS add_time_show, r.name AS role
+        FROM
+            user AS u
+        INNER JOIN
+            role AS r
+        INNER JOIN
+            user_role AS ul
+        ON
+            u.id = ul.user_id
+            AND
+            r.id = ul.role_id
+    </select>
+
 </mapper>

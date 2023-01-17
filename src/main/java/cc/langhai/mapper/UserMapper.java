@@ -1,6 +1,7 @@
 package cc.langhai.mapper;
 
 import cc.langhai.domain.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @date 2022-12-06 22:11
  */
 @Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 获取用户信息 用户名称查询
@@ -56,4 +57,12 @@ public interface UserMapper {
      * @param user
      */
     void updateUser(User user);
+
+    /**
+     * 获取所有用户信息
+     *
+     * @return
+     */
+    List<User> getUserList();
+
 }

@@ -33,6 +33,10 @@ public class AuthorityConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/links/deleteLinks");
         registration.addPathPatterns("/links/linksUpdatePage");
         registration.addPathPatterns("/links/updateLinks");
+        registration.addPathPatterns("/userRole/userRolePage");
+        registration.addPathPatterns("/userRole/userRoleList");
+        registration.addPathPatterns("/userRole/userRoleUpdatePage");
+        registration.addPathPatterns("/userRole/updateUserRole");
         // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",

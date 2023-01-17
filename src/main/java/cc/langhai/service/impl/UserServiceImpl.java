@@ -3,6 +3,7 @@ package cc.langhai.service.impl;
 import cc.langhai.domain.User;
 import cc.langhai.mapper.UserMapper;
 import cc.langhai.service.UserService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @date 2022-12-06 22:17
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -53,6 +54,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         userMapper.updateUser(user);
+    }
+
+    @Override
+    public List<User> getUserList() {
+        List<User> list = userMapper.getUserList();
+        return list;
     }
 
 }

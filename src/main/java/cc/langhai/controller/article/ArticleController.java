@@ -2,16 +2,12 @@ package cc.langhai.controller.article;
 
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
-import cc.langhai.domain.User;
 import cc.langhai.dto.ArticleDTO;
 import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
-import cc.langhai.service.UserService;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,10 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -44,9 +38,6 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
-
-    @Autowired
-    private UserService userService;
 
     /**
      * 跳转到 文章 新发布页面
@@ -108,7 +99,6 @@ public class ArticleController {
         JSONObject jsonObject = new JSONObject();
 
         PageHelper.startPage(curr, limitArticle);
-
         List<Article> allArticle = articleService.getAllArticle();
 
         jsonObject.put("code", 0);
