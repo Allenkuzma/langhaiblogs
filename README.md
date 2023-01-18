@@ -23,7 +23,7 @@ hutool java工具集
 浪海博客系统的主要前端模板来自html5up.net网站。  
 
 基本组件：  
-关系型数据库 MySQL  
+关系型数据库 MySQL [MySQL 详细说明](http://www.langhai.cc/article/articleShow?id=53) 
 
 ```sql
 /* 
@@ -37,6 +37,6 @@ INSERT INTO role VALUES(3, 'vip', NOW(), NULL);
 ```
 
 非关系型数据库 Redis  
-图片存储服务器 minio  
+图片存储服务器 minio [minio 详细说明](http://www.langhai.cc/article/articleShow?id=54)   
 搜索引擎(可选) elasticSearch  
 消息队列（可选）rabbitMQ   <a href="https://langhai.cc/article/articleShow?id=33">rabbitMQ所有说明</a>

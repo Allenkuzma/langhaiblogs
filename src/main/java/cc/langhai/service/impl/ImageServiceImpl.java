@@ -1,11 +1,14 @@
 package cc.langhai.service.impl;
 
 import cc.langhai.config.constant.ImageConstant;
+import cc.langhai.config.constant.RoleConstant;
 import cc.langhai.domain.Image;
+import cc.langhai.domain.Role;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ImageMapper;
 import cc.langhai.response.ImageReturnCode;
 import cc.langhai.service.ImageService;
+import cc.langhai.service.RoleService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.NumberUtil;
@@ -31,23 +34,34 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImageMapper imageMapper;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
-    public void size() {
-        Long userId = UserContext.getUserId();
-        List<Image> allImageByUser = imageMapper.getAllImageByUser(userId);
+    public Long size() {
+        List<Image> allImageByUser = imageMapper.getAllImageByUser(UserContext.getUserId());
 
         Long sum = 0L;
         if(CollectionUtil.isNotEmpty(allImageByUser)){
             for (Image image : allImageByUser) {
-                Long fileSize = image.getFileSize();
-                sum += fileSize;
+                sum += image.getFileSize();
             }
         }
 
-        // 默认50M
-        if(sum >= ImageConstant.IMAGE_COUNT_ALL){
-            throw new BusinessException(ImageReturnCode.IMAGE_UPLOAD_FAIL_00000);
+        Role role = roleService.getRole();
+        if(role.getName().equals(RoleConstant.ADMIN) || role.getName().equals(RoleConstant.VIP)){
+            // 默认100M
+            if(sum >= ImageConstant.IMAGE_COUNT_ADMIN_VIP_ALL){
+                throw new BusinessException(ImageReturnCode.IMAGE_UPLOAD_FAIL_00000);
+            }
+        }else {
+            // 默认50M
+            if(sum >= ImageConstant.IMAGE_COUNT_ALL){
+                throw new BusinessException(ImageReturnCode.IMAGE_UPLOAD_FAIL_00000);
+            }
         }
+
+        return sum;
     }
 
     @Override
@@ -63,21 +77,20 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String space() {
-        Long userId = UserContext.getUserId();
-        List<Image> allImageByUser = imageMapper.getAllImageByUser(userId);
-
-        Long sum = 0L;
-        if(CollectionUtil.isNotEmpty(allImageByUser)){
-            for (Image image : allImageByUser) {
-                Long fileSize = image.getFileSize();
-                sum += fileSize;
-            }
-        }
+        Long size = this.size();
 
         BigDecimal result = new BigDecimal(0);
-        if(sum != 0L){
-            result = NumberUtil.div(Long.valueOf(sum), Long.valueOf(ImageConstant.IMAGE_COUNT_ALL), 2, RoundingMode.UP);
-            result = result.multiply(new BigDecimal(100));
+        Role role = roleService.getRole();
+        if(role.getName().equals(RoleConstant.ADMIN) || role.getName().equals(RoleConstant.VIP)){
+            if(size != 0L){
+                result = NumberUtil.div(Long.valueOf(size), Long.valueOf(ImageConstant.IMAGE_COUNT_ADMIN_VIP_ALL), 2, RoundingMode.UP);
+                result = result.multiply(new BigDecimal(100));
+            }
+        }else {
+            if(size != 0L){
+                result = NumberUtil.div(Long.valueOf(size), Long.valueOf(ImageConstant.IMAGE_COUNT_ALL), 2, RoundingMode.UP);
+                result = result.multiply(new BigDecimal(100));
+            }
         }
         return result.toString() + "%";
     }

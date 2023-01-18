@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 文章标签 service实现类
@@ -34,6 +35,15 @@ public class LabelServiceImpl implements LabelService {
     public List<Label> getAllLabelByUser() {
         Long userId = UserContext.getUserId();
         return labelMapper.getAllLabelByUser(userId);
+    }
+
+    @Override
+    public List<String> getAllLabelContentByUser() {
+        List<Label> labelList = this.getAllLabelByUser();
+
+        // collect 用来存储文章标签的内容
+        List<String> collect = labelList.stream().map(label -> label.getContent()).collect(Collectors.toList());
+        return collect;
     }
 
     @Override
@@ -128,7 +138,6 @@ public class LabelServiceImpl implements LabelService {
 
         List<Article> articleList = labelMapper.article(id);
         PageInfo<Article> pageInfo = new PageInfo<>(articleList);
-
         return pageInfo;
     }
 

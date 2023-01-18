@@ -13,9 +13,14 @@ public class ImageConstant {
 
     /**
      * 用户图片存储总数量字节 默认设置为50M
-     * TODO 后期优化
      *
      */
     public static final Long IMAGE_COUNT_ALL = 52428800L;
+
+    /**
+     * admin vip 用户图片存储总数量字节 默认设置为100M
+     *
+     */
+    public static final Long IMAGE_COUNT_ADMIN_VIP_ALL = 104857600L;
 
 }

@@ -15,8 +15,9 @@ public interface ImageService {
     /**
      * 判断用户存储的图片总大小
      *
+     * @return 用户存储的图片总大小
      */
-    void size();
+    Long size();
 
     /**
      * 保存图片
@@ -33,10 +34,10 @@ public interface ImageService {
      */
     List<Image> getAllImageByUser(Long userId);
 
-
     /**
      * 返回用户使用空间
      *
+     * @return 用户占用空间百分比
      */
     String space();
 

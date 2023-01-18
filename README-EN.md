@@ -25,7 +25,7 @@ Copyright/citation statement
 The main front-end template of Langhai blog system comes from the html5up.net website.  
 
 Basic components:  
-Relational database MySQL  
+Relational database MySQL  [MySQL All instructions](http://www.langhai.cc/article/articleShow?id=53)
 
 ```sql
 /* 
@@ -39,6 +39,6 @@ INSERT INTO role VALUES(3, 'vip', NOW(), NULL);
 ```
 
 Non-relational database Redis  
-Picture storage server minio  
+Picture storage server minio  [minio All instructions](http://www.langhai.cc/article/articleShow?id=54)  
 Search engine (optional) elasticSearch  
 Message Queuing (optional) rabbitMQ   <a href="https://langhai.cc/article/articleShow?id=33">RabbitMQ All instructions</a>

@@ -46,12 +46,8 @@ public class ArticleController {
      */
     @GetMapping("/newArticlePage")
     public String newArticlePage(Model model){
-        List<Label> labelList = labelService.getAllLabelByUser();
-
-        // arrayList 用来存储文章标签的内容
-        List<String> collect = labelList.stream().map(label -> label.getContent()).collect(Collectors.toList());
-        model.addAttribute("labelList", collect);
-
+        List<String> labelContent = labelService.getAllLabelContentByUser();
+        model.addAttribute("labelList", labelContent);
         return "blogs/article/newArticle";
     }
 
@@ -116,8 +112,8 @@ public class ArticleController {
      * @param   id 文章id
      * @return 文章公开的情况下，页面 blogs/article/articleShow。
      *         文章不公开的情况下，验证当前用户与文章作者是否匹配。
-     *                          匹配 页面 blogs/article/articleShow
-     *                          不匹配 页面 blogs/user/login
+     *                          匹配页面 blogs/article/articleShow
+     *                          不匹配页面 blogs/user/login
      */
     @GetMapping("/articleShow")
     public String articleShow(Long id, Model model, HttpSession session){
@@ -125,11 +121,10 @@ public class ArticleController {
         if(ObjectUtil.isNull(article)){
             return "blogs/user/login";
         }
-        Article articleHeat = articleService.getArticleHeat(article);
 
-        boolean judgeShow = articleService.judgeShow(session, article);
-        if(judgeShow){
-            model.addAttribute("article", articleHeat);
+        // 判断文章是否具有访问权限
+        if(articleService.judgeShow(session, article)){
+            model.addAttribute("article", articleService.getArticleHeat(article));
             return "blogs/article/articleShow";
         }
 
@@ -147,14 +142,12 @@ public class ArticleController {
             return "blogs/user/login";
         }
 
-        // 查询要更新的文章
-        Article article = articleService.getById(id);
+        // 查询要更新的文章 判断是否有操作权限
+        Article article = articleService.articlePermission(id);
         model.addAttribute("article", article);
 
-        List<Label> labelList = labelService.getAllLabelByUser();
-        // arrayList 用来存储文章标签的内容
-        List<String> collect = labelList.stream().map(label -> label.getContent()).collect(Collectors.toList());
-        model.addAttribute("labelList", collect);
+        List<String> labelContent = labelService.getAllLabelContentByUser();
+        model.addAttribute("labelList", labelContent);
 
         return "blogs/article/updateArticle";
     }

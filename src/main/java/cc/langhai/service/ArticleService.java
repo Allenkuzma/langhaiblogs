@@ -34,7 +34,7 @@ public interface ArticleService {
     /**
      * 获取一篇文章
      *
-     * @param id
+     * @param id 文章id
      * @return
      */
     Article getById(Long id);
@@ -99,5 +99,13 @@ public interface ArticleService {
      * @return
      */
     HashMap<String, Object> searchES(Integer page, Integer size, String searchArticleStr) throws IOException;
+
+    /**
+     * 判断文章是否有权限操作
+     *
+     * @param id 文章实体类id
+     * @return
+     */
+    Article articlePermission(Long id);
 
 }

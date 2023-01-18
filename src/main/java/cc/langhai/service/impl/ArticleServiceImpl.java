@@ -232,7 +232,6 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow(searchArticleStr);
         PageInfo<Article> pageInfo = new PageInfo<>(allArticlePublicShow);
-
         return pageInfo;
     }
 
@@ -286,12 +285,8 @@ public class ArticleServiceImpl implements ArticleService {
         return hashMap;
     }
 
-    /**
-     * 判断文章是否有权限操作
-     *
-     * @param id 文章实体类id
-     */
-    private Article articlePermission(Long id){
+    @Override
+    public Article articlePermission(Long id){
         // 文章id不能为空
         if(ObjectUtil.isNull(id)){
             throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);

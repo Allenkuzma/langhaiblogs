@@ -23,6 +23,13 @@ public interface LabelService {
     List<Label> getAllLabelByUser();
 
     /**
+     * 获取用户的所有标签内容
+     *
+     * @return
+     */
+    List<String> getAllLabelContentByUser();
+
+    /**
      * 新增标签的时候 进行校验
      *
      * @param content

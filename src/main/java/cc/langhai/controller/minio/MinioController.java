@@ -1,17 +1,12 @@
 package cc.langhai.controller.minio;
 
-import cc.langhai.minio.config.MinioProp;
 import cc.langhai.minio.util.MinioUtils;
 import cc.langhai.response.MinioReturnCode;
 import cc.langhai.response.ResultResponse;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
-import io.minio.MinioClient;
-import io.minio.ObjectStat;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -47,7 +41,6 @@ public class MinioController {
     @PostMapping("/upload")
     @ResponseBody
     public ResultResponse upload(@RequestParam(name = "file", required = true) MultipartFile file) {
-
         try {
             String url = minioUtils.uploadFile(file, "product");
             return ResultResponse.success(MinioReturnCode.MINIO_UPLOAD_OK_00000, url);
