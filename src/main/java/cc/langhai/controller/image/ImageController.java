@@ -41,14 +41,12 @@ public class ImageController {
 
         List<Image> list = imageService.getAllImageByUser(UserContext.getUserId());
         PageInfo<Image> pageInfo = new PageInfo<>(list);
-        String url = "";
 
         if(CollectionUtil.isNotEmpty(list)){
             for (Image image : list) {
                 StringBuffer requestURL = request.getRequestURL();
                 String urlPrefix = requestURL.substring(0, requestURL.length() - request.getRequestURI().length());
-                url = urlPrefix + "/minio/download?minioName=" + image.getMinioName();
-                image.setUrl(url);
+                image.setUrl(urlPrefix + "/minio/download?minioName=" + image.getMinioName());
             }
         }
         model.addAttribute("list", list);

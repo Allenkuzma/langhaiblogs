@@ -12,22 +12,22 @@
 
     <form class="layui-form" action="">
             <div class="layui-form-item">
-                   <label class="layui-form-label">标签内容</label>
-                    <div class="layui-input-block">
-                            <input type="text" th:value="${content}" id="contentUpdate" name="content" lay-verify="content" autocomplete="off" placeholder="请输入标签内容" class="layui-input">
-                    </div>
-               </div>
+                <label class="layui-form-label">标签内容</label>
+                <div class="layui-input-block">
+                    <input type="text" th:value="${content}" id="contentUpdate" name="content" lay-verify="content" autocomplete="off" placeholder="请输入标签内容" class="layui-input">
+                </div>
+            </div>
            <div>
                <div>
                    <input type="text" th:value="${id}" id="idUpdate" hidden="hidden" >
                </div>
            </div>
-    <div class="layui-form-item">
+           <div class="layui-form-item">
             <div class="layui-input-block">
                  <button class="layui-btn" id="update" lay-submit lay-filter="formDemoUpdate">立即提交</button>
                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
-          </div>
+            </div>
+           </div>
     </form>
 
 </body>

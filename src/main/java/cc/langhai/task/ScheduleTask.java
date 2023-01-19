@@ -41,13 +41,13 @@ public class ScheduleTask {
     private UserInfoService userInfoService;
 
     /**
-     * 删除前三天的访问次数 23:23:23执行
+     * 删除前七天的访问次数 23:23:23执行
      *
      */
     @Scheduled(cron = "23 23 23 * * ?")
     private void deleteVisitTask(){
-        // 获取前三天的时间
-        DateTime dateTime = DateUtil.offsetDay(new Date(), -3);
+        // 获取前七天的时间
+        DateTime dateTime = DateUtil.offsetDay(new Date(), -7);
         String[] split = dateTime.toString().split(" ");
 
         List<Visit> list = visitService.list(Wrappers.<Visit>lambdaQuery()

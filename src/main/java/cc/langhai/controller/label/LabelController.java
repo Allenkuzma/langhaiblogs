@@ -37,29 +37,27 @@ public class LabelController {
     private ArticleService articleService;
 
     /**
-     * 跳转到 标签管理页面
+     * 跳转到标签管理页面
      *
      * @return
      */
     @GetMapping("/labelPage")
     public String labelPage(){
-
         return "blogs/label/labelList";
     }
 
     /**
-     * 跳转到 标签新增页面
+     * 跳转到标签新增页面
      *
      * @return
      */
     @GetMapping("/labelAddPage")
     public String labelAddPage(){
-
         return "blogs/label/labelAdd";
     }
 
     /**
-     * 跳转到 标签更新页面
+     * 跳转到标签更新页面
      *
      * @return
      */
@@ -71,7 +69,7 @@ public class LabelController {
     }
 
     /**
-     * 获取 标签 列表页面数据
+     * 获取标签列表页面数据
      *
      * @return
      */
@@ -98,12 +96,12 @@ public class LabelController {
      */
     @PostMapping("/addLabel")
     @ResponseBody
-    public ResultResponse addLabel(String content, Model model){
+    public ResultResponse addLabel(String content){
         if(StrUtil.isBlank(content)){
             return ResultResponse.fail(LabelReturnCode.LABEL_ADD_FAIL_00002);
         }
-        labelService.verifyAddLabel(content);
 
+        labelService.verifyAddLabel(content);
         return ResultResponse.success(LabelReturnCode.LABEL_ADD_SUCCESS_00001);
     }
 
@@ -115,10 +113,11 @@ public class LabelController {
      */
     @PostMapping("/deleteLabel")
     @ResponseBody
-    public ResultResponse deleteLabel(Long id, Model model){
+    public ResultResponse deleteLabel(Long id){
         if(ObjectUtil.isNull(id)){
             return ResultResponse.fail(LabelReturnCode.LABEL_DELETE_FAIL_00004);
         }
+
         labelService.deleteLabel(id);
         return ResultResponse.success(LabelReturnCode.LABEL_DELETE_SUCCESS_00003);
     }
@@ -130,10 +129,11 @@ public class LabelController {
      */
     @PostMapping("/updateLabel")
     @ResponseBody
-    public ResultResponse updateLabel(Long id, Model model, String content){
+    public ResultResponse updateLabel(Long id, String content){
         if(ObjectUtil.isNull(id) || StrUtil.isBlank(content)){
             return ResultResponse.fail(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
         }
+
         labelService.updateLabel(id, content);
         return ResultResponse.success(LabelReturnCode.LABEL_UPDATE_SUCCESS_00005);
     }
@@ -144,7 +144,7 @@ public class LabelController {
      * @return
      */
     @GetMapping("/articleLabelPage")
-    public String articleLabelPage(HttpSession session, Model model,
+    public String articleLabelPage(Model model,
                                     @RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "10") Integer size,
                                     Long id){

@@ -38,30 +38,29 @@ public class LinksController {
     @Autowired
     private LinksService linksService;
 
-
     /**
-     * 跳转到 友情链接管理页面
+     * 跳转到友情链接管理页面
      *
      * @return
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/linksListPage")
     public String linksListPage(String message, Model model){
-
         if(StrUtil.isNotBlank(message)){
             model.addAttribute("message", message);
         }
+
         return "blogs/links/linksList";
     }
 
     /**
-     * 跳转到 友情链接新增页面
+     * 跳转到友情链接新增页面
      *
      * @return
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/linksAddPage")
-    public String linksAddPage(HttpSession session, Model model){
+    public String linksAddPage(){
 
         return "blogs/links/linksAdd";
     }
@@ -84,18 +83,16 @@ public class LinksController {
     }
 
     /**
-     * 获取 友情链接 列表页面数据
+     * 获取友情链接列表页面数据
      *
      * @return
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/linksList")
     @ResponseBody
-    public JSONObject linksList(HttpSession session, Model model) throws InterruptedException {
+    public JSONObject linksList(){
         JSONObject jsonObject = new JSONObject();
-
         List<Links> linksList = linksService.list();
-
         jsonObject.put("code", 0);
         jsonObject.put("data", linksList);
         jsonObject.put("count", linksList.size());
@@ -110,7 +107,7 @@ public class LinksController {
     @PostMapping("/addLinks")
     @RequestAuthority(value = {"admin"})
     @ResponseBody
-    public ResultResponse addLinks(@RequestBody @Validated Links links, Model model){
+    public ResultResponse addLinks(@RequestBody @Validated Links links){
         if(ObjectUtil.isNull(links)){
             return ResultResponse.fail(LinksReturnCode.LINKS_ADD_FAIL_00002);
         }
@@ -128,7 +125,7 @@ public class LinksController {
     @PostMapping("/deleteLinks")
     @RequestAuthority(value = {"admin"})
     @ResponseBody
-    public ResultResponse deleteLinks(Long id, Model model){
+    public ResultResponse deleteLinks(Long id){
         if(ObjectUtil.isNull(id)){
             return ResultResponse.fail(LinksReturnCode.LINKS_DELETE_FAIL_00004);
         }
@@ -145,7 +142,7 @@ public class LinksController {
     @PostMapping("/updateLinks")
     @RequestAuthority(value = {"admin"})
     @ResponseBody
-    public ResultResponse updateLinks(@RequestBody @Validated Links links, Model model){
+    public ResultResponse updateLinks(@RequestBody @Validated Links links){
         linksService.updateLinks(links);
         return ResultResponse.success(LinksReturnCode.LINKS_UPDATE_SUCCESS_00005);
     }
