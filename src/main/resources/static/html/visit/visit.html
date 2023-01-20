@@ -23,7 +23,8 @@
     </ul>
 
     <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="day" style="width: 600px;height:400px;"></div>
+    <div id="device" style="width: 600px;height:400px;"></div>
 
     <blockquote class="layui-elem-quote">
         <ul class="menu">
@@ -36,11 +37,13 @@
 <script src="/blogs/assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
+    var dayChart = echarts.init(document.getElementById('day'));
+    var deviceChart = echarts.init(document.getElementById('device'));
 
-    let map;
     let arrayDay = new Array();
     let arrayDayCount = new Array();
+    let arrayDevice = new Array();
+    let arrayDeviceCount = new Array();
 
     $.ajax({
         url: "/visit/day",
@@ -48,14 +51,14 @@
         type: "get",
         success: function (data) {
             if(data.code == 200){
-                map = new Map(Object.entries(data.result))
+                var map = new Map(Object.entries(data.result))
                 map.forEach((val, key) => {
                     arrayDay.push(key)
                     arrayDayCount.push(val)
                 })
 
                 window.addEventListener('resize', function() {
-                    myChart.resize();
+                    dayChart.resize();
                 });
 
                 // 指定图表的配置项和数据
@@ -80,11 +83,51 @@
                     ]
                 };
                 // 使用刚指定的配置项和数据显示图表。
-                myChart.setOption(option);
+                dayChart.setOption(option);
             }
         }
     })
 
+    $.ajax({
+        url: "/visit/device",
+        async: true,
+        type: "get",
+        success: function (data) {
+            if(data.code == 200){
+                var map = new Map(Object.entries(data.result))
+                map.forEach((val, key) => {
+                    arrayDevice.push(key)
+                    arrayDeviceCount.push(val)
+                })
+
+                window.addEventListener('resize', function() {
+                    deviceChart.resize();
+                });
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '当天访问设备类型'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: arrayDevice
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: arrayDeviceCount,
+                            type: 'line'
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                deviceChart.setOption(option);
+            }
+        }
+    })
 </script>
 </body>
 </html>

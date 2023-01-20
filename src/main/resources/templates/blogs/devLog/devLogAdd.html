@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开发日志记录新增 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,开发日志记录新增" />
+    <meta name="description" content="浪海博客的开发日志记录新增页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+</head>
+<body>
+
+    <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">日志标题</label>
+                <div class="layui-input-block">
+                    <input type="text" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入日志标题" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">日志内容</label>
+                <div class="layui-input-block">
+                    <input type="text" id="content" name="content" lay-verify="content" autocomplete="off" placeholder="请输入日志内容" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                 <button id="save" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+               </div>
+            </div>
+    </form>
+
+</body>
+<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script>
+    $(function() {
+        $("#save").click(function () {
+            // 执行添加的操作ajax
+            $.ajax({
+                cache: true,
+                type: "post",
+                url: "/devLog/addDevLog",
+                contentType : "application/json",
+                dataType : "json",
+                data: JSON.stringify({
+                    "content": $("#content").val(),
+                    "title": $("#title").val()
+                }),
+                async: false,
+                success: function () {
+                    window.parent.location.href = "/devLog/devLogManagePage";
+                }
+            })
+        })
+    })
+</script>
+</html>

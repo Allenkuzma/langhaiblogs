@@ -11,5 +11,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DevLogService extends IService<DevLog> {
 
-
+    /**
+     * 管理员新增开发日志记录
+     *
+     * @param devLog
+     */
+    void addDevLog(DevLog devLog);
 }

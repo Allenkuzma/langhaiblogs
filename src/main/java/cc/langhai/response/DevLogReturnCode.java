@@ -1,23 +1,24 @@
 package cc.langhai.response;
 
 /**
- * 用户访问记录相关返回枚举
+ * 开发日志记录相关枚举类
  *
  * @author langhai
- * @date 2023-01-19 21:45
+ * @date 2023-01-20 16:45
  */
-public enum VisitReturnCode implements ReturnCode{
+public enum DevLogReturnCode implements ReturnCode{
 
-    VISIT_DAY_SUCCESS_00000(200, "用户访问记录获取成功。"),
+    DEV_LOG_ADD_SUCCESS_00001(200, "开发日志记录新增成功。"),
 
-    DEVICE_DAY_SUCCESS_00001(200, "用户访问设备类型获取成功。"),
+    DEV_LOG_ADD_FAIL_00002(500, "开发日志记录新增失败。"),
+
     ;
 
     private Integer code;
 
     private String message;
 
-    VisitReturnCode(Integer code, String message){
+    DevLogReturnCode(Integer code, String message){
         this.code = code;
         this.message = message;
     }
