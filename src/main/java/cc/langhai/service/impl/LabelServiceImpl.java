@@ -57,9 +57,9 @@ public class LabelServiceImpl implements LabelService {
         }
 
         // 判断新增的标签是否存在
-        Label labelByUserAndContent = labelMapper.getLabelByUserAndContent(userId, content);
-        if(ObjectUtil.isNotNull(labelByUserAndContent)){
-            return labelByUserAndContent;
+        Label labelOld = this.labelExist(content);
+        if(ObjectUtil.isNotNull(labelOld)){
+            return labelOld;
         }
 
         Label label = new Label();
@@ -67,23 +67,13 @@ public class LabelServiceImpl implements LabelService {
         label.setAddTime(new Date());
         label.setContent(content);
         labelMapper.insertLabel(label);
-
         return label;
     }
 
     @Override
     public void deleteLabel(Long id) {
-        Long userId = UserContext.getUserId();
-
-        // 判断标签是否有权限操作
-        Label label = labelMapper.getLabelById(id);
-        if(ObjectUtil.isNull(label)){
-            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
-        }
-
-        if(!label.getUserId().equals(userId)){
-            throw new BusinessException(LabelReturnCode.LABEL_DELETE_FAIL_00004);
-        }
+        // 标签是否有权限操作
+        Label label = this.labelPermission(id);
 
         // 判断标签下是否存在文章
         List<Label> labelList = labelMapper.selectArticleByLabel(label);
@@ -96,21 +86,12 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public void updateLabel(Long id, String content) {
-        Long userId = UserContext.getUserId();
-
-        // 判断标签是否有权限操作
-        Label label = labelMapper.getLabelById(id);
-        if(ObjectUtil.isNull(label)){
-            throw new BusinessException(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
-        }
-
-        if(!label.getUserId().equals(userId)){
-            throw new BusinessException(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
-        }
+        // 标签是否有权限操作
+        Label label = this.labelPermission(id);
 
         // 判断更新的标签是否存在
-        Label labelByUserAndContent = labelMapper.getLabelByUserAndContent(userId, content);
-        if(ObjectUtil.isNotNull(labelByUserAndContent)){
+        Label labelExist = this.labelExist(content);
+        if(ObjectUtil.isNotNull(labelExist)){
             throw new BusinessException(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
         }
 
@@ -135,7 +116,6 @@ public class LabelServiceImpl implements LabelService {
 
         // 开启分页助手
         PageHelper.startPage(page, size);
-
         List<Article> articleList = labelMapper.article(id);
         PageInfo<Article> pageInfo = new PageInfo<>(articleList);
         return pageInfo;
@@ -145,6 +125,28 @@ public class LabelServiceImpl implements LabelService {
     public Label getById(Long id) {
         Label label = labelMapper.getLabelById(id);
         return label;
+    }
+
+    @Override
+    public Label labelPermission(Long id) {
+        Long userId = UserContext.getUserId();
+
+        // 判断标签是否有权限操作
+        Label label = labelMapper.getLabelById(id);
+        if(ObjectUtil.isNull(label)){
+            throw new BusinessException(LabelReturnCode.LABEL_PARAM_FAIL_00008);
+        }
+
+        if(!label.getUserId().equals(userId)){
+            throw new BusinessException(LabelReturnCode.LABEL_PERMISSION_FAIL_00009);
+        }
+        return label;
+    }
+
+    @Override
+    public Label labelExist(String content) {
+        Label labelByUserAndContent = labelMapper.getLabelByUserAndContent(UserContext.getUserId(), content);
+        return labelByUserAndContent;
     }
 
 }

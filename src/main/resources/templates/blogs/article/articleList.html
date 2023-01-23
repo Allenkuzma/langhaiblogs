@@ -12,6 +12,7 @@
   <ul class="layui-nav layui-bg-green" lay-filter="">
     <li class="layui-nav-item"><a href="/">首页</a></li>
     <li class="layui-nav-item layui-this"><a href="/article/articleListPage">文章列表</a></li>
+    <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
     <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
     <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
   </ul>
@@ -20,14 +21,6 @@
     展示所有发布的文章。
     <p id="issueResult" style="color: red"></p>
   </blockquote>
-
-  <!--<table class="layui-hide" id="article" lay-filter="article"></table>
-
-  <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
-  </script>-->
 
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md12" th:each="article : ${allArticle}">
@@ -111,27 +104,6 @@
       }
     });
 
-    // 触发单元格工具事件
-    /*table.on('tool(article)', function(obj){ // 双击 toolDouble
-      var data = obj.data;
-      // console.log(obj)
-      if(obj.event === 'del'){
-        layer.confirm('真的删除行么', function(index){
-          obj.del();
-          layer.close(index);
-        });
-      } else if(obj.event === 'edit'){
-        layer.open({
-          title: '编辑',
-          type: 1,
-          area: ['80%','80%'],
-          content: '<div style="padding: 16px;">自定义表单元素</div>'
-        });
-      } else if(obj.event === 'look'){
-        window.location.href = "/article/articleShow?id=" + data.id
-      }
-    });*/
-
     // 删除文章
     $("body").on("click", ".delBtn", function(){
       var delId = this.id;
@@ -167,44 +139,5 @@
     })
 
   })
-</script>
-<script th:inline="none">
-  // 分页完整功能 表格版本
-  /*laypage.render({
-    elem: 'demo7'
-    ,count: getCount()
-    ,curr: [${curr}]
-    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-    ,jump: function(obj, first){
-      console.log(obj.curr)
-      console.log(obj.limit)
-      table.render({
-        elem: '#article',
-        url: '/article/articleList?curr=' + obj.curr + '&limitArticle=' + obj.limit,
-        cols: [[
-          {type: 'checkbox', fixed: 'left'}
-          ,{field:'id', fixed: 'left', title: 'ID', sort: true, width:80,}
-          ,{field:'title', title: '文章标题', width:180,}
-          ,{field:'title', title: '文章标题', width:180,},
-          {field:'title', title: '文章标题', width:180,},
-          {field:'title', title: '文章标题', width:180,}
-          ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
-        ]],
-        page: false
-      })
-    }
-  });*/
-
-  /*table.render({
-      elem: '#article',
-      url: '/article/articleList',
-      cols: [[
-        {type: 'checkbox', fixed: 'left'}
-        ,{field:'id', fixed: 'left', title: 'ID', sort: true}
-        ,{field:'title', title: '文章标题'}
-        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
-      ]],
-      page: false
-    })*/
 </script>
 </html>

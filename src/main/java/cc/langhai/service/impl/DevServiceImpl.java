@@ -21,4 +21,15 @@ public class DevServiceImpl extends ServiceImpl<DevLogMapper, DevLog> implements
         devLog.setUserId(UserContext.getUserId());
         this.save(devLog);
     }
+
+    @Override
+    public void updateDevLog(DevLog devLog) {
+        devLog.setUserId(UserContext.getUserId());
+        this.updateById(devLog);
+    }
+
+    @Override
+    public void deleteDevLog(Long id) {
+        this.removeById(id);
+    }
 }

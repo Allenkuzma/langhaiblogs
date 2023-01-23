@@ -297,11 +297,9 @@ public class ArticleServiceImpl implements ArticleService {
             throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
         }
 
-        Long userId = UserContext.getUserId();
-
         // 文章是否有权限操作
         Long userIdArticle = article.getUserId();
-        if(!userId.equals(userIdArticle)){
+        if(!UserContext.getUserId().equals(userIdArticle)){
             throw new BusinessException(ArticleReturnCode.ARTICLE_PERMISSION_FAIL_00007);
         }
 

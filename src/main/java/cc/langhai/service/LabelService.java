@@ -68,4 +68,20 @@ public interface LabelService {
      * @return
      */
     Label getById(Long id);
+
+    /**
+     * 判断标签是否有权限操作
+     *
+     * @param id
+     * @return
+     */
+    Label labelPermission(Long id);
+
+    /**
+     * 判断标签是否存在文章
+     *
+     * @param context
+     * @return
+     */
+    Label labelExist(String context);
 }

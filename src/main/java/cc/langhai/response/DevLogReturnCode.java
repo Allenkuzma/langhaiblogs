@@ -12,6 +12,14 @@ public enum DevLogReturnCode implements ReturnCode{
 
     DEV_LOG_ADD_FAIL_00002(500, "开发日志记录新增失败。"),
 
+    DEV_LOG_UPDATE_SUCCESS_00003(200, "开发日志记录更新成功。"),
+
+    DEV_LOG_UPDATE_FAIL_00004(500, "开发日志记录更新失败。"),
+
+    DEV_LOG_DELETE_SUCCESS_00005(200, "开发日志记录删除成功。"),
+
+    DEV_LOG_DELETE_FAIL_00006(500, "开发日志记录删除失败。"),
+
     ;
 
     private Integer code;

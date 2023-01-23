@@ -38,5 +38,5 @@ INSERT INTO role VALUES(3, 'vip', NOW(), NULL);
 
 非关系型数据库 Redis  
 图片存储服务器 minio [minio 详细说明](http://www.langhai.cc/article/articleShow?id=54)   
-搜索引擎(可选) elasticSearch  
+搜索引擎(可选) elasticSearch [elasticSearch 相关说明](http://www.langhai.cc/article/articleShow?id=55)   
 消息队列（可选）rabbitMQ   <a href="https://langhai.cc/article/articleShow?id=33">rabbitMQ所有说明</a>

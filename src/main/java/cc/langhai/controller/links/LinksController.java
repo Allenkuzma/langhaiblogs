@@ -66,7 +66,7 @@ public class LinksController {
     }
 
     /**
-     * 跳转到 友情链接更新页面
+     * 跳转到友情链接更新页面
      *
      * @return
      */

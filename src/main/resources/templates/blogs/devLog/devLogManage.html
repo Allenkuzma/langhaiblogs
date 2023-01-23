@@ -100,11 +100,11 @@
       // console.log(obj)
       if(obj.event === 'del'){
         layer.open({
-          title: "删除标签",
-          content: '确定要删除这个标签',
+          title: "删除开发日志记录",
+          content: '确定要删除开发日志记录',
           yes: function(index, layero){
             $.ajax({
-              url: "/label/deleteLabel",
+              url: "/devLog/deleteDevLog",
               async: true,
               type: "POST",
               data: {
@@ -117,7 +117,7 @@
                   $("#issueResult").html(data.message);
                 }else {
                   layer.close(index);
-                  $("#issueResult").html("删除失败标签，有可能是标签下存在发表的文章。");
+                  $("#issueResult").html(data.message);
                 }
               }
             })
@@ -125,9 +125,9 @@
         });
       } else if(obj.event === 'edit'){
         layer.open({
-          title: '编辑标签',
+          title: '编辑开发日志记录',
           type: 2,
-          content: '/label/labelUpdatePage?id=' + data.id + "&content=" + data.content
+          content: '/devLog/devLogUpdatePage?id=' + data.id + "&title=" + data.title + "&content=" + data.content
         });
       }
     });

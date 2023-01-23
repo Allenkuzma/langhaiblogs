@@ -40,5 +40,5 @@ INSERT INTO role VALUES(3, 'vip', NOW(), NULL);
 
 Non-relational database Redis  
 Picture storage server minio  [minio All instructions](http://www.langhai.cc/article/articleShow?id=54)  
-Search engine (optional) elasticSearch  
+Search engine (optional) elasticSearch  [elasticSearch All instructions](http://www.langhai.cc/article/articleShow?id=55)  
 Message Queuing (optional) rabbitMQ   <a href="https://langhai.cc/article/articleShow?id=33">RabbitMQ All instructions</a>

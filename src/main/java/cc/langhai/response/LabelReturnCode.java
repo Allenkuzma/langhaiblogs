@@ -23,6 +23,10 @@ public enum LabelReturnCode implements ReturnCode{
 
     LABEL_ARTICLE_FAIL_00007(500, "标签下所有的文章查询失败。"),
 
+    LABEL_PARAM_FAIL_00008(500, "标签参数校验失败。"),
+
+    LABEL_PERMISSION_FAIL_00009(500, "权限校验不足。"),
+
     ;
 
     private Integer code;
