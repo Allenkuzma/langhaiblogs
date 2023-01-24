@@ -23,6 +23,7 @@ hutool Java toolset
 
 Copyright/citation statement  
 The main front-end template of Langhai blog system comes from the html5up.net website.  
+The navigation module is from an open source project [geekape](https://github.com/geekape/geek-navigation)  
 
 Basic components:  
 Relational database MySQL  [MySQL All instructions](http://www.langhai.cc/article/articleShow?id=53)

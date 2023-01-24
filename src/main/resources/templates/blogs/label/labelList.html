@@ -96,7 +96,6 @@
     // 触发单元格工具事件
     table.on('tool(label)', function(obj){ // 双击 toolDouble
       var data = obj.data;
-      // console.log(obj)
       if(obj.event === 'del'){
         layer.open({
           title: "删除标签",
@@ -129,7 +128,7 @@
           content: '/label/labelUpdatePage?id=' + data.id + "&content=" + data.content
         });
       } else if(obj.event === 'look'){
-        window.location.href = "/label/articleLabelPage?id=" + data.id
+        window.open("/label/articleLabelPage?id=" + data.id)
       }
     });
 
