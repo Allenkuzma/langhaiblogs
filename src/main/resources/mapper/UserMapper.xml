@@ -15,7 +15,7 @@
     </select>
 
     <select id="getUserListByDay" resultType="cc.langhai.domain.User">
-        select * from user where add_time like #{username}"%"
+        select * from user where add_time like #{date}"%"
     </select>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id">

@@ -67,6 +67,11 @@ public class IndexController {
         }
         model.addAttribute("linksList", linksList);
 
+        // 底部友情链接 超过六个放在底部
+        if(linksList.size() > LinksConstant.LINKS_COUNT_ALL){
+            List<Links> bottomLinks = linksList.subList(6, linksList.size());
+            model.addAttribute("bottomLinks", bottomLinks);
+        }
         return "blogs/index";
     }
 

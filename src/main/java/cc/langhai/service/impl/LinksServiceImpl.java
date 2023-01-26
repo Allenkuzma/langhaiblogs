@@ -25,13 +25,6 @@ public class LinksServiceImpl extends ServiceImpl<LinksMapper, Links> implements
 
     @Override
     public void addLinks(Links links) {
-        List<Links> list = this.list();
-        if(list.size() >= LinksConstant.LINKS_COUNT_ALL){
-            throw new BusinessException(LinksReturnCode.LINKS_COUNT_FAIL_00000);
-        }
-
-        // 填充新增时间
-        links.setAddTime(new Date());
         this.save(links);
     }
 

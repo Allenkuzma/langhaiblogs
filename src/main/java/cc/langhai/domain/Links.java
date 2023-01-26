@@ -36,7 +36,7 @@ public class Links {
     @NotBlank(message = "网站描述不能为空")
     private String description;
 
-    @TableField("add_time")
+    @TableField(value = "add_time", fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date addTime;
 
