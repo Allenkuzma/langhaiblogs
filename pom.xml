@@ -142,10 +142,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <!-- 代码生成器 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>langhaiblogs~2023-01-26</finalName>
+        <finalName>langhaiblogs~2023-01-27</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
