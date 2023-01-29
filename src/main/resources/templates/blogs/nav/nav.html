@@ -44,7 +44,7 @@
                     </div>
                 </div>
 
-                <div class="box" th:each="nav : ${navList}">
+                <div class="box" th:each="nav : ${navClassifyList}">
                     <a href="#" th:name="${nav.tagName}"></a>
                     <div class="sub-category">
                         <div><i th:class="${nav.icon}"></i><span th:text="${nav.name}"></span></div>

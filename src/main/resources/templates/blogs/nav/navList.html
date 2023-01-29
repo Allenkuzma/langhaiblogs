@@ -2,16 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>友情链接管理 - 浪海博客</title>
-  <meta name="keywords" content="浪海博客,友情链接管理" />
-  <meta name="description" content="浪海博客的友情链接管理。" />
+  <title>公共导航分类管理 - 浪海博客</title>
+  <meta name="keywords" content="浪海博客,公共导航分类管理" />
+  <meta name="description" content="浪海博客的公共导航分类管理。" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
 </head>
 <body>
   <ul class="layui-nav layui-bg-green" lay-filter="">
     <li class="layui-nav-item"><a href="/">首页</a></li>
-    <li class="layui-nav-item layui-this"><a href="/links/linksListPage">友情链接管理</a></li>
+    <li class="layui-nav-item layui-this"><a href="/navClassify/navClassifyListPage">公共导航分类管理</a></li>
+    <li class="layui-nav-item"><a href="/links/linksListPage">友情链接管理</a></li>
     <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
     <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
     <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
@@ -19,12 +20,12 @@
   </ul>
 
   <blockquote class="layui-elem-quote">
-    在这里可以管理你的所有的友情链接。最多可以设置六个友情链接。如果超过六个将添加到首页底部。
+    在这里可以管理你网站首页公共导航分类。最多可以设置十二个公共导航网站分类。
     <p id="issueResult" style="color: red"></p>
     <p th:text="${message}" style="color: red"></p>
   </blockquote>
 
-  <table class="layui-hide" id="links" lay-filter="links"></table>
+  <table class="layui-hide" id="nav" lay-filter="nav"></table>
 
   <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -37,7 +38,6 @@
       <button class="layui-btn layui-btn-sm" lay-event="addLinks">新增友情链接</button>
     </div>
   </script>
-
 
   <blockquote class="layui-elem-quote">
     <ul class="menu">
@@ -66,16 +66,15 @@
     });
 
     table.render({
-      elem: '#links',
-      url: '/links/linksList',
+      elem: '#nav',
+      url: '/navClassify/navClassifyList',
       toolbar: '#toolbarDemo',
       cols: [[
         {type: 'checkbox', fixed: 'left'}
         ,{field:'id', fixed: 'left', title: 'ID', sort: true}
-        ,{field:'title', title: 'h3标签内容', width:180}
-        ,{field:'href', title: '超链接地址', width:180}
-        ,{field:'name', title: '网站名字', width:180}
-        ,{field:'description', title: '描述', width:180}
+        ,{field:'name', title: '导航分类名字', width:180}
+        ,{field:'icon', title: '导航分类图标', width:180}
+        ,{field:'tagName', title: '导航分类标签名字', width:180}
         ,{field:'addTime', title: '新增时间', width:180}
         ,{field:'updateTime', title: '修改时间', width:180}
         ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 175, minWidth: 175}
@@ -84,7 +83,7 @@
     })
 
     // 工具栏事件
-    table.on('toolbar(links)', function(obj){
+    table.on('toolbar(nav)', function(obj){
       var id = obj.config.id;
       var checkStatus = table.checkStatus(id);
       var othis = lay(this);
@@ -100,7 +99,7 @@
     });
 
     // 触发单元格工具事件
-    table.on('tool(links)', function(obj){ // 双击 toolDouble
+    table.on('tool(nav)', function(obj){ // 双击 toolDouble
       var data = obj.data;
       // console.log(obj)
       if(obj.event === 'del'){

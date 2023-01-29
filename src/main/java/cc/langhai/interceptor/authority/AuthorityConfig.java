@@ -44,6 +44,8 @@ public class AuthorityConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/devLog/devLogUpdatePage");
         registration.addPathPatterns("/devLog/updateDevLog");
         registration.addPathPatterns("/devLog/deleteDevLog");
+        registration.addPathPatterns("/navClassify/navClassifyListPage");
+        registration.addPathPatterns("/navClassify/navClassifyList");
         // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",
