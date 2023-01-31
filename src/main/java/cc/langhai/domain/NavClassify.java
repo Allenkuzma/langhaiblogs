@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 导航分类 实体类
  *
@@ -36,18 +38,21 @@ public class NavClassify implements Serializable {
      * 导航分类名字
      *
      */
+    @NotBlank(message = "导航分类名字不能为空")
     private String name;
 
     /**
      * 导航分类图标
      *
      */
+    @NotBlank(message = "导航分类图标不能为空")
     private String icon;
 
     /**
      * 导航分类标签名字
      *
      */
+    @NotBlank(message = "导航分类标签名字")
     private String tagName;
 
     /**

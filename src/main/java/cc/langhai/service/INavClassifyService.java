@@ -19,4 +19,11 @@ public interface INavClassifyService extends IService<NavClassify> {
      * @return
      */
     List<NavClassify> getPublicNav();
+
+    /**
+     * 新增公共导航分类
+     *
+     * @param navClassify
+     */
+    void addNavClassify(NavClassify navClassify);
 }

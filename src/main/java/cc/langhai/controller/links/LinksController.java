@@ -116,7 +116,6 @@ public class LinksController {
         return ResultResponse.success(LinksReturnCode.LINKS_ADD_SUCCESS_00001);
     }
 
-
     /**
      * 删除友情链接
      *

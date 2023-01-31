@@ -35,7 +35,7 @@
 
   <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm" lay-event="addLinks">新增友情链接</button>
+      <button class="layui-btn layui-btn-sm" lay-event="addNav">新增公共导航分类</button>
     </div>
   </script>
 
@@ -88,11 +88,11 @@
       var checkStatus = table.checkStatus(id);
       var othis = lay(this);
       switch(obj.event){
-        case 'addLinks':
+        case 'addNav':
           layer.open({
-            title: '新增友情链接',
+            title: '新增公共导航分类',
             type: 2,
-            content: '/links/linksAddPage'
+            content: '/navClassify/navClassifyAddPage'
           });
           break;
       };

@@ -40,7 +40,7 @@ public class ArticleController {
     private ArticleService articleService;
 
     /**
-     * 跳转到 文章 新发布页面
+     * 跳转到文章新发布页面
      *
      * @return
      */

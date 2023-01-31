@@ -2,22 +2,26 @@ package cc.langhai.controller.navclassify;
 
 
 import cc.langhai.config.annotation.RequestAuthority;
+import cc.langhai.config.constant.IconfontConstant;
 import cc.langhai.domain.NavClassify;
 import cc.langhai.domain.NavWebsite;
+import cc.langhai.response.LinksReturnCode;
+import cc.langhai.response.NavClassifyReturnCode;
+import cc.langhai.response.ResultResponse;
 import cc.langhai.service.INavClassifyService;
 import cc.langhai.service.INavWebsiteService;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +70,26 @@ public class NavClassifyController {
     }
 
     /**
+     * 跳转到公共导航分类新增页面
+     *
+     * @return
+     */
+    @RequestAuthority(value = {"admin"})
+    @GetMapping("/navClassifyAddPage")
+    public String navClassifyAddPage(Model model) throws IllegalAccessException {
+        ArrayList<String> iconfont = new ArrayList<>();
+        // 遍历输出属性
+        Field[] fields =  IconfontConstant.class.getDeclaredFields();
+        for( int i = 0; i < fields.length; i++){
+            Field f = fields[i];
+            iconfont.add(f.get(IconfontConstant.class).toString());
+        }
+
+        model.addAttribute("iconfont", iconfont);
+        return "blogs/nav/navAdd";
+    }
+
+    /**
      * 获取公共导航分类列表页面数据
      *
      * @return
@@ -81,6 +105,23 @@ public class NavClassifyController {
         jsonObject.put("data", list);
         jsonObject.put("count", list.size());
         return jsonObject;
+    }
+
+    /**
+     * 新增公共导航分类
+     *
+     * @return
+     */
+    @PostMapping("/addNav")
+    @RequestAuthority(value = {"admin"})
+    @ResponseBody
+    public ResultResponse addNav(@RequestBody @Validated NavClassify navClassify){
+        if(ObjectUtil.isNull(navClassify)){
+            return ResultResponse.fail(NavClassifyReturnCode.NAV_CLASSIFY_ADD_FAIL_00002);
+        }
+
+        navClassifyService.addNavClassify(navClassify);
+        return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_ADD_SUCCESS_00001);
     }
 
 }

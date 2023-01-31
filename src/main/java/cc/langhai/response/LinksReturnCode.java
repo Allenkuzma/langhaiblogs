@@ -24,6 +24,7 @@ public enum LinksReturnCode implements ReturnCode{
     ;
 
     private Integer code;
+
     private String message;
 
     LinksReturnCode(Integer code, String message){
