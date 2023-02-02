@@ -23,8 +23,8 @@
     </ul>
 
     <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
-    <div id="day" style="width: 600px;height:400px;"></div>
-    <div id="device" style="width: 600px;height:400px;"></div>
+    <div id="day" style="width: auto;height: 400px;"></div>
+    <div id="device" style="width: auto;height: 400px;"></div>
 
     <blockquote class="layui-elem-quote">
         <ul class="menu">
@@ -109,6 +109,7 @@
                     title: {
                         text: '当天访问设备类型'
                     },
+                    tooltip: {},
                     xAxis: {
                         type: 'category',
                         data: arrayDevice
@@ -118,6 +119,7 @@
                     },
                     series: [
                         {
+                            name: '设备类型',
                             data: arrayDeviceCount,
                             type: 'line'
                         }

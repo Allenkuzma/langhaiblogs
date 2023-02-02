@@ -221,7 +221,7 @@ public class RegisterServiceImpl implements RegisterService {
         // 验证码判断
         String verifyCode = (String) session.getAttribute("verifyCode");
         if(StrUtil.isBlank(verifyCode) || !verifyCodeText.equalsIgnoreCase(verifyCode)){
-            throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_00016);
+            throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_CODE_FAIL_00020);
         }
 
         // 判断其他地方是否登录
@@ -230,8 +230,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         if (sessionMap != null){
             // 删除已登录的sessionId绑定的用户
-            // sessionMap.removeAttribute("user");
-            sessionMap.invalidate();
+            sessionMap.removeAttribute("user");
 
             // 当前session销毁时删除当前session绑定的用户信息
             // 同时删除当前session绑定用户的HttpSession
@@ -267,8 +266,6 @@ public class RegisterServiceImpl implements RegisterService {
         response.addCookie(cookie);
         // 删除session用户信息
         session.removeAttribute("user");
-
-        UserContext.set(null);
         UserContext.remove();
     }
 
@@ -309,8 +306,7 @@ public class RegisterServiceImpl implements RegisterService {
 
                                 if (sessionMap != null){
                                     // 删除已登录的sessionId绑定的用户
-                                    // sessionMap.removeAttribute("user");
-                                    sessionMap.invalidate();
+                                    sessionMap.removeAttribute("user");
 
                                     // 当前session销毁时删除当前session绑定的用户信息
                                     // 同时删除当前session绑定用户的HttpSession

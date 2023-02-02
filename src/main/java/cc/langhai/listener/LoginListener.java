@@ -22,7 +22,7 @@ public class LoginListener implements HttpSessionListener {
     @Override
     public void sessionCreated(HttpSessionEvent se){
         String sessionId = se.getSession().getId();
-        System.out.println("创建session sessionId= " + sessionId);
+        System.out.println("创建sessionId = " + sessionId);
     }
  
     /**
@@ -32,7 +32,7 @@ public class LoginListener implements HttpSessionListener {
     @Override
     public void sessionDestroyed(HttpSessionEvent se){
         String sessionId = se.getSession().getId();
-        System.out.println("sessionId========="+sessionId);
+        System.out.println("销毁sessionId = " + sessionId);
 
         // 当前session销毁时删除当前session绑定的用户信息
         // 同时删除当前session绑定用户的HttpSession

@@ -45,9 +45,12 @@ public enum UserReturnCode implements ReturnCode{
     USER_PERSONAL_UPDATE_USER_INFO_YES_00018(200, "用户个人信息成功更新。"),
 
     USER_PERSONAL_UPDATE_USER_INFO_PARAM_FAIL_00019(500, "用户个人信息参数校验失败。"),
+
+    USER_LOGIN_PARAM_VERIFY_CODE_FAIL_00020(500, "验证码校验失败。"),
     ;
 
     private Integer code;
+
     private String message;
 
     UserReturnCode(Integer code, String message){

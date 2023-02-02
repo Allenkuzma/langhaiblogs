@@ -104,11 +104,11 @@
       // console.log(obj)
       if(obj.event === 'del'){
         layer.open({
-          title: "删除友情链接",
-          content: '确定要删除这个友情链接',
+          title: "删除公共导航分类",
+          content: '确定要删除这个公共导航分类',
           yes: function(index, layero){
             $.ajax({
-              url: "/links/deleteLinks",
+              url: "/navClassify/deleteNav",
               async: true,
               type: "POST",
               data: {

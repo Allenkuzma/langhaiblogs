@@ -26,4 +26,11 @@ public interface INavClassifyService extends IService<NavClassify> {
      * @param navClassify
      */
     void addNavClassify(NavClassify navClassify);
+
+    /**
+     * 删除公共导航分类
+     *
+     * @param id
+     */
+    void deleteNavClassify(Long id);
 }

@@ -2,7 +2,7 @@ Langhai Blog
 [中文](./README.md)  
 
 Introduction:  
-Langhai Blog is a single architecture project built quickly based on SpirngBoot, 
+Langhai Blog is a single architecture project built quickly based on SpringBoot, 
 which is simple and convenient to deploy and suitable for personal blog system construction.
 
 Online presentation：http://www.langhai.cc  

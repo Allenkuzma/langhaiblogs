@@ -16,6 +16,13 @@ public enum NavClassifyReturnCode implements ReturnCode{
     NAV_CLASSIFY_NAME_EXISTENCE_00003(500, "公共导航分类名字已经存在。"),
 
     NAV_CLASSIFY_TAG_NAME_EXISTENCE_00004(500, "公共导航分类标签名字已经存在。"),
+
+    NAV_CLASSIFY_DELETE_SUCCESS_00005(200, "公共导航分类删除成功。"),
+
+    NAV_CLASSIFY_DELETE_FAIL_00006(500, "公共导航分类删除失败。"),
+
+    NAV_CLASSIFY_DELETE_FAIL_EXIST_WEBSITE_00007(500, "公共导航分类存在导航网站，删除失败。")
+
     ;
 
     private Integer code;

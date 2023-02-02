@@ -5,7 +5,6 @@ import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.config.constant.IconfontConstant;
 import cc.langhai.domain.NavClassify;
 import cc.langhai.domain.NavWebsite;
-import cc.langhai.response.LinksReturnCode;
 import cc.langhai.response.NavClassifyReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.INavClassifyService;
@@ -122,6 +121,23 @@ public class NavClassifyController {
 
         navClassifyService.addNavClassify(navClassify);
         return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_ADD_SUCCESS_00001);
+    }
+
+    /**
+     * 删除公共导航分类
+     *
+     * @return
+     */
+    @PostMapping("/deleteNav")
+    @RequestAuthority(value = {"admin"})
+    @ResponseBody
+    public ResultResponse deleteNav(Long id){
+        if(ObjectUtil.isNull(id)){
+            return ResultResponse.fail(NavClassifyReturnCode.NAV_CLASSIFY_DELETE_FAIL_00006);
+        }
+
+        navClassifyService.deleteNavClassify(id);
+        return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_DELETE_SUCCESS_00005);
     }
 
 }

@@ -2,10 +2,13 @@ package cc.langhai.service.impl;
 
 import cc.langhai.config.constant.NavClassifyConstant;
 import cc.langhai.domain.NavClassify;
+import cc.langhai.domain.NavWebsite;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.NavClassifyMapper;
 import cc.langhai.response.NavClassifyReturnCode;
 import cc.langhai.service.INavClassifyService;
+import cc.langhai.service.INavWebsiteService;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,6 +28,9 @@ public class NavClassifyServiceImpl extends ServiceImpl<NavClassifyMapper, NavCl
 
     @Autowired
     private NavClassifyMapper navClassifyMapper;
+
+    @Autowired
+    private INavWebsiteService navWebsiteService;
 
     @Override
     public List<NavClassify> getPublicNav() {
@@ -62,5 +68,17 @@ public class NavClassifyServiceImpl extends ServiceImpl<NavClassifyMapper, NavCl
         // 插入数据库，进行添加。
         navClassify.setUserId(0L);
         this.save(navClassify);
+    }
+
+    @Override
+    public void deleteNavClassify(Long id) {
+        // 判断该导航分类下是否存在网站
+        List<NavWebsite> list = navWebsiteService.list(Wrappers.<NavWebsite>lambdaQuery()
+                .eq(NavWebsite::getNavClassifyId, id));
+        if(CollUtil.isNotEmpty(list)){
+            throw new BusinessException(NavClassifyReturnCode.NAV_CLASSIFY_DELETE_FAIL_EXIST_WEBSITE_00007);
+        }
+
+        this.removeById(id);
     }
 }

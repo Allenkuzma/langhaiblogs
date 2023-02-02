@@ -22,6 +22,7 @@
 				<nav>
 					<ul>
 						<li><a href="/">主页</a></li>
+						<li><a href="/navClassify/navPage">网站导航</a></li>
 					</ul>
 				</nav>
 			</header>
@@ -88,8 +89,8 @@
 				<div class="inner">
 					<ul class="menu">
 						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
-						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
-						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
+						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
 					</ul>
 				</div>
 			</footer>
@@ -115,10 +116,10 @@
 					data: $('#loginForm').serialize(),
 					success: function (data) {
 						if(data.code == 200){
-							$("#vCodeStatus").html("登录成功，3秒后为你跳转到首页。");
+							$("#vCodeStatus").html("登录成功，1秒后为你跳转到首页。");
 							setTimeout(function(){
 								window.location.href = "/";
-							}, 3000);
+							}, 1000);
 						}else {
 							$("#vCodeStatus").html(data.message);
 						}
