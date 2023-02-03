@@ -64,7 +64,7 @@ public class ArticleController {
     }
 
     /**
-     * 跳转到 文章 列表页面
+     * 跳转到文章列表页面
      *
      * @return
      */
@@ -179,7 +179,7 @@ public class ArticleController {
     }
 
     /**
-     * 跳转到 文章 搜索页面
+     * 跳转到文章搜索页面
      *
      * @return
      */
@@ -221,5 +221,26 @@ public class ArticleController {
         model.addAttribute("pages", pages);
         model.addAttribute("search", searchArticleStr);
         return "blogs/article/articleSearchES";
+    }
+
+
+    /**
+     * 跳转到文章搜索页面 新版
+     *
+     * @return
+     */
+    @GetMapping("/articleSearchPageNew")
+    public String articleSearchPageNew(Model model,
+                                    @RequestParam(defaultValue = "1") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer size,
+                                    String searchArticleStr){
+        PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr);
+
+        model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("pages", pageInfo.getPages());
+        model.addAttribute("search", searchArticleStr);
+        return "blogs-new/article";
     }
 }

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width" />
+    <title>浪海博客 ~ www.langhai.cc</title>
+    <meta name="keywords" content="浪海,博客,java,浪海博客,博客系统,浪海博客系统" />
+    <meta name="description" content="浪海博客一个由java构建的博客网站。" />
+    <link href="/blogs-new/layui/css/layui.css" rel="stylesheet" type="text/css">
+    <link href="/blogs-new/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/blogs-new/css/index_style.css" rel="stylesheet" type="text/css">
+    <link href="/blogs-new/css/animate.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="menu" class="hover_animation menu_open" data-mark="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div id="navgation" class="navgation navgation_close">
+        <ul class="point">
+            <li><a href="#">首页</a></li>
+            <li><a href="article.html">博客</a></li>
+            <li><a href="message.html">留言</a></li>
+        </ul>
+        <div class="logo"><a>浪海博客</a></div>
+    </div>
+    <div class="section" id="section1">
+        <div class="fp-tablecell">
+            <div class="page1">
+                <div class="nav wow zoomIn" data-wow-duration="2s">
+                    <h1>浪海博客</h1>
+                    <p>
+                        <span th:if="${not #strings.isEmpty(session.user?.username)}" >当前用户：</span>
+                            <a href="" th:text="${session.user?.nickname}" id="userInfo"></a><br />
+                            <span th:text="${userInfo?.motto}" ></span><br />
+                            <span th:if="${not #strings.isEmpty(session.user?.username)}">
+                            <a href="javascript:void(0)" id="logout">安全退出</a><br />
+                        </span>
+                    </p>
+                    <a class="layui-btn layui-btn-normal" style="margin-top: 20px" href="#">Enter Blog</a>
+                </div>
+                <a class="next wow fadeInUp" data-wow-duration="2s" id="next"></a>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section2">
+        <div class="fp-tablecell">
+            <div class="page2">
+                <div class="warp-box">
+                    <div class="new-article">
+                        <div class="inner wow fadeInDown" data-wow-delay=".2s">
+                            <h1>热门文章</h1>
+                            <p>
+                                很想给你写封信,告诉你这里的天气.
+                                <br>昨夜的那场电影,还有我的心情.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" style="padding: 0 10px">
+                            <div class="single-news">
+                                <div class="news-head">
+                                    <img src="image/1.jpg">
+                                    <a href="#" class="link"><i class="fa fa-link"></i></a>
+                                </div>
+                                <div class="news-content">
+                                    <h4>
+                                        <a href="#">
+                                            标题
+                                        </a>
+                                    </h4>
+                                    <div class="date">
+                                        2017年2月16日
+                                    </div>
+                                    <p>
+                                        很想给你写封信,告诉你这里的天气. 昨夜的那场电影,还有我的心情.
+                                    </p>
+                                    <a href="#" class="btn">
+                                        阅读更多 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" data-wow-delay=".2s" style="padding: 0 10px">
+                            <div class="single-news">
+                                <div class="news-head">
+                                    <img src="image/1.jpg">
+                                    <a href="#" class="link"><i class="fa fa-link"></i></a>
+                                </div>
+                                <div class="news-content">
+                                    <h4>
+                                        <a href="#">
+                                            标题
+                                        </a>
+                                    </h4>
+                                    <div class="date">
+                                        2017年2月16日
+                                    </div>
+                                    <p>
+                                        很想给你写封信,告诉你这里的天气. 昨夜的那场电影,还有我的心情.
+                                    </p>
+                                    <a href="#" class="btn">
+                                        阅读更多 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" data-wow-delay=".4s" style="padding: 0 10px">
+                            <div class="single-news">
+                                <div class="news-head">
+                                    <img src="image/1.jpg">
+                                    <a href="#" class="link"><i class="fa fa-link"></i></a>
+                                </div>
+                                <div class="news-content">
+                                    <h4>
+                                        <a href="#">
+                                            标题
+                                        </a>
+                                    </h4>
+                                    <div class="date">
+                                        2017年2月16日
+                                    </div>
+                                    <p>
+                                        很想给你写封信,告诉你这里的天气. 昨夜的那场电影,还有我的心情.
+                                    </p>
+                                    <a href="#" class="btn">
+                                        阅读更多 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section3">
+        <div class="fp-tablecell">
+            <div class="page3">
+                <div class="warp-box">
+                    <div class="warp">
+                        <div class="inner">
+                            <div class="links">
+                                <ul>
+                                    <li class="wow fadeInLeft"><a href="#">关于</a></li>
+                                    <li class="wow fadeInRight"><a href="#">+友情链接</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section4">
+        <div class="fp-tablecell">
+            <div class="page4">
+                <div class="warp-box">
+                    <div class="about">
+                        <div class="inner">
+                            <h1 class="wow fadeInLeft">次元使者</h1>
+                            <p class="wow fadeInRight">
+                                爱好游戏，动漫。闲来无事喜欢在一些不健康的场所虚度光阴，撸起代码就会废寝忘食。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer wow fadeInUp" id="contact">
+        <div class="footer-top">
+            <div class="container">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+                        <div class="single-widget about">
+                            <div class="footer-logo">
+                                <h2>浪海博客</h2>
+                            </div>
+                            <p>浪海博客 langhai.cc</p>
+                            <div class="button">
+                                <a href="#" class="btn layui-btn layui-btn-normal">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+                        <div class="single-widget">
+                            <h2>相关链接</h2>
+                            <ul class="social-icon">
+                                <li class="active"><a href="#"><i class="fa fa-book"></i>博文</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-comments"></i>留言</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-share"></i>资源</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-snowflake-o"></i>日记</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-files-o"></i>归档</a></li>
+                            </ul>                   
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-sm12 layui-col-md4">
+                        <div class="single-widget contact">
+                            <h2>联系我</h2>
+                            <ul class="list">
+                                <li><i class="fa fa-map"></i>地址: 南京</li>
+                                <li><i class="fa fa-qq"></i>QQ: 676558206 </li>
+                                <li><i class="fa fa-envelope"></i>邮箱: 676558206@qq.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 text-center">
+                        <p>
+                            &copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved. 个人网站 2021 ~ 2029年
+                            <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a>
+                            <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </footer>
+    <script src="/blogs-new/layui/layui.js"></script>
+    <script src="/blogs-new/js/wow.min.js"></script>
+    <script src="/blogs-new/js/index.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+    <script>
+        $(function(){
+            // 判断用户是否登录
+            if($("#userInfo").is(":empty")){
+                $("#userInfo").html("<span class=\"icon fa-smile-beam\"></span> 点击登录 ~ ");
+                $("#userInfo").prop("href", "/user/loginPage");
+            }
+
+            // 安全退出
+            $("#logout").click(function () {
+                $.ajax({
+                    url: "/user/loginOut",
+                    async: true,
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code == 200){
+                            window.location.href = "/";
+                        }else {
+
+                        }
+                    }
+                })
+            })
+
+            // 用户反馈信息
+            $("#sendMessage").click(function () {
+                $.ajax({
+                    url: "/message/message",
+                    async: true,
+                    type: "POST",
+                    contentType : "application/json",
+                    dataType : "json",
+                    data: JSON.stringify({
+                        "name":  $("#name").val(),
+                        "email": $("#email").val(),
+                        "message": $("#message").val()
+                    }),
+                    success: function (data) {
+                        if(data.code == 200){
+                            $("#sendMessageResult").html(data.message);
+                            $("#sendMessageForm")[0].reset();
+                        }else {
+                            $("#sendMessageResult").html(data.message);
+                        }
+                    }
+                })
+            })
+
+        })
+    </script>
+</body>
+</html>

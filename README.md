@@ -21,7 +21,9 @@ hutool java工具集
 
 版权/引用声明  
 浪海博客系统的主要前端模板来自html5up.net网站。  
-导航模块来自开源项目 [geekape](https://github.com/geekape/geek-navigation)  
+博客前端模板 [燕十三博客模板](https://gitee.com/yssgit/yan_shisan_blog_template)  
+导航模块来自开源项目 [geekape](https://github.com/geekape/geek-navigation)    
+后台管理来自开源项目 [Pear Admin](https://gitee.com/pear-admin/Pear-Admin-Layui)
 
 基本组件：  
 关系型数据库 MySQL [MySQL 详细说明](http://www.langhai.cc/article/articleShow?id=53) 

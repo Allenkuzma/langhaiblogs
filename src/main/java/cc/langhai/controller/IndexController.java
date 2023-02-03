@@ -41,7 +41,7 @@ public class IndexController {
      *
      * @return 首页页面 blogs/index.html
      */
-    @GetMapping("/")
+    @GetMapping(value = {"/", "/index"})
     public String index(HttpServletRequest httpRequest, HttpSession session, Model model){
         registerService.remember(httpRequest, session);
 
@@ -57,8 +57,9 @@ public class IndexController {
 
         // 首页超链接
         List<Links> linksList = linksService.list();
+        int count = linksList.size();
         if(linksList.size() < LinksConstant.LINKS_COUNT_ALL){
-            for (int i = 0; i < LinksConstant.LINKS_COUNT_ALL - linksList.size(); i++) {
+            for (int i = 0; i < LinksConstant.LINKS_COUNT_ALL - count; i++) {
                 Links links = new Links();
                 links.setTitle("请在系统中填充满六个友情链接");
                 links.setDescription("请在系统中填充满六个友情链接");

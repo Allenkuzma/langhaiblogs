@@ -89,4 +89,20 @@ public class VisitController {
 
         return ResultResponse.success(VisitReturnCode.DEVICE_DAY_SUCCESS_00001, map);
     }
+
+    /**
+     * 获取今天用户访问次数
+     *
+     * @return
+     */
+    @GetMapping("/today")
+    @ResponseBody
+    public ResultResponse today(){
+        String[] nowDayScope = cc.langhai.utils.DateUtil.getNowDayScope();
+        int count = visitService.count(Wrappers.<Visit>lambdaQuery()
+                .ge(Visit::getTime, nowDayScope[0])
+                .le(Visit::getTime, nowDayScope[1]));
+
+        return ResultResponse.success(VisitReturnCode.VISIT_TODAY_SUCCESS_00002, count);
+    }
 }
