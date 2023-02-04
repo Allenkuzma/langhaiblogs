@@ -61,6 +61,13 @@
                 <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
             </div>
         </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">摘要</label>
+            <div class="layui-input-block">
+                <textarea id="abstractText" placeholder="请输入摘要 小于等于30个字 必填" class="layui-textarea"></textarea>
+            </div>
+        </div>
     </form>
 
     <div id="editor—wrapper">
@@ -115,7 +122,8 @@
                     "title": $("#title").val(),
                     "content": $("#content").val(),
                     "label": $("#label-langhai option:selected").text(),
-                    "publicShow": $("input[name='public']:checked").val()
+                    "publicShow": $("input[name='public']:checked").val(),
+                    "abstractText": $("#abstractText").val()
                 }),
                 success: function (data) {
                     if(data.code == 200){

@@ -1,6 +1,7 @@
 package cc.langhai.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -21,6 +22,10 @@ public class ArticleDTO implements Serializable {
 
     @NotBlank(message = "文章内容不能为空")
     private String html;
+
+    @NotBlank(message = "文章摘要不能为空")
+    @Length(min = 1, max = 30, message = "文章摘要长度最大为30个字符")
+    private String abstractText;
 
     /**
      * 新增文章标签

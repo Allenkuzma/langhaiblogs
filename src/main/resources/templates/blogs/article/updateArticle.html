@@ -62,6 +62,13 @@
                 <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
             </div>
         </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">摘要</label>
+            <div class="layui-input-block">
+                <textarea id="abstractText" th:text="${article.abstractText}" placeholder="请输入摘要 小于等于30个字 必填" class="layui-textarea"></textarea>
+            </div>
+        </div>
     </form>
 
     <div id="editor—wrapper">
@@ -76,8 +83,8 @@
     <blockquote class="layui-elem-quote">
         <ul class="menu">
             <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
-            <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
-            <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+            <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
+            <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
         </ul>
     </blockquote>
 
@@ -125,7 +132,8 @@
                     "content": $("#content").val(),
                     "label": $("#label-langhai option:selected").text(),
                     "publicShow": $("input[name='public']:checked").val(),
-                    "id": [[${article.id}]]
+                    "id": [[${article.id}]],
+                    "abstractText": $("#abstractText").val()
                 }),
                 success: function (data) {
                     if(data.code == 200){

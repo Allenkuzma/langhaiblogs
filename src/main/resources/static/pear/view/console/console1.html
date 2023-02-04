@@ -236,28 +236,28 @@
 							bit: 2,
 							regulator: 50
 						})
+
+						count.up("value2", {
+							time: 4000,
+							num: today,
+							bit: 2,
+							regulator: 50
+						})
+
+						count.up("value3", {
+							time: 4000,
+							num: today,
+							bit: 2,
+							regulator: 50
+						})
+
+						count.up("value4", {
+							time: 4000,
+							bit: 2,
+							num: today,
+							regulator: 50
+						})
 					}
-				})
-
-				count.up("value2", {
-					time: 4000,
-					num: 236.30,
-					bit: 2,
-					regulator: 50
-				})
-
-				count.up("value3", {
-					time: 4000,
-					num: 634.43,
-					bit: 2,
-					regulator: 50
-				})
-
-				count.up("value4", {
-					time: 4000,
-					bit: 2,
-					num: 373.23,
-					regulator: 50
 				})
 
 				var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');

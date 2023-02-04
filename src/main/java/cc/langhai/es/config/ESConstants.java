@@ -68,6 +68,11 @@ public class ESConstants {
             "        \"type\": \"text\",\n" +
             "        \"analyzer\": \"text_anlyzer\",\n" +
             "        \"search_analyzer\": \"ik_smart\"\n" +
+            "      },\n" +
+            "      \"abstractText\":{\n" +
+            "        \"type\": \"text\",\n" +
+            "        \"analyzer\": \"text_anlyzer\",\n" +
+            "        \"search_analyzer\": \"ik_smart\"\n" +
             "      }\n" +
             "    }\n" +
             "  }\n" +

@@ -84,7 +84,7 @@ public class ArticleController {
     }
 
     /**
-     * 获取 文章 列表页面数据
+     * 获取文章列表页面数据
      *
      * @return
      */
@@ -241,6 +241,7 @@ public class ArticleController {
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());
         model.addAttribute("search", searchArticleStr);
+        model.addAttribute("count", pageInfo.getTotal());
         return "blogs-new/article";
     }
 }

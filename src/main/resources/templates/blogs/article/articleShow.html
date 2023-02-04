@@ -41,7 +41,8 @@
 								<div>
 									<span th:text="${article.title}"></span>
 									<span th:text="'浪海值：' + ${article.heat} + '度'"></span><br />
-									<span th:text="'文章标签：' + ${article.labelContent}"></span>
+									<span th:text="'文章标签：' + ${article.labelContent}"></span><br />
+									<span th:text="'文章摘要：' + ${article.abstractText}"></span>
 								</div>
 								<div th:utext="${article.html}">
 

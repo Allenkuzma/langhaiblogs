@@ -26,6 +26,8 @@ public class Article {
     @NotBlank(message = "文章内容不能为空")
     private String html;
 
+    private String abstractText;
+
     private Integer publicShow;
 
     private Integer deleteFlag;

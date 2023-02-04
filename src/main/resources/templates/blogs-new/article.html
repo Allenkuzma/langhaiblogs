@@ -60,7 +60,7 @@
 								<a href="read.html" class="cover img-light">           
 									<img src="/blogs-new/image/cover/2019121192339714.png">
 								</a>
-								<span th:text="${article.getTitle()}"></span>
+								<span th:text="${article.abstractText}"></span>
 							</div>   
 							<div class="read-more">       
 								<a href="/" class="fc-black f-fwb">继续阅读</a>
@@ -83,6 +83,7 @@
 							</aside>
 						</section>
 		            </article>
+					<div id="paging"></div>
 		        </div>
 		    </div>
 		    <div class="col-other">
@@ -90,9 +91,9 @@
 					<div class="other-item" id="categoryandsearch">
 			    		<div class="search">
 					        <label class="search-wrap">
-					            <input type="text" id="searchtxt" placeholder="输入关键字搜索" />
+					            <input type="text" id="searchTxt" th:value="${search}" placeholder="输入关键字搜索" />
 					            <span class="search-icon">
-					                <i class="fa fa-search"></i>
+					                <i id="search" class="fa fa-search"></i>
 					            </span>
 					        </label>
 			        		<ul class="search-result"></ul>
@@ -160,10 +161,39 @@
     <script>NProgress.start();</script>
  	<script src="/blogs-new/js/yss/article.js"></script>
 	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
     <script> 
         window.onload = function () {
             NProgress.done();
         };
     </script>
+	<script >
+		//注意：导航 依赖 element 模块，否则无法进行功能性操作
+		layui.use(['element', 'form', 'table', 'laypage'], function() {
+			var element = layui.element;
+			var form = layui.form;
+			var table = layui.table;
+			var laypage = layui.laypage;
+
+			// 分页完整功能
+			laypage.render({
+				elem: 'paging'
+				,count: [[${count}]]
+				,curr: [[${page}]]
+				,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+				,jump: function(obj, first){
+					if(!first){
+						window.location.href = '/article/articleSearchPageNew?page=' + obj.curr + '&size=' + obj.limit + '&searchArticleStr=' + $("#searchTxt").val()
+					}
+				}
+			});
+
+		})
+
+		// 登录校验
+		$("#search").click(function () {
+			window.location.href = '/article/articleSearchPageNew?searchArticleStr=' + $("#searchTxt").val()
+		})
+	</script>
 </body>
 </html>
