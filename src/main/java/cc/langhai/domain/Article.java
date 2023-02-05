@@ -48,6 +48,12 @@ public class Article {
      */
     private String addTimeShow;
 
+    private String year;
+
+    private String month;
+
+    private String day;
+
     /**
      * 文章热度
      *

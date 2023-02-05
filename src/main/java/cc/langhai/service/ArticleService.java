@@ -86,9 +86,10 @@ public interface ArticleService {
      * @param size
      * @param page
      * @param searchArticleStr
+     * @param labelId
      * @return
      */
-    PageInfo<Article> search(Integer page, Integer size, String searchArticleStr);
+    PageInfo<Article> search(Integer page, Integer size, String searchArticleStr, Long labelId);
 
     /**
      * 文章搜索功能 用于ES搜索引擎
@@ -107,5 +108,12 @@ public interface ArticleService {
      * @return
      */
     Article articlePermission(Long id);
+
+    /**
+     * 获取热点前十的文章
+     *
+     * @return
+     */
+    List<Article> getArticleHeatTop();
 
 }

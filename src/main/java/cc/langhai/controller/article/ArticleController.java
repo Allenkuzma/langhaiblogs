@@ -7,6 +7,7 @@ import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -188,7 +190,7 @@ public class ArticleController {
                                   @RequestParam(defaultValue = "1") Integer page,
                                   @RequestParam(defaultValue = "10") Integer size,
                                     String searchArticleStr){
-        PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr);
+        PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, null);
 
         model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
         model.addAttribute("page", page);
@@ -233,8 +235,8 @@ public class ArticleController {
     public String articleSearchPageNew(Model model,
                                     @RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "10") Integer size,
-                                    String searchArticleStr){
-        PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr);
+                                    String searchArticleStr, Long labelId){
+        PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, labelId);
 
         model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
         model.addAttribute("page", page);
@@ -242,6 +244,20 @@ public class ArticleController {
         model.addAttribute("pages", pageInfo.getPages());
         model.addAttribute("search", searchArticleStr);
         model.addAttribute("count", pageInfo.getTotal());
+
+        // 获取公开文章的标签
+        Set<Label> labelPublicShow = labelService.getLabelPublicShow();
+        model.addAttribute("labelPublicShow", labelPublicShow);
+        if(ObjectUtil.isNull(labelId)){
+            model.addAttribute("labelId", 0);
+        }else {
+            model.addAttribute("labelId", labelId);
+        }
+
+        // 获取热点前十文章
+        List<Article> articleHeatTop = articleService.getArticleHeatTop();
+        model.addAttribute("articleHeatTop", articleHeatTop);
+
         return "blogs-new/article";
     }
 }

@@ -59,7 +59,9 @@ public interface ArticleMapper {
     /**
      * 获取用户发布的所有文章
      *
+     * @param labelId 标签id
+     * @param searchArticleStr 文章搜索关键字
      * @return
      */
-    List<Article> getAllArticlePublicShow(String searchArticleStr);
+    List<Article> getAllArticlePublicShow(String searchArticleStr, Long labelId);
 }

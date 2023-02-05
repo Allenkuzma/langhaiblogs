@@ -125,7 +125,7 @@ public class ESTest {
     @Test
     void testBulkRequest() throws IOException {
         // 批量查询酒店数据
-        List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow("");
+        List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow("", null);
 
         // 1.创建Request
         BulkRequest request = new BulkRequest();

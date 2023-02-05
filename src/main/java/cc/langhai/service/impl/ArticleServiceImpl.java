@@ -44,6 +44,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * article service 实现类
@@ -226,11 +227,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageInfo<Article> search(Integer page, Integer size, String searchArticleStr) {
+    public PageInfo<Article> search(Integer page, Integer size, String searchArticleStr, Long labelId) {
         // 开启分页助手
         PageHelper.startPage(page, size);
 
-        List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow(searchArticleStr);
+        List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow(searchArticleStr, labelId);
         PageInfo<Article> pageInfo = new PageInfo<>(allArticlePublicShow);
         return pageInfo;
     }
@@ -304,6 +305,18 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return article;
+    }
+
+    @Override
+    public List<Article> getArticleHeatTop() {
+        List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow("", null);
+        List<Article> articleHeat = this.getArticleHeat(allArticlePublicShow);
+        if(CollectionUtil.isNotEmpty(articleHeat)){
+            // 直接使用List集合sort方法按照热度排序，
+            articleHeat.sort((a, b) -> b.getHeat().compareTo(a.getHeat()));
+            return articleHeat.stream().limit(10).collect(Collectors.toList());
+        }
+        return articleHeat;
     }
 
     /**

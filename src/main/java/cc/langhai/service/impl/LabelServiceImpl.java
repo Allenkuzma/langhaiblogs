@@ -4,8 +4,10 @@ import cc.langhai.config.constant.LabelConstant;
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
 import cc.langhai.exception.BusinessException;
+import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
 import cc.langhai.response.LabelReturnCode;
+import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.collection.CollectionUtil;
@@ -16,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +34,9 @@ public class LabelServiceImpl implements LabelService {
 
     @Autowired
     private LabelMapper labelMapper;
+
+    @Autowired
+    private ArticleMapper articleMapper;
 
     @Override
     public List<Label> getAllLabelByUser() {
@@ -147,6 +154,25 @@ public class LabelServiceImpl implements LabelService {
     public Label labelExist(String content) {
         Label labelByUserAndContent = labelMapper.getLabelByUserAndContent(UserContext.getUserId(), content);
         return labelByUserAndContent;
+    }
+
+    @Override
+    public Set<Label> getLabelPublicShow() {
+        HashSet<Label> labelHashSet = new HashSet<>();
+        // 获取公开的文章
+        List<Article> articleList = articleMapper.getAllArticlePublicShow("", null);
+        if(CollectionUtil.isNotEmpty(articleList)){
+            for (Article article : articleList) {
+                Long labelId = article.getLabelId();
+                String labelContent = article.getLabelContent();
+                Label label = new Label();
+                label.setId(labelId);
+                label.setContent(labelContent);
+                labelHashSet.add(label);
+            }
+        }
+
+        return labelHashSet;
     }
 
 }

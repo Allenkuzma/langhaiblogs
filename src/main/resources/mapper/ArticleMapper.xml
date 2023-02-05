@@ -88,7 +88,10 @@
 
     <select id="getAllArticlePublicShow" resultType="cc.langhai.domain.Article">
         SELECT
-            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") as add_time_show, l.content AS label_content
+            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") AS add_time_show, l.content AS label_content,
+            DATE_FORMAT(a.add_time, "%Y") AS year,
+            DATE_FORMAT(a.add_time, "%m") AS month,
+            DATE_FORMAT(a.add_time, "%d") AS day
         FROM
             article AS a
         INNER JOIN
@@ -102,6 +105,10 @@
         <if test="searchArticleStr != null and searchArticleStr != ''">
             AND
             a.title like concat( '%' , #{searchArticleStr}, '%')
+        </if>
+        <if test="labelId != null and labelId != 0">
+            AND
+            a.label_id = #{labelId}
         </if>
         AND
             a.user_id = u.id

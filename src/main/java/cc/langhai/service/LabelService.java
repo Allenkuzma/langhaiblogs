@@ -5,6 +5,7 @@ import cc.langhai.domain.Label;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 文章标签表 service接口
@@ -84,4 +85,11 @@ public interface LabelService {
      * @return
      */
     Label labelExist(String context);
+
+    /**
+     * 获取公开文章的所有标签
+     *
+     * @return
+     */
+    Set<Label> getLabelPublicShow();
 }
