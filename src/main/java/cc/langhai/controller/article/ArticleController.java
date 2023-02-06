@@ -260,4 +260,33 @@ public class ArticleController {
 
         return "blogs-new/article";
     }
+
+    /**
+     * 跳转到展示文章详细内容的页面 新版
+     *
+     * @param   id 文章id
+     * @return 文章公开的情况下，页面 blogs/article/articleShow。
+     *         文章不公开的情况下，验证当前用户与文章作者是否匹配。
+     *                          匹配页面 blogs/article/articleShow
+     *                          不匹配页面 blogs/user/login
+     */
+    @GetMapping("/articleShowNew")
+    public String articleShowNew(Long id, Model model, HttpSession session){
+        Article article = articleService.getById(id);
+        if(ObjectUtil.isNull(article)){
+            return "blogs/user/login";
+        }
+
+        // 判断文章是否具有访问权限
+        if(articleService.judgeShow(session, article)){
+            model.addAttribute("article", articleService.getArticleHeat(article));
+
+            // 获取热点前十文章
+            List<Article> articleHeatTop = articleService.getArticleHeatTop();
+            model.addAttribute("articleHeatTop", articleHeatTop);
+            return "blogs-new/read";
+        }
+
+        return "blogs/user/login";
+    }
 }

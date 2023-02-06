@@ -48,6 +48,8 @@ public class Article {
      */
     private String addTimeShow;
 
+    private String updateTimeShow;
+
     private String year;
 
     private String month;

@@ -49,7 +49,7 @@
 							<div class="fc-flag">置顶</div>   
 							<h5 class="title">       
 								<span class="fc-blue">【原创】</span>       
-								<a target="_blank" th:href="'/article/articleShow?id=' + ${article.id}" th:text="${article.getTitle()}"></a>
+								<a target="_blank" th:href="'/article/articleShowNew?id=' + ${article.id}" th:text="${article.getTitle()}"></a>
 							</h5>   
 							<div class="time">
 								<span class="day" th:text="${article.day}"></span>
@@ -57,7 +57,7 @@
 								<span class="year fs-18 ml10" th:text="${article.year}"></span>
 							</div>   
 							<div class="content">       
-								<a th:href="'/article/articleShow?id=' + ${article.id}" class="cover img-light">
+								<a th:href="'/article/articleShowNew?id=' + ${article.id}" class="cover img-light">
 									<img src="/blogs-new/image/cover/2018416205043154.jpg">
 								</a>
 								<span th:text="${article.abstractText}"></span>
@@ -116,7 +116,7 @@
 					    <h5 class="other-item-title">热门文章</h5>
 					    <div class="inner">
 					        <ul class="hot-list-article">
-					                <li th:each="articleHeat : ${articleHeatTop}"> <a target="_blank" th:href="'/article/articleShow?id=' + ${articleHeat.id}"><span th:text="${articleHeat.title}"></span></a></li>
+					                <li th:each="articleHeat : ${articleHeatTop}"> <a target="_blank" th:href="'/article/articleShowNew?id=' + ${articleHeat.id}"><span th:text="${articleHeat.title}"></span></a></li>
 					        </ul>
 					    </div>
 					</div>
