@@ -39,12 +39,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * article service 实现类
@@ -159,6 +157,10 @@ public class ArticleServiceImpl implements ArticleService {
                         heatLater.toString(), 7 * 24 * 60, TimeUnit.MINUTES);
                 article.setHeat(heatLater.toString());
             }
+        }
+
+        if(article.getPublicShow().equals(1)){
+            this.handleHeatTopMap(article);
         }
         return article;
     }
@@ -308,15 +310,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticleHeatTop() {
-        List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow("", null);
+    public Set<Article> getArticleHeatTop() {
+        // 旧版：遍历所有公开的文章
+        /*List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow("", null);
         List<Article> articleHeat = this.getArticleHeat(allArticlePublicShow);
         if(CollectionUtil.isNotEmpty(articleHeat)){
             // 直接使用List集合sort方法按照热度排序，
             articleHeat.sort((a, b) -> b.getHeat().compareTo(a.getHeat()));
             return articleHeat.stream().limit(10).collect(Collectors.toList());
-        }
-        return articleHeat;
+        }*/
+
+        return ArticleConstant.ARTICLE_HEAT_TOP_10;
     }
 
     /**
@@ -351,4 +355,33 @@ public class ArticleServiceImpl implements ArticleService {
 
         return labelMysql;
     }
+
+    /**
+     * 处理热点前十的文章排序集合Set
+     *
+     * @param articleSave
+     */
+    private void handleHeatTopMap(Article articleSave){
+        TreeSet<Article> articleHeatTop10 = ArticleConstant.ARTICLE_HEAT_TOP_10;
+        if(CollectionUtil.isNotEmpty(articleHeatTop10)){
+            Iterator<Article> iterator = articleHeatTop10.iterator();
+            while (iterator.hasNext()){
+                if(articleSave.getId().equals(iterator.next().getId())){
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+        articleHeatTop10.add(articleSave);
+        if(articleHeatTop10.size() > 10){
+            TreeSet<Article> articleTreeSet = new TreeSet<>();
+            for (Article article : articleHeatTop10) {
+                if(articleTreeSet.size() < 10){
+                    articleTreeSet.add(article);
+                }
+            }
+            ArticleConstant.ARTICLE_HEAT_TOP_10 = articleTreeSet;
+        }
+    }
+
 }

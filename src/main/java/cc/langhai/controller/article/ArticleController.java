@@ -255,7 +255,7 @@ public class ArticleController {
         }
 
         // 获取热点前十文章
-        List<Article> articleHeatTop = articleService.getArticleHeatTop();
+        Set<Article> articleHeatTop = articleService.getArticleHeatTop();
         model.addAttribute("articleHeatTop", articleHeatTop);
 
         return "blogs-new/article";
@@ -282,7 +282,7 @@ public class ArticleController {
             model.addAttribute("article", articleService.getArticleHeat(article));
 
             // 获取热点前十文章
-            List<Article> articleHeatTop = articleService.getArticleHeatTop();
+            Set<Article> articleHeatTop = articleService.getArticleHeatTop();
             model.addAttribute("articleHeatTop", articleHeatTop);
             return "blogs-new/read";
         }

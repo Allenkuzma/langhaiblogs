@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * article service接口
@@ -114,6 +115,6 @@ public interface ArticleService {
      *
      * @return
      */
-    List<Article> getArticleHeatTop();
+    Set<Article> getArticleHeatTop();
 
 }

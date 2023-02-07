@@ -21,7 +21,9 @@ public enum ArticleReturnCode implements ReturnCode{
 
     ARTICLE_PARAM_FAIL_00006(500, "文章参数校验失败。"),
 
-    ARTICLE_PERMISSION_FAIL_00007(500, "权限校验不足。")
+    ARTICLE_PERMISSION_FAIL_00007(500, "权限校验不足。"),
+
+    ARTICLE_SORT_FAIL_00008(500, "文章排序错误。")
     ;
 
     private Integer code;

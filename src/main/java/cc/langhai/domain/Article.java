@@ -1,5 +1,7 @@
 package cc.langhai.domain;
 
+import cc.langhai.exception.BusinessException;
+import cc.langhai.response.ArticleReturnCode;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -12,7 +14,7 @@ import java.util.Date;
  * @date 2022-12-24 16:30
  */
 @Data
-public class Article {
+public class Article implements Comparable{
 
     private Long id;
 
@@ -67,4 +69,18 @@ public class Article {
      *
      */
     private String labelContent;
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Article){
+            Article article = (Article) o;
+            if(Long.compare(Long.valueOf(article.getHeat()), Long.valueOf(this.getHeat())) == 0){
+                return Long.compare(article.getId(), this.getId());
+            }else {
+                return Long.compare(Long.valueOf(article.getHeat()), Long.valueOf(this.getHeat()));
+            }
+        }else {
+            throw new BusinessException(ArticleReturnCode.ARTICLE_SORT_FAIL_00008);
+        }
+    }
 }
