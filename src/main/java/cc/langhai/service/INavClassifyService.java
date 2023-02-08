@@ -33,4 +33,18 @@ public interface INavClassifyService extends IService<NavClassify> {
      * @param id
      */
     void deleteNavClassify(Long id);
+
+    /**
+     * 获取list集合icon名字
+     *
+     * @return
+     */
+    List<String> getIconList() throws IllegalAccessException;
+
+    /**
+     * 更新公共导航分类
+     *
+     * @param navClassify
+     */
+    void updateNav(NavClassify navClassify);
 }

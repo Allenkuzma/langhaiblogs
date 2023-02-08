@@ -12,32 +12,32 @@ import lombok.Data;
 @Data
 public class IconfontConstant {
 
-    public static final String ICON_SHEQU = "iconfont icon-shequ";
+    public static final String ICON_SHEQU = "icon-shequ";
 
-    public static final String ICON_DESIGNER = "iconfont icon-designer";
+    public static final String ICON_DESIGNER = "icon-designer";
 
-    public static final String ICON_WENDANGDOCUMENT78 = "iconfont icon-wendangdocument78";
+    public static final String ICON_WENDANGDOCUMENT78 = "icon-wendangdocument78";
 
-    public static final String ICON_BLOGGER = "iconfont icon-blogger";
+    public static final String ICON_BLOGGER = "icon-blogger";
 
-    public static final String ICON_DAOHANG2 = "iconfont icon-daohang2";
+    public static final String ICON_DAOHANG2 = "icon-daohang2";
 
-    public static final String ICON_LIUYAN = "iconfont icon-liuyan";
+    public static final String ICON_LIUYAN = "icon-liuyan";
 
-    public static final String ICON_TOOL = "iconfont icon-tool";
+    public static final String ICON_TOOL = "icon-tool";
 
-    public static final String ICON_XUEXI1 = "iconfont icon-xuexi1";
+    public static final String ICON_XUEXI1 = "icon-xuexi1";
 
-    public static final String ICON_ZIXUN = "iconfont icon-zixun";
+    public static final String ICON_ZIXUN = "icon-zixun";
 
-    public static final String ICON_YUNYING = "iconfont icon-yunying";
+    public static final String ICON_YUNYING = "icon-yunying";
 
-    public static final String ICON_DAOHANG = "iconfont icon-daohang";
+    public static final String ICON_DAOHANG = "icon-daohang";
 
-    public static final String ICON_GITHUB = "iconfont icon-github";
+    public static final String ICON_GITHUB = "icon-github";
 
-    public static final String ICON_DAOHANG1 = "iconfont icon-daohang1";
+    public static final String ICON_DAOHANG1 = "icon-daohang1";
 
-    public static final String ICON_XUEXI = "iconfont icon-xuexi";
+    public static final String ICON_XUEXI = "icon-xuexi";
 
 }

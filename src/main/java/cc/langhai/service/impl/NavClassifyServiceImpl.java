@@ -1,5 +1,6 @@
 package cc.langhai.service.impl;
 
+import cc.langhai.config.constant.IconfontConstant;
 import cc.langhai.config.constant.NavClassifyConstant;
 import cc.langhai.domain.NavClassify;
 import cc.langhai.domain.NavWebsite;
@@ -15,6 +16,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,4 +84,42 @@ public class NavClassifyServiceImpl extends ServiceImpl<NavClassifyMapper, NavCl
 
         this.removeById(id);
     }
+
+    @Override
+    public List<String> getIconList() throws IllegalAccessException {
+        ArrayList<String> iconfont = new ArrayList<>();
+        // 遍历输出属性
+        Field[] fields =  IconfontConstant.class.getDeclaredFields();
+        for( int i = 0; i < fields.length; i++){
+            Field f = fields[i];
+            iconfont.add(f.get(IconfontConstant.class).toString());
+        }
+
+        return iconfont;
+    }
+
+    @Override
+    public void updateNav(NavClassify navClassify) {
+        // 判读分类名字以及分类标签名字是否有重复的
+        NavClassify nameClassify = this.getOne(Wrappers.<NavClassify>lambdaQuery()
+                .eq(NavClassify::getUserId, 0)
+                .eq(NavClassify::getName, navClassify.getName())
+                .ne(NavClassify::getId, navClassify.getId()));
+
+        if(ObjectUtil.isNotNull(nameClassify)){
+            throw new BusinessException(NavClassifyReturnCode.NAV_CLASSIFY_NAME_EXISTENCE_00003);
+        }
+
+        NavClassify tagNameClassify = this.getOne(Wrappers.<NavClassify>lambdaQuery()
+                .eq(NavClassify::getUserId, 0)
+                .eq(NavClassify::getTagName, navClassify.getTagName())
+                .ne(NavClassify::getId, navClassify.getId()));
+
+        if(ObjectUtil.isNotNull(tagNameClassify)){
+            throw new BusinessException(NavClassifyReturnCode.NAV_CLASSIFY_TAG_NAME_EXISTENCE_00004);
+        }
+
+        this.updateById(navClassify);
+    }
+
 }

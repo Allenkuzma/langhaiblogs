@@ -21,7 +21,11 @@ public enum NavClassifyReturnCode implements ReturnCode{
 
     NAV_CLASSIFY_DELETE_FAIL_00006(500, "公共导航分类删除失败。"),
 
-    NAV_CLASSIFY_DELETE_FAIL_EXIST_WEBSITE_00007(500, "公共导航分类存在导航网站，删除失败。")
+    NAV_CLASSIFY_DELETE_FAIL_EXIST_WEBSITE_00007(500, "公共导航分类存在导航网站，删除失败。"),
+
+    NAV_CLASSIFY_UPDATE_SUCCESS_00008(200, "公共导航分类更新成功。"),
+
+    NAV_CLASSIFY_UPDATE_FAIL_00009(500, "公共导航分类更新失败。"),
 
     ;
 

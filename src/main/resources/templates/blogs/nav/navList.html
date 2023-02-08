@@ -129,9 +129,9 @@
         });
       } else if(obj.event === 'edit'){
         layer.open({
-          title: '编辑友情链接',
+          title: '编辑公共导航分类',
           type: 2,
-          content: '/links/linksUpdatePage?id=' + data.id
+          content: '/navClassify/navClassifyUpdatePage?id=' + data.id
         });
       } else if(obj.event === 'look'){
         window.open(data.href)

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/blogs-new/css/gloable.css" />
     <link rel="stylesheet" href="/blogs-new/css/nprogress.css" />
     <link rel="stylesheet" href="/blogs-new/css/blog.css" />
+    <link rel="stylesheet" href="/blogs-new/css/monokai-sublime.css" />
 </head>
 <body>
     <div class="header">
@@ -139,11 +140,23 @@
     <script src="/blogs-new/js/yss/gloable.js"></script>
     <script src="/blogs-new/js/plugins/nprogress.js"></script>
     <script src="/blogs-new/js/pagecomment.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
     <script>NProgress.start();</script>
     <script> 
         window.onload = function () {
             NProgress.done();
         };
+
+
+        // 图片自适应处理
+        $(function (){
+            $("img").attr("style", "max-width: 100%;");
+        })
+
+        // 代码自适应处理
+        $(function (){
+            $("code").addClass("hljs");
+        })
     </script>
 </body>
 </html>

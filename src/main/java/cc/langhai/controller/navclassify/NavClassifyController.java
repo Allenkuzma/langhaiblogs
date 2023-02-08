@@ -2,9 +2,9 @@ package cc.langhai.controller.navclassify;
 
 
 import cc.langhai.config.annotation.RequestAuthority;
-import cc.langhai.config.constant.IconfontConstant;
 import cc.langhai.domain.NavClassify;
 import cc.langhai.domain.NavWebsite;
+import cc.langhai.exception.BusinessException;
 import cc.langhai.response.NavClassifyReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.INavClassifyService;
@@ -76,16 +76,28 @@ public class NavClassifyController {
     @RequestAuthority(value = {"admin"})
     @GetMapping("/navClassifyAddPage")
     public String navClassifyAddPage(Model model) throws IllegalAccessException {
-        ArrayList<String> iconfont = new ArrayList<>();
-        // 遍历输出属性
-        Field[] fields =  IconfontConstant.class.getDeclaredFields();
-        for( int i = 0; i < fields.length; i++){
-            Field f = fields[i];
-            iconfont.add(f.get(IconfontConstant.class).toString());
+
+        model.addAttribute("iconfont", navClassifyService.getIconList());
+        return "blogs/nav/navAdd";
+    }
+
+    /**
+     * 跳转到公共导航分类更新页面
+     *
+     * @return
+     */
+    @GetMapping("/navClassifyUpdatePage")
+    @RequestAuthority(value = {"admin"})
+    public String navClassifyUpdatePage(Long id, Model model) throws IllegalAccessException {
+        if(ObjectUtil.isNull(id)){
+            throw new BusinessException(NavClassifyReturnCode.NAV_CLASSIFY_UPDATE_FAIL_00009);
         }
 
-        model.addAttribute("iconfont", iconfont);
-        return "blogs/nav/navAdd";
+        NavClassify navClassify = navClassifyService.getById(id);
+        model.addAttribute("navClassify", navClassify);
+
+        model.addAttribute("iconfont", navClassifyService.getIconList());
+        return "blogs/nav/navUpdate";
     }
 
     /**
@@ -138,6 +150,19 @@ public class NavClassifyController {
 
         navClassifyService.deleteNavClassify(id);
         return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_DELETE_SUCCESS_00005);
+    }
+
+    /**
+     * 更新公共导航分类
+     *
+     * @return
+     */
+    @PostMapping("/updateNav")
+    @RequestAuthority(value = {"admin"})
+    @ResponseBody
+    public ResultResponse updateNav(@RequestBody @Validated NavClassify navClassify){
+        navClassifyService.updateNav(navClassify);
+        return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_UPDATE_SUCCESS_00008);
     }
 
 }

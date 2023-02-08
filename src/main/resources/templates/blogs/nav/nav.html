@@ -24,7 +24,7 @@
                     <i class="line"></i>
                 </div>
                 <ul class="nav-item" id="navItem">
-                    <li th:each="navClassify : ${navClassifyList}"><a th:href="'#' + ${navClassify.tagName}"><i th:class="${navClassify.icon}"><span th:text="${navClassify.name}"></span></i></a></li>
+                    <li th:each="navClassify : ${navClassifyList}"><a th:href="'#' + ${navClassify.tagName}"><i th:class="${'iconfont ' + navClassify.icon}"><span th:text="${navClassify.name}"></span></i></a></li>
                     <li class="download"><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank"><i class="iconfont icon-github"></i>源码下载</a></li>
                 </ul>
                 <div class="item comment"><a target="_blank" href="/#three"><i class="iconfont icon-liuyan"></i>留言</a></div>
@@ -47,7 +47,7 @@
                 <div class="box" th:each="nav : ${navClassifyList}">
                     <a href="#" th:name="${nav.tagName}"></a>
                     <div class="sub-category">
-                        <div><i th:class="${nav.icon}"></i><span th:text="${nav.name}"></span></div>
+                        <div><i th:class="${'iconfont ' + nav.icon}"></i><span th:text="${nav.name}"></span></div>
                     </div>
                     <div th:each="website : ${nav.websiteList}">
                         <a target="_blank" th:href="${website.url}">
