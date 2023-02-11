@@ -56,23 +56,21 @@ public class PersonalController {
 
 
     /**
-     * 跳转到 更新用户个人信息 页面
+     * 跳转到更新用户个人信息页面
      *
      * @return
      */
     @GetMapping("/updateUserInfoPage")
-    public String updateUserInfoPage(HttpSession session, Model model){
+    public String updateUserInfoPage(Model model){
         // 将用户详情信息存储到 model中
-        User user = UserContext.get();
-        UserInfo userInfo = userInfoService.getUserInfoById(user.getId());
-
+        UserInfo userInfo = userInfoService.getUserInfoById(UserContext.getUserId());
         model.addAttribute("userInfo", userInfo);
 
         return "blogs/user/updateUserInfo";
     }
 
     /**
-     * 更新用户个人信息 提交至数据库
+     * 更新用户个人信息，提交至数据库。
      *
      * @return
      */
@@ -81,6 +79,7 @@ public class PersonalController {
     public ResultResponse updateUserInfo(@RequestParam("nickname") String nickname,
                                    @RequestParam("motto") String motto, HttpSession session){
         personalService.updateUserInfo(nickname, motto, session);
+
         return ResultResponse.success(UserReturnCode.USER_PERSONAL_UPDATE_USER_INFO_YES_00018);
     }
 }

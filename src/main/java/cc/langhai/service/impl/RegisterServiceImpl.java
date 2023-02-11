@@ -19,6 +19,7 @@ import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -329,5 +330,30 @@ public class RegisterServiceImpl implements RegisterService {
                 }
             }
         }
+    }
+
+    @Override
+    public JSONObject enter(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", 200);
+
+        User user = (User)request.getSession().getAttribute("user");
+        if(ObjectUtil.isNotNull(user)){
+            UserContext.set(user);
+            jsonObject.put("data", "ok");
+        }else {
+            this.remember(request, request.getSession());
+            user = (User)request.getSession().getAttribute("user");
+            if(ObjectUtil.isNotNull(user)){
+                UserContext.set(user);
+                jsonObject.put("data", "ok");
+            }
+        }
+
+        if(ObjectUtil.isNull(user)){
+            jsonObject.put("data", "fail");
+        }
+
+        return jsonObject;
     }
 }

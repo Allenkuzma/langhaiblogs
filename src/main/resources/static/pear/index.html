@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<title>主页</title>
+		<title>浪海博客管理后台</title>
 		<!-- 依 赖 样 式 -->
 		<link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
 		<!-- 加 载 样 式 -->
@@ -117,6 +117,22 @@
 				
 				// 消息点击回调
 				admin.message(function(id, title, context, form) {});
+
+				$.ajax({
+					url: "/user/enter",
+					type: 'get',
+					success: function(result) {
+						if (result.code == 200) {
+							if(result.data == "ok"){
+
+							}else if(result.data == "fail"){
+								window.location.href = "/user/loginPage";
+							}
+						} else {
+							window.location.href = "/user/loginPage";
+						}
+					}
+				})
 			})
 		</script>		
 	</body>

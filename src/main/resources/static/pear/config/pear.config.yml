@@ -38,7 +38,7 @@ tab:
   index: 
     id: "10" ## 标识 ID , 建议与菜单项中的 ID 一致
     href: "view/console/console1.html" ## 页面地址
-    title: "首页" ## 标题
+    title: "浪海博客管理后台" ## 标题
 ## 主题配置
 theme: 
   ## 默认主题色，对应 colors 配置中的 ID 标识

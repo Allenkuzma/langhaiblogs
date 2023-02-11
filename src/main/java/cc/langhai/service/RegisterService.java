@@ -1,5 +1,7 @@
 package cc.langhai.service;
 
+import com.alibaba.fastjson.JSONObject;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -74,4 +76,12 @@ public interface RegisterService {
      * @param session
      */
     void remember(HttpServletRequest request, HttpSession session);
+
+    /**
+     * 判断用户是否登录
+     *
+     * @param request
+     * @return
+     */
+    JSONObject enter(HttpServletRequest request);
 }

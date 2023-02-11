@@ -12,6 +12,7 @@ import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class PersonalServiceImpl implements PersonalService {
     private UserInfoService userInfoService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateUserInfo(String nickname, String motto, HttpSession session) {
         if(StrUtil.isBlank(nickname) || StrUtil.isBlank(motto)){
             throw new BusinessException(UserReturnCode.USER_PERSONAL_UPDATE_USER_INFO_PARAM_FAIL_00019);

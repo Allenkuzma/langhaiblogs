@@ -49,7 +49,7 @@ public class UserRoleController {
     }
 
     /**
-     * 获取 用户信息 列表页面数据
+     * 获取用户信息列表页面数据
      *
      * @return
      */

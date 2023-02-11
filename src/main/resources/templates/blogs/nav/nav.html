@@ -26,6 +26,7 @@
                 <ul class="nav-item" id="navItem">
                     <li th:each="navClassify : ${navClassifyList}"><a th:href="'#' + ${navClassify.tagName}"><i th:class="${'iconfont ' + navClassify.icon}"><span th:text="${navClassify.name}"></span></i></a></li>
                     <li class="download"><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank"><i class="iconfont icon-github"></i>源码下载</a></li>
+                    <li class="download"><a href="/juso/index.html"><i class="iconfont icon-daohang1"></i>聚合搜索</a></li>
                 </ul>
                 <div class="item comment"><a target="_blank" href="/#three"><i class="iconfont icon-liuyan"></i>留言</a></div>
             </nav>
@@ -63,7 +64,7 @@
                     <div class="copyright">
                         <div>
                             Copyright © 2021- 2050
-                            <a href="/">浪海博客</a>
+                            <a href="/">浪海博客</a> <a href="/juso/index.html">聚合搜索</a>
                         </div>
                     </div>
                 </footer>

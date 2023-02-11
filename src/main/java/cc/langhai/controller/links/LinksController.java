@@ -45,10 +45,7 @@ public class LinksController {
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/linksListPage")
-    public String linksListPage(String message, Model model){
-        if(StrUtil.isNotBlank(message)){
-            model.addAttribute("message", message);
-        }
+    public String linksListPage(Model model){
 
         return "blogs/links/linksList";
     }
@@ -121,7 +118,7 @@ public class LinksController {
      *
      * @return
      */
-    @PostMapping("/deleteLinks")
+    @DeleteMapping("/deleteLinks")
     @RequestAuthority(value = {"admin"})
     @ResponseBody
     public ResultResponse deleteLinks(Long id){

@@ -1,10 +1,13 @@
 package cc.langhai.controller.user;
 
+import cc.langhai.domain.User;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.RegisterService;
 import cc.langhai.utils.ImageVerifyCodeGenerator;
+import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -95,4 +98,16 @@ public class LoginController {
         registerService.loginOut(session, response);
         return ResultResponse.success(UserReturnCode.USER_LOGOUT_YES_00017);
     }
+
+    /**
+     * 判断用户是否登录
+     *
+     */
+    @GetMapping("/enter")
+    @ResponseBody
+    public JSONObject enter(HttpServletRequest request){
+
+        return registerService.enter(request);
+    }
+
 }
