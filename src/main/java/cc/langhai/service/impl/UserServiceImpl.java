@@ -57,8 +57,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public List<User> getUserList() {
-        List<User> list = userMapper.getUserList();
+    public List<User> getUserList(String username, String nickname) {
+        List<User> list = userMapper.getUserList(username, nickname);
         return list;
     }
 

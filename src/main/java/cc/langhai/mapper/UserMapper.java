@@ -61,8 +61,10 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 获取所有用户信息
      *
+     * @param username
+     * @param nickname
      * @return
      */
-    List<User> getUserList();
+    List<User> getUserList(String username, String nickname);
 
 }

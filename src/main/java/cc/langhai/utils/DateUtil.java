@@ -27,7 +27,7 @@ public class DateUtil {
     /**
      * 获取当天日期 yyyy-MM-dd 开始结束时间
      *  nowDay + " 00:00:00"
-     *  nowDay + " 24:00:00"
+     *  nowDay + " 23:59:59"
      *
      * @return
      */

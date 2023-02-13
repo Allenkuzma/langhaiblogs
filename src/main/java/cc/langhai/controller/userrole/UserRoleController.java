@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * 用户角色 控制器
+ * 用户角色控制器
  *
  * @author langhai
  * @date 2023-01-17 14:03
@@ -51,17 +51,20 @@ public class UserRoleController {
     /**
      * 获取用户信息列表页面数据
      *
+     * @param username 用户账号
+     * @param nickname 用户昵称
      * @return
      */
     @GetMapping("/userRoleList")
     @RequestAuthority(value = {"admin"})
     @ResponseBody
     public JSONObject userRoleList(@RequestParam(defaultValue = "1") Integer page,
-                                   @RequestParam(defaultValue = "10") Integer limit){
+                                   @RequestParam(defaultValue = "10") Integer limit,
+                                    String username, String nickname){
         PageHelper.startPage(page, limit);
         JSONObject jsonObject = new JSONObject();
 
-        List<User> list = userService.getUserList();
+        List<User> list = userService.getUserList(username, nickname);
         PageInfo<User> userPageInfo = new PageInfo<>(list);
 
         jsonObject.put("code", 0);
@@ -97,12 +100,12 @@ public class UserRoleController {
     @PostMapping("/updateUserRole")
     @RequestAuthority(value = {"admin"})
     @ResponseBody
-    public ResultResponse updateUserRole(Long id, String name){
-        if(ObjectUtil.isNull(id) || StrUtil.isBlank(name)){
+    public ResultResponse updateUserRole(Long id, String role){
+        if(ObjectUtil.isNull(id) || StrUtil.isBlank(role)){
             return ResultResponse.fail(UserRoleReturnCode.ROLE_AUTH_FAIL_00000);
         }
 
-        roleService.updateUserRole(id, name);
+        roleService.updateUserRole(id, role);
         return ResultResponse.success(UserRoleReturnCode.ROLE_AUTH_SUCCESS_00001);
     }
 }

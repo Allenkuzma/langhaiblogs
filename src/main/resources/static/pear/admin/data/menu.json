@@ -19,13 +19,6 @@
 			"openType": "_iframe",
 			"href": "view/console/console2.html"
 		}, {
-			"id": 14,
-			"title": "必应",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "http://www.bing.com"
-		}, {
 			"id": 15,
 			"title": "友情链接管理",
 			"icon": "layui-icon layui-icon-console",
@@ -34,11 +27,11 @@
 			"href": "/links/linksListPage"
 		}, {
 			"id": 16,
-			"title": "酸爽翻倍",
+			"title": "用户授权管理",
 			"icon": "layui-icon layui-icon-console",
 			"type": 1,
 			"openType": "_iframe",
-			"href": "view/document/core.html"
+			"href": "/userRole/userRolePage"
 		}]
 	},
 	{

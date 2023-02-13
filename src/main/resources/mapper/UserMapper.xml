@@ -62,6 +62,16 @@
             u.id = ul.user_id
             AND
             r.id = ul.role_id
+        WHERE
+            1 = 1
+        <if test="username != null and username != ''">
+            AND
+            u.username like concat( '%' , #{username}, '%')
+        </if>
+        <if test="nickname != null and nickname != ''">
+            AND
+            u.nickname like concat( '%' , #{nickname}, '%')
+        </if>
     </select>
 
 </mapper>
