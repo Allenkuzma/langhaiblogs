@@ -60,7 +60,7 @@ public class LoginConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/userRole/userRoleList");
         registration.addPathPatterns("/userRole/userRoleUpdatePage");
         registration.addPathPatterns("/userRole/updateUserRole");
-        registration.addPathPatterns("/devLog/devLogManagePage");
+        registration.addPathPatterns("/devLog/devLogListPage");
         registration.addPathPatterns("/devLog/devLogAddPage");
         registration.addPathPatterns("/devLog/devLogList");
         registration.addPathPatterns("/devLog/addDevLog");

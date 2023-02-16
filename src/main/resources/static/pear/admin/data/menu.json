@@ -19,13 +19,6 @@
 			"openType": "_iframe",
 			"href": "view/console/console2.html"
 		}, {
-			"id": 15,
-			"title": "友情链接管理",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "/links/linksListPage"
-		}, {
 			"id": 16,
 			"title": "用户授权管理",
 			"icon": "layui-icon layui-icon-console",
@@ -36,100 +29,24 @@
 	},
 	{
 		"id": "component",
-		"title": "常用组件",
+		"title": "系统管理",
 		"icon": "layui-icon layui-icon-component",
 		"type": 0,
 		"href": "",
 		"children": [{
-			"id": 201,
-			"title": "基础组件",
+			"id": 17,
+			"title": "友情链接管理",
 			"icon": "layui-icon layui-icon-console",
-			"type": 0,
-			"children": [
-			{
-				"id": 2011,
-				"title": "功能按钮",
-				"icon": "layui-icon layui-icon-face-smile",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/button.html"
-			}, {
-				"id": 2014,
-				"title": "表单集合",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/form.html"
-			}, {
-				"id": 2010,
-				"title": "字体图标",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/icon.html"
-			}, {
-				"id": 2012,
-				"title": "多选下拉",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/select.html"
-			}, {
-				"id": 2013,
-				"title": "动态标签",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/tag.html"
-			}]
+			"type": 1,
+			"openType": "_iframe",
+			"href": "/links/linksListPage"
 		}, {
-			"id": 203,
-			"title": "进阶组件",
+			"id": 18,
+			"title": "开发日志记录",
 			"icon": "layui-icon layui-icon-console",
-			"type": 0,
-			"children": [{
-				"id": 2031,
-				"title": "数据表格",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/table.html"
-			}, {
-				"id": 2032,
-				"title": "分布表单",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/step.html"
-			}, {
-				"id": 2033,
-				"title": "树形表格",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/treetable.html"
-			}, {
-				"id": 2034,
-				"title": "树状结构",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/dtree.html"
-			}, {
-				"id": 2035,
-				"title": "文本编辑",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/tinymce.html"
-			}, {
-				"id": 2036,
-				"title": "卡片组件",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/card.html"
-			}]
+			"type": 1,
+			"openType": "_iframe",
+			"href": "/devLog/devLogListPage"
 		}, {
 			"id": 202,
 			"title": "弹层组件",

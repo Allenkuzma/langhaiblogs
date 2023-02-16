@@ -26,7 +26,7 @@ public interface DevLogService extends IService<DevLog> {
     void updateDevLog(DevLog devLog);
 
     /**
-     * 删除开发日志记录
+     * 管理员删除开发日志记录
      *
      * @param id
      */

@@ -58,7 +58,7 @@ public class LoginController {
     @GetMapping("/verifyCode")
     public void verifyCode(HttpServletResponse response, HttpSession session) throws IOException {
         //生成验证码图片
-        Map<String, Object> imageVerify = ImageVerifyCodeGenerator.generate(300, 40 ,4);
+        Map<String, Object> imageVerify = ImageVerifyCodeGenerator.generate(300, 45 ,4);
         BufferedImage image = (BufferedImage) imageVerify.get("image");
         String code = String.valueOf(imageVerify.get("code"));
         session.setAttribute("verifyCode", code);

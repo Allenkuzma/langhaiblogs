@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>友情链接更新 - 浪海博客</title>
@@ -83,7 +83,7 @@
                     if (result.code == 200) {
                         layer.msg(result.message, {
                             icon: 1,
-                            time: 1000
+                            time: 2000
                         }, function() {
                             parent.layer.close(parent.layer.getFrameIndex(window
                                 .name)); //关闭当前页
@@ -92,7 +92,7 @@
                     } else {
                         layer.msg(result.message, {
                             icon: 2,
-                            time: 1000
+                            time: 2000
                         });
                     }
                 }

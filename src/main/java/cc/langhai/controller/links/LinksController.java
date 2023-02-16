@@ -45,7 +45,7 @@ public class LinksController {
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/linksListPage")
-    public String linksListPage(Model model){
+    public String linksListPage(){
 
         return "blogs/links/linksList";
     }
@@ -73,9 +73,9 @@ public class LinksController {
         if(ObjectUtil.isNull(id)){
             throw new BusinessException(LinksReturnCode.LINKS_UPDATE_FAIL_00006);
         }
-
         Links links = linksService.getById(id);
         model.addAttribute("links", links);
+
         return "blogs/links/linksUpdate";
     }
 
