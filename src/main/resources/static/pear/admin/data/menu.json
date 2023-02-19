@@ -179,17 +179,17 @@
 	},
 	{
 		"id": "result",
-		"title": "结果页面",
+		"title": "导航管理",
 		"icon": "layui-icon layui-icon-auz",
 		"type": 0,
 		"href": "",
 		"children": [{
 				"id": "success",
-				"title": "成功",
+				"title": "公共导航分类",
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/result/success.html"
+				"href": "/navClassify/navClassifyListPage"
 			},
 			{
 				"id": "failure",

@@ -3,6 +3,7 @@ package cc.langhai.interceptor.authority;
 import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.domain.Role;
 import cc.langhai.domain.User;
+import cc.langhai.exception.AuthException;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.response.SystemReturnCode;
 import cc.langhai.service.RoleService;
@@ -30,7 +31,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!isAuthority(handler)) {
-            throw new BusinessException(SystemReturnCode.SYSTEM_AUTH_00001);
+            throw new AuthException(SystemReturnCode.SYSTEM_AUTH_FAIL_00001);
         }
         return true;
     }
@@ -52,7 +53,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
                 // 得到当前登录人的权限,判断请求的权限是否包含在内
                 Role role = roleService.getRole();
                 if(ObjectUtil.isNull(role)){
-                    throw new BusinessException(SystemReturnCode.SYSTEM_AUTH_00001);
+                    throw new AuthException(SystemReturnCode.SYSTEM_AUTH_FAIL_00001);
                 }
                 // 获得注解的值（权限）
                 String[] values = annotation.value();

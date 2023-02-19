@@ -60,10 +60,7 @@ public class NavClassifyController {
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/navClassifyListPage")
-    public String navClassifyListPage(String message, Model model){
-        if(StrUtil.isNotBlank(message)){
-            model.addAttribute("message", message);
-        }
+    public String navClassifyListPage(){
 
         return "blogs/nav/navList";
     }
@@ -76,8 +73,8 @@ public class NavClassifyController {
     @RequestAuthority(value = {"admin"})
     @GetMapping("/navClassifyAddPage")
     public String navClassifyAddPage(Model model) throws IllegalAccessException {
-
         model.addAttribute("iconfont", navClassifyService.getIconList());
+
         return "blogs/nav/navAdd";
     }
 
@@ -93,10 +90,9 @@ public class NavClassifyController {
             throw new BusinessException(NavClassifyReturnCode.NAV_CLASSIFY_UPDATE_FAIL_00009);
         }
 
-        NavClassify navClassify = navClassifyService.getById(id);
-        model.addAttribute("navClassify", navClassify);
-
+        model.addAttribute("navClassify", navClassifyService.getById(id));
         model.addAttribute("iconfont", navClassifyService.getIconList());
+
         return "blogs/nav/navUpdate";
     }
 
@@ -109,12 +105,14 @@ public class NavClassifyController {
     @GetMapping("/navClassifyList")
     @ResponseBody
     public JSONObject navClassifyList(){
-        JSONObject jsonObject = new JSONObject();
         List<NavClassify> list = navClassifyService.list(Wrappers.<NavClassify>lambdaQuery()
                 .eq(NavClassify::getUserId, 0));
+        // 收集数据
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);
         jsonObject.put("data", list);
         jsonObject.put("count", list.size());
+
         return jsonObject;
     }
 
@@ -130,8 +128,8 @@ public class NavClassifyController {
         if(ObjectUtil.isNull(navClassify)){
             return ResultResponse.fail(NavClassifyReturnCode.NAV_CLASSIFY_ADD_FAIL_00002);
         }
-
         navClassifyService.addNavClassify(navClassify);
+
         return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_ADD_SUCCESS_00001);
     }
 
@@ -140,15 +138,15 @@ public class NavClassifyController {
      *
      * @return
      */
-    @PostMapping("/deleteNav")
+    @DeleteMapping("/deleteNav")
     @RequestAuthority(value = {"admin"})
     @ResponseBody
     public ResultResponse deleteNav(Long id){
         if(ObjectUtil.isNull(id)){
             return ResultResponse.fail(NavClassifyReturnCode.NAV_CLASSIFY_DELETE_FAIL_00006);
         }
-
         navClassifyService.deleteNavClassify(id);
+
         return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_DELETE_SUCCESS_00005);
     }
 
@@ -162,6 +160,7 @@ public class NavClassifyController {
     @ResponseBody
     public ResultResponse updateNav(@RequestBody @Validated NavClassify navClassify){
         navClassifyService.updateNav(navClassify);
+
         return ResultResponse.success(NavClassifyReturnCode.NAV_CLASSIFY_UPDATE_SUCCESS_00008);
     }
 

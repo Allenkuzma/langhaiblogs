@@ -10,7 +10,7 @@ public enum SystemReturnCode implements ReturnCode{
 
     SYSTEM_UNKNOWN_00000(500, "系统未知错误，请联系管理员。"),
 
-    SYSTEM_AUTH_00001(500, "您的权限不足，请联系管理员。")
+    SYSTEM_AUTH_FAIL_00001(403, "您的权限不足，请联系管理员。")
     ;
 
     private Integer code;

@@ -52,7 +52,7 @@ public class NavClassify implements Serializable {
      * 导航分类标签名字
      *
      */
-    @NotBlank(message = "导航分类标签名字")
+    @NotBlank(message = "导航分类标签名字不能为空")
     private String tagName;
 
     /**
