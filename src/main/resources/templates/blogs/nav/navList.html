@@ -19,7 +19,7 @@
   <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="website">管理网站</a>
   </script>
 
   <script type="text/html" id="toolbarDemo">
@@ -60,7 +60,7 @@
         ,{field:'tagName', title: '导航分类标签名字', width:180, align: 'center'}
         ,{field:'addTime', title: '新增时间', width:180, align: 'center'}
         ,{field:'updateTime', title: '修改时间', width:180, align: 'center'}
-        ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}
+        ,{title:'操作', toolbar: '#barDemo', width: 280, align: 'center'}
       ]],
       page: false,
       skin: 'line',
@@ -106,8 +106,8 @@
           area: [common.isModile()?'100%':'500px', common.isModile()?'100%':'400px'],
           content: '/navClassify/navClassifyUpdatePage?id=' + data.id
         });
-      } else if(obj.event === 'look'){
-        window.open(data.href)
+      } else if(obj.event === 'website'){
+        window.location.href = '/navWebsite/navWebsiteListPage?navClassifyId=' + data.id
       }
     });
 

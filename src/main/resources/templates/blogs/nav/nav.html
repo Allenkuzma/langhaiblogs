@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -24,9 +24,19 @@
                     <i class="line"></i>
                 </div>
                 <ul class="nav-item" id="navItem">
-                    <li th:each="navClassify : ${navClassifyList}"><a th:href="'#' + ${navClassify.tagName}"><i th:class="${'iconfont ' + navClassify.icon}"><span th:text="${navClassify.name}"></span></i></a></li>
-                    <li class="download"><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank"><i class="iconfont icon-github"></i>源码下载</a></li>
-                    <li class="download"><a href="/juso/index.html"><i class="iconfont icon-daohang1"></i>聚合搜索</a></li>
+                    <li th:each="navClassify : ${navClassifyList}">
+                        <a th:href="'#' + ${navClassify.tagName}">
+                            <i th:class="${'iconfont ' + navClassify.icon}">
+                                <span th:text="${navClassify.name}"></span>
+                            </i>
+                        </a>
+                    </li>
+                    <li class="download">
+                        <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank"><i class="iconfont icon-github"></i>源码下载</a>
+                    </li>
+                    <li class="download">
+                        <a href="/juso/index.html"><i class="iconfont icon-daohang1"></i>聚合搜索</a>
+                    </li>
                 </ul>
                 <div class="item comment"><a target="_blank" href="/#three"><i class="iconfont icon-liuyan"></i>留言</a></div>
             </nav>
@@ -89,7 +99,6 @@
             }
         }
 
-
         // 监听页面宽度变化
         window.onresize = function() {
             judgeWidth();
@@ -104,7 +113,6 @@
                 oLeftBar.style.left = -249 + 'px';
             }
         }
-
 
         var oNavItem = document.getElementById('navItem');
         var aA = oNavItem.getElementsByTagName('a');
@@ -123,7 +131,6 @@
                 }
             }
         }
-
 
         $(window).scroll(function() {
             if($(window).scrollTop() >= 200){
