@@ -9,6 +9,7 @@ import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,12 +45,14 @@ public class ArticleController {
     /**
      * 跳转到文章新发布页面
      *
-     * @return
+     * @return 文章新发布页面
      */
     @GetMapping("/newArticlePage")
     public String newArticlePage(Model model){
+        // 获取用户的所有标签内容
         List<String> labelContent = labelService.getAllLabelContentByUser();
         model.addAttribute("labelList", labelContent);
+
         return "blogs/article/newArticle";
     }
 
@@ -58,17 +61,18 @@ public class ArticleController {
      *
      * @return 数据 200代表成功 其他代表失败
      */
-    @PostMapping("/issue")
     @ResponseBody
+    @PostMapping("/issue")
     public ResultResponse issue(@RequestBody @Validated ArticleDTO articleDTO){
         articleService.issue(articleDTO);
+
         return ResultResponse.success(ArticleReturnCode.ARTICLE_ISSUE_OK_00000);
     }
 
     /**
      * 跳转到文章列表页面
      *
-     * @return
+     * @return 返回文章列表页面
      */
     @GetMapping("/articleListPage")
     public String articleListPage(Model model,
@@ -76,12 +80,12 @@ public class ArticleController {
                                   @RequestParam(defaultValue = "10") Integer limitArticle){
         // 开启分页助手
         PageHelper.startPage(curr, limitArticle);
-
-        List<Article> allArticle = articleService.getAllArticle();
+        // 用户发布的所有文章list集合数据
+        List<Article> allArticle = articleService.getAllArticle("", "");
         List<Article> articleHeat = articleService.getArticleHeat(allArticle);
-
         model.addAttribute("allArticle", articleHeat);
         model.addAttribute("curr", curr);
+
         return "blogs/article/articleList";
     }
 
@@ -90,23 +94,57 @@ public class ArticleController {
      *
      * @return
      */
-    @GetMapping("/articleList")
     @ResponseBody
+    @GetMapping("/articleList")
     public JSONObject articleList(@RequestParam(defaultValue = "1") Integer curr,
                                   @RequestParam(defaultValue = "10") Integer limitArticle){
-        JSONObject jsonObject = new JSONObject();
-
         PageHelper.startPage(curr, limitArticle);
-        List<Article> allArticle = articleService.getAllArticle();
 
+        JSONObject jsonObject = new JSONObject();
+        List<Article> allArticle = articleService.getAllArticle("", "");
         jsonObject.put("code", 0);
         jsonObject.put("data", allArticle);
-
         PageInfo<Article> pageInfo = new PageInfo<>(allArticle);
         jsonObject.put("count", pageInfo.getTotal());
+
         return jsonObject;
     }
 
+    /**
+     * 获取文章列表页面数据 卡片组件
+     *
+     * @return 用户发布的所有文章list集合数据
+     */
+    @ResponseBody
+    @GetMapping("/articleListCard")
+    public JSONObject articleListCard(@RequestParam(defaultValue = "1") Integer page,
+                                      @RequestParam(defaultValue = "10") Integer limit,
+                                      String title, String abstractText){
+        PageHelper.startPage(page, limit);
+
+        JSONObject jsonObject = new JSONObject();
+        List<Article> allArticle = articleService.getAllArticle(title, abstractText);
+        PageInfo<Article> pageInfo = new PageInfo<>(allArticle);
+        jsonObject.put("count", pageInfo.getTotal());
+        jsonObject.put("msg", "not data");
+        jsonObject.put("code", 0);
+        // 所有的文章 结果处理
+        JSONArray articleArray = new JSONArray();
+        if(CollectionUtil.isNotEmpty(allArticle)){
+            for (Article article : allArticle) {
+                JSONObject articleJson = new JSONObject();
+                articleJson.put("id", article.getId());
+                articleJson.put("image", "/blogs/images/article.jpg");
+                articleJson.put("title", article.getTitle());
+                articleJson.put("remark", article.getAbstractText());
+                articleJson.put("time", article.getAddTimeShow());
+                articleArray.add(articleJson);
+            }
+        }
+        jsonObject.put("data", articleArray);
+
+        return jsonObject;
+    }
 
     /**
      * 跳转到展示文章详细内容的页面

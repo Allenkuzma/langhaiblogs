@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>发布新文章 - 浪海博客</title>
@@ -28,7 +28,6 @@
 
     <blockquote class="layui-elem-quote">
         本页面推荐使用 平板/电脑 进行操作。
-        <p id="issueResult" style="color: red"></p>
     </blockquote>
 
     <form class="layui-form" action="">
@@ -81,9 +80,14 @@
 
     <blockquote class="layui-elem-quote">
         <ul class="menu">
-            <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
-            <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
-            <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
+            <li>
+                &copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.
+                个人网站 2021 ~ 2029年
+            </li>
+            <li>
+                <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a>
+                <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a>
+            </li>
         </ul>
     </blockquote>
 
@@ -91,10 +95,6 @@
 <script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
 <script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
 <script src="/blogs/assets/js/jquery.min.js"></script>
-<script>
-
-
-</script>
 <script th:inline="javascript">
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
     layui.use(['element', 'form'], function(){
@@ -127,12 +127,17 @@
                 }),
                 success: function (data) {
                     if(data.code == 200){
-                        $("#issueResult").html("发布成功，即将跳转到个人空间！");
-                        setTimeout(function(){
+                        layer.msg(data.message, {
+                            icon: 1,
+                            time: 2000
+                        }, function () {
                             window.location.href = "/user/personalPage";
-                        }, 1000);
+                        })
                     }else {
-                        $("#issueResult").text(data.message);
+                        layer.msg(data.message, {
+                            icon: 2,
+                            time: 2000
+                        });
                     }
                 }
             })

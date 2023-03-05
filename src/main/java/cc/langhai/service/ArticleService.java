@@ -28,9 +28,11 @@ public interface ArticleService {
     /**
      * 获取用户发布的所有文章
      *
-     * @return
+     * @param title
+     * @param abstractText
+     * @return 用户发布的所有文章list集合数据
      */
-    List<Article> getAllArticle();
+    List<Article> getAllArticle(String title, String abstractText);
 
     /**
      * 获取一篇文章

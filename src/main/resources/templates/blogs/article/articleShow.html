@@ -42,7 +42,10 @@
 									<span th:text="${article.title}"></span>
 									<span th:text="'浪海值：' + ${article.heat} + '度'"></span><br />
 									<span th:text="'文章标签：' + ${article.labelContent}"></span><br />
-									<span th:text="'文章摘要：' + ${article.abstractText}"></span>
+									<span th:text="'文章摘要：' + ${article.abstractText}"></span><br />
+									<span>
+										使用新的显示器：<a th:href="'/article/articleShowNew?id=' + ${article.id}">新的显示器</a>
+									</span><br />
 								</div>
 								<div th:utext="${article.html}">
 

@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = AuthException.class)
     public ModelAndView authException(Exception exception){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/error/error");
+        modelAndView.setViewName("error/error");
         if(exception instanceof AuthException){
             AuthException authException = (AuthException) exception;
             ReturnCode returnCode = authException.getReturnCode();
@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ModelAndView exception(Exception exception){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/error/error");
+        modelAndView.setViewName("error/error");
         // 添加错误详细信息
         modelAndView.addObject("status", SystemReturnCode.SYSTEM_UNKNOWN_00000.getCode());
         modelAndView.addObject("message", SystemReturnCode.SYSTEM_UNKNOWN_00000.getMessage());

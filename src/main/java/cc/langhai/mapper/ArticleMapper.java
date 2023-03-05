@@ -30,9 +30,12 @@ public interface ArticleMapper {
     /**
      * 获取用户发布的所有文章
      *
-     * @return
+     * @param userId 用户唯一标识
+     * @param title
+     * @param abstractText
+     * @return 用户发布的所有文章list集合数据
      */
-    List<Article> getAllArticle(Long userId);
+    List<Article> getAllArticle(Long userId, String title, String abstractText);
 
     /**
      * 获取一篇文章

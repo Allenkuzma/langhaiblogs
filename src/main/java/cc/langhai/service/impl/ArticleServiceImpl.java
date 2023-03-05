@@ -106,10 +106,10 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getAllArticle() {
+    public List<Article> getAllArticle(String title, String abstractText) {
         Long userId = UserContext.getUserId();
+        List<Article> allArticle = articleMapper.getAllArticle(userId, title, abstractText);
 
-        List<Article> allArticle = articleMapper.getAllArticle(userId);
         return allArticle;
     }
 

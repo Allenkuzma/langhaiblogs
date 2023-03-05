@@ -40,6 +40,12 @@
             a.delete_flag = 0
           AND
             a.user_id = u.id
+          <if test="title != null and title != ''">
+              and a.title like concat( '%' , #{title}, '%')
+          </if>
+          <if test="abstractText != null and abstractText != ''">
+              and a.abstract_text like concat( '%' , #{abstractText}, '%')
+          </if>
         ORDER BY a.add_time DESC
     </select>
 

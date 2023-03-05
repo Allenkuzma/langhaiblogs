@@ -203,17 +203,17 @@
 	},
 	{
 		"id": "error",
-		"title": "错误页面",
+		"title": "文章管理",
 		"icon": "layui-icon layui-icon-face-cry",
 		"type": 0,
 		"href": "",
 		"children": [{
-				"id": 403,
-				"title": "403",
-				"icon": "layui-icon layui-icon-face-smile",
+				"id": 2036,
+				"title": "所有文章",
+				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/error/403.html"
+				"href": "view/document/card.html"
 			},
 			{
 				"id": 404,
