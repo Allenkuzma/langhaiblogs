@@ -70,21 +70,12 @@ public class ArticleController {
     }
 
     /**
-     * 跳转到文章列表页面
+     * 跳转到文章列表管理页面
      *
-     * @return 返回文章列表页面
+     * @return 返回文章列表管理页面
      */
     @GetMapping("/articleListPage")
-    public String articleListPage(Model model,
-                                  @RequestParam(defaultValue = "1") Integer curr,
-                                  @RequestParam(defaultValue = "10") Integer limitArticle){
-        // 开启分页助手
-        PageHelper.startPage(curr, limitArticle);
-        // 用户发布的所有文章list集合数据
-        List<Article> allArticle = articleService.getAllArticle("", "");
-        List<Article> articleHeat = articleService.getArticleHeat(allArticle);
-        model.addAttribute("allArticle", articleHeat);
-        model.addAttribute("curr", curr);
+    public String articleListPage(){
 
         return "blogs/article/articleList";
     }
@@ -96,12 +87,13 @@ public class ArticleController {
      */
     @ResponseBody
     @GetMapping("/articleList")
-    public JSONObject articleList(@RequestParam(defaultValue = "1") Integer curr,
-                                  @RequestParam(defaultValue = "10") Integer limitArticle){
-        PageHelper.startPage(curr, limitArticle);
-
+    public JSONObject articleList(@RequestParam(defaultValue = "1") Integer page,
+                                  @RequestParam(defaultValue = "10") Integer limit,
+                                  String title, String abstractText){
+        // 开启分页助手
+        PageHelper.startPage(page, limit);
+        List<Article> allArticle = articleService.getAllArticle(title, abstractText);
         JSONObject jsonObject = new JSONObject();
-        List<Article> allArticle = articleService.getAllArticle("", "");
         jsonObject.put("code", 0);
         jsonObject.put("data", allArticle);
         PageInfo<Article> pageInfo = new PageInfo<>(allArticle);
@@ -208,13 +200,14 @@ public class ArticleController {
     /**
      * 场景：用户逻辑删除文章，保存到数据库。
      *
-     * @param id
+     * @param id 文章id
      * @return 数据 200代表成功 其他代表失败
      */
-    @PostMapping("/deleteArticle")
     @ResponseBody
+    @DeleteMapping("/deleteArticle")
     public ResultResponse deleteArticle(Long id){
         articleService.deleteArticle(id);
+
         return ResultResponse.success(ArticleReturnCode.ARTICLE_DELETE_OK_00005);
     }
 

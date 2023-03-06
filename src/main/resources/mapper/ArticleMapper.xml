@@ -29,7 +29,8 @@
 
     <select id="getAllArticle" resultType="cc.langhai.domain.Article">
         SELECT
-            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") as add_time_show
+            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") as add_time_show,
+                                       DATE_FORMAT(a.update_time, "%Y-%m-%d %H:%i:%s") as update_time_show
         FROM
             article AS a
         INNER JOIN

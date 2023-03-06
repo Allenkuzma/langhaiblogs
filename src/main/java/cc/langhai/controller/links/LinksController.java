@@ -84,15 +84,16 @@ public class LinksController {
      *
      * @return
      */
-    @RequestAuthority(value = {"admin"})
-    @GetMapping("/linksList")
     @ResponseBody
+    @GetMapping("/linksList")
+    @RequestAuthority(value = {"admin"})
     public JSONObject linksList(){
-        JSONObject jsonObject = new JSONObject();
         List<Links> linksList = linksService.list();
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);
         jsonObject.put("data", linksList);
         jsonObject.put("count", linksList.size());
+
         return jsonObject;
     }
 

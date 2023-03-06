@@ -216,12 +216,12 @@
 				"href": "view/document/card.html"
 			},
 			{
-				"id": 404,
-				"title": "404",
+				"id": 2037,
+				"title": "文章管理",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/error/404.html"
+				"href": "/article/articleListPage"
 			},
 
 			{
