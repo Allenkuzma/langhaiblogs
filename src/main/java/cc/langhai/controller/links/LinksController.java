@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * 首页超链接管理 控制器
+ * 首页超链接管理控制器
  *
  * @author langhai
  * @date 2023-01-12 13:36
@@ -43,8 +43,8 @@ public class LinksController {
      *
      * @return
      */
-    @RequestAuthority(value = {"admin"})
     @GetMapping("/linksListPage")
+    @RequestAuthority(value = {"admin"})
     public String linksListPage(){
 
         return "blogs/links/linksList";
@@ -55,8 +55,8 @@ public class LinksController {
      *
      * @return
      */
-    @RequestAuthority(value = {"admin"})
     @GetMapping("/linksAddPage")
+    @RequestAuthority(value = {"admin"})
     public String linksAddPage(){
 
         return "blogs/links/linksAdd";
@@ -73,6 +73,7 @@ public class LinksController {
         if(ObjectUtil.isNull(id)){
             throw new BusinessException(LinksReturnCode.LINKS_UPDATE_FAIL_00006);
         }
+
         Links links = linksService.getById(id);
         model.addAttribute("links", links);
 
@@ -102,15 +103,16 @@ public class LinksController {
      *
      * @return
      */
+    @ResponseBody
     @PostMapping("/addLinks")
     @RequestAuthority(value = {"admin"})
-    @ResponseBody
     public ResultResponse addLinks(@RequestBody @Validated Links links){
         if(ObjectUtil.isNull(links)){
             return ResultResponse.fail(LinksReturnCode.LINKS_ADD_FAIL_00002);
         }
 
         linksService.addLinks(links);
+
         return ResultResponse.success(LinksReturnCode.LINKS_ADD_SUCCESS_00001);
     }
 
@@ -119,15 +121,16 @@ public class LinksController {
      *
      * @return
      */
+    @ResponseBody
     @DeleteMapping("/deleteLinks")
     @RequestAuthority(value = {"admin"})
-    @ResponseBody
     public ResultResponse deleteLinks(Long id){
         if(ObjectUtil.isNull(id)){
             return ResultResponse.fail(LinksReturnCode.LINKS_DELETE_FAIL_00004);
         }
 
         linksService.deleteLinks(id);
+
         return ResultResponse.success(LinksReturnCode.LINKS_DELETE_SUCCESS_00003);
     }
 

@@ -223,16 +223,14 @@
 				"openType": "_iframe",
 				"href": "/article/articleListPage"
 			},
-
 			{
-				"id": 500,
-				"title": "500",
+				"id": 2038,
+				"title": "标签管理",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/error/500.html"
+				"href": "/label/labelPage"
 			}
-
 		]
 	},
 	{

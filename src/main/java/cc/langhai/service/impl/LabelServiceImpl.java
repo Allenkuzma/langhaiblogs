@@ -57,7 +57,6 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public Label verifyAddLabel(String content) {
         Long userId = UserContext.getUserId();
-
         // 先判断标签数量是否超过上限
         List<Label> allLabelByUser = labelMapper.getAllLabelByUser(userId);
         if(LabelConstant.LABEL_COUNT_ALL <= allLabelByUser.size()){
@@ -75,6 +74,7 @@ public class LabelServiceImpl implements LabelService {
         label.setAddTime(new Date());
         label.setContent(content);
         labelMapper.insertLabel(label);
+
         return label;
     }
 
@@ -138,7 +138,6 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public Label labelPermission(Long id) {
         Long userId = UserContext.getUserId();
-
         // 判断标签是否有权限操作
         Label label = labelMapper.getLabelById(id);
         if(ObjectUtil.isNull(label)){
@@ -148,12 +147,14 @@ public class LabelServiceImpl implements LabelService {
         if(!label.getUserId().equals(userId)){
             throw new BusinessException(LabelReturnCode.LABEL_PERMISSION_FAIL_00009);
         }
+
         return label;
     }
 
     @Override
     public Label labelExist(String content) {
         Label labelByUserAndContent = labelMapper.getLabelByUserAndContent(UserContext.getUserId(), content);
+
         return labelByUserAndContent;
     }
 

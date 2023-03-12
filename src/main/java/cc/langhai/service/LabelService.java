@@ -31,9 +31,10 @@ public interface LabelService {
     List<String> getAllLabelContentByUser();
 
     /**
-     * 新增标签的时候 进行校验
+     * 新增标签的时候进行校验
      *
-     * @param content
+     * @param content 标签内容
+     * @return
      */
     Label verifyAddLabel(String content);
 

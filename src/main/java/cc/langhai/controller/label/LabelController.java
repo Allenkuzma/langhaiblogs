@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 标签 控制器
+ * 标签控制器
  *
  * @author langhai
  * @date 2023-01-05 11:39
@@ -41,6 +41,7 @@ public class LabelController {
      */
     @GetMapping("/labelPage")
     public String labelPage(){
+
         return "blogs/label/labelList";
     }
 
@@ -51,6 +52,7 @@ public class LabelController {
      */
     @GetMapping("/labelAddPage")
     public String labelAddPage(){
+
         return "blogs/label/labelAdd";
     }
 
@@ -63,6 +65,7 @@ public class LabelController {
     public String labelUpdatePage(Long id, Model model, String content){
         model.addAttribute("id", id);
         model.addAttribute("content", content);
+
         return "blogs/label/labelUpdate";
     }
 
@@ -71,19 +74,19 @@ public class LabelController {
      *
      * @return
      */
-    @GetMapping("/labelList")
     @ResponseBody
+    @GetMapping("/labelList")
     public JSONObject labelList(@RequestParam(defaultValue = "1") Integer page,
                                 @RequestParam(defaultValue = "10") Integer limit){
-        JSONObject jsonObject = new JSONObject();
         PageHelper.startPage(page, limit);
-
+        // 查询用户标签数据
         List<Label> labelList = labelService.getAllLabelByUser();
         PageInfo<Label> labelPageInfo = new PageInfo<>(labelList);
-
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);
         jsonObject.put("data", labelList);
         jsonObject.put("count", labelPageInfo.getTotal());
+
         return jsonObject;
     }
 
@@ -92,31 +95,32 @@ public class LabelController {
      *
      * @return
      */
-    @PostMapping("/addLabel")
     @ResponseBody
+    @PostMapping("/addLabel")
     public ResultResponse addLabel(String content){
         if(StrUtil.isBlank(content)){
             return ResultResponse.fail(LabelReturnCode.LABEL_ADD_FAIL_00002);
         }
 
         labelService.verifyAddLabel(content);
+
         return ResultResponse.success(LabelReturnCode.LABEL_ADD_SUCCESS_00001);
     }
-
 
     /**
      * 删除标签
      *
      * @return
      */
-    @PostMapping("/deleteLabel")
     @ResponseBody
+    @DeleteMapping("/deleteLabel")
     public ResultResponse deleteLabel(Long id){
         if(ObjectUtil.isNull(id)){
             return ResultResponse.fail(LabelReturnCode.LABEL_DELETE_FAIL_00004);
         }
 
         labelService.deleteLabel(id);
+
         return ResultResponse.success(LabelReturnCode.LABEL_DELETE_SUCCESS_00003);
     }
 
@@ -125,14 +129,15 @@ public class LabelController {
      *
      * @return
      */
-    @PostMapping("/updateLabel")
     @ResponseBody
+    @PostMapping("/updateLabel")
     public ResultResponse updateLabel(Long id, String content){
         if(ObjectUtil.isNull(id) || StrUtil.isBlank(content)){
             return ResultResponse.fail(LabelReturnCode.LABEL_UPDATE_FAIL_00006);
         }
-
+        // 标签执行更新操作
         labelService.updateLabel(id, content);
+
         return ResultResponse.success(LabelReturnCode.LABEL_UPDATE_SUCCESS_00005);
     }
 
@@ -147,7 +152,6 @@ public class LabelController {
                                     @RequestParam(defaultValue = "10") Integer size,
                                     Long id){
         PageInfo<Article> pageInfo = labelService.article(page, size, id);
-
         model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
         model.addAttribute("page", page);
         model.addAttribute("size", size);
@@ -156,6 +160,7 @@ public class LabelController {
 
         Label label = labelService.getById(id);
         model.addAttribute("label", label);
+
         return "blogs/label/articleLabel";
     }
 

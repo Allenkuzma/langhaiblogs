@@ -25,11 +25,13 @@ public class LinksServiceImpl extends ServiceImpl<LinksMapper, Links> implements
 
     @Override
     public void addLinks(Links links) {
+
         this.save(links);
     }
 
     @Override
     public void deleteLinks(Long id) {
+
         this.removeById(id);
     }
 
