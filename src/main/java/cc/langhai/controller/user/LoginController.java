@@ -1,11 +1,9 @@
 package cc.langhai.controller.user;
 
-import cc.langhai.domain.User;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.RegisterService;
 import cc.langhai.utils.ImageVerifyCodeGenerator;
-import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ public class LoginController {
     private RegisterService registerService;
 
     /**
-     * 跳转到 登录 页面
+     * 跳转到登录页面
      *
      * @return
      */
@@ -69,20 +67,22 @@ public class LoginController {
     /**
      * 用户登录功能
      *
-     * @param username
-     * @param password
-     * @param verifyCodeText
-     * @param session
-     * @return
+     * @param username        用户账号
+     * @param password        用户密码
+     * @param verifyCodeText  验证码内容
+     * @param remember        记住我功能 七天免登录
+     * @return 用户登录处理的结果
      */
-    @PostMapping("/loginEnter")
     @ResponseBody
+    @PostMapping("/loginEnter")
     public ResultResponse loginEnter(@RequestParam("username") String username,
                              @RequestParam("password") String password,
                              @RequestParam("verifyCodeText") String verifyCodeText,
-                             HttpSession session, HttpServletResponse response,
-                             String remember){
+                             @RequestParam(value = "remember", required = false) String remember,
+                             HttpSession session, HttpServletResponse response){
+        // 用户登录服务处理
         registerService.loginEnter(username, password, verifyCodeText, session, remember, response);
+        // 用户登录成功
         return ResultResponse.success(UserReturnCode.USER_LOGIN_ENTER_YES_00014);
     }
 

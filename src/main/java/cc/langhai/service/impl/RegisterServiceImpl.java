@@ -1,6 +1,7 @@
 package cc.langhai.service.impl;
 
 import cc.langhai.config.constant.RoleConstant;
+import cc.langhai.config.constant.UserConstant;
 import cc.langhai.config.system.SystemConfig;
 import cc.langhai.domain.Role;
 import cc.langhai.domain.User;
@@ -205,17 +206,37 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public void loginEnter(String username, String password, String verifyCodeText,
                            HttpSession session, String remember, HttpServletResponse response) {
+        // 对用户登录信息进行非空校验
         if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(verifyCodeText)){
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_NULL_00015);
         }
 
-        // 构建
+        // 判断用户是否处于锁定状态
+        String userLockFlag = redisTemplate.opsForValue().get("user:lock:" + username);
+        if("lock".equals(userLockFlag)){
+            throw new BusinessException(UserReturnCode.USER_LOGIN_LOCK_STATUS_00021);
+        }
+
+        // 构建AES加密工具
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, systemConfig.getSecret().getBytes());
         // 加密为16进制表示
         String encryptHex = aes.encryptHex(password);
         User user = userService.getUserByUsernameAndPassword(username, encryptHex);
-
         if(ObjectUtil.isNull(user)){
+            String lockCount = redisTemplate.opsForValue().get("user:lock:count:" + username);
+            if(StrUtil.isNotBlank(lockCount)){
+                if(Integer.valueOf(lockCount) >= UserConstant.USER_LOGIN_ERROR_COUNT - 1){
+                    // 存储到redis当中
+                    redisTemplate.opsForValue().set("user:lock:" + username,
+                            "lock", 5, TimeUnit.MINUTES);
+                }
+                redisTemplate.opsForValue().increment("user:lock:count:" + username, 1);
+            }else {
+                // 存储到redis当中
+                redisTemplate.opsForValue().set("user:lock:count:" + username,
+                        "1", 5, TimeUnit.MINUTES);
+            }
+
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_00016);
         }
 

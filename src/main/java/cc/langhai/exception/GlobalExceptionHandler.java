@@ -24,8 +24,8 @@ public class GlobalExceptionHandler {
      * @param exception
      * @return
      */
-    @ExceptionHandler(value = BusinessException.class)
     @ResponseBody
+    @ExceptionHandler(value = BusinessException.class)
     public ResultResponse businessException(Exception exception){
         if(exception instanceof BusinessException){
             BusinessException businessException = (BusinessException) exception;
@@ -43,8 +43,8 @@ public class GlobalExceptionHandler {
      * @param exception
      * @return
      */
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResultResponse validException(Exception exception){
         if(exception instanceof MethodArgumentNotValidException){
             MethodArgumentNotValidException validException = (MethodArgumentNotValidException) exception;

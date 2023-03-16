@@ -6,7 +6,7 @@ package cc.langhai.response;
  * @author langhai
  * @date 2022-11-22 20:28
  */
-public enum UserReturnCode implements ReturnCode{
+public enum UserReturnCode implements ReturnCode {
 
     EMAIL_CODE_00000(200, "邮件验证码发送成功，请注意查收。"),
 
@@ -38,7 +38,7 @@ public enum UserReturnCode implements ReturnCode{
 
     USER_LOGIN_PARAM_NULL_00015(500, "用户登录参数不能为空。"),
 
-    USER_LOGIN_PARAM_VERIFY_00016(500, "用户登录参数非法。"),
+    USER_LOGIN_PARAM_VERIFY_00016(500, "用户账号或者密码错误。"),
 
     USER_LOGOUT_YES_00017(200, "用户成功退出。"),
 
@@ -47,6 +47,8 @@ public enum UserReturnCode implements ReturnCode{
     USER_PERSONAL_UPDATE_USER_INFO_PARAM_FAIL_00019(500, "用户个人信息参数校验失败。"),
 
     USER_LOGIN_PARAM_VERIFY_CODE_FAIL_00020(500, "验证码校验失败。"),
+
+    USER_LOGIN_LOCK_STATUS_00021(500, "用户处于锁定状态，请于5分钟后重试。"),
     ;
 
     private Integer code;
