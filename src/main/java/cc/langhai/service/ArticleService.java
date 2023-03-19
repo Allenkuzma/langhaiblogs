@@ -86,11 +86,11 @@ public interface ArticleService {
     /**
      * 文章搜索功能
      *
-     * @param size
-     * @param page
-     * @param searchArticleStr
-     * @param labelId
-     * @return
+     * @param size              显示的条数
+     * @param page              页数
+     * @param searchArticleStr  搜索的文章标题
+     * @param labelId           标签id
+     * @return                  文章分页对象
      */
     PageInfo<Article> search(Integer page, Integer size, String searchArticleStr, Long labelId);
 

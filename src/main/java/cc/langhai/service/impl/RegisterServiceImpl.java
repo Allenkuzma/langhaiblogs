@@ -74,7 +74,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         String ip = IPUtil.getIP(request);
-        //先从redis获得这个ip地址
+        // 先从redis获得这个ip地址
         String ipCount = redisTemplate.opsForValue().get("email:register:" + ip);
         if(StringUtils.isBlank(ipCount)){
             redisTemplate.opsForValue().set("email:register:" + ip, "1", 24, TimeUnit.HOURS);
@@ -87,7 +87,7 @@ public class RegisterServiceImpl implements RegisterService {
             redisTemplate.opsForValue().set("email:register:" + ip, sum.toString(), 24, TimeUnit.HOURS);
         }
 
-        //获取当天注册账号的次数信息
+        // 获取当天注册账号的次数信息
         String nowDay = DateUtil.getNowDay();
         String nowDayCount = redisTemplate.opsForValue().get("email:register:" + nowDay);
         if(StrUtil.isBlank(nowDayCount)){
@@ -133,11 +133,11 @@ public class RegisterServiceImpl implements RegisterService {
 
         // 对用户名进行合法判断 用户名（3到8位的数字和字母组合）
         if(username.length() > 8 || username.length() < 3){
-            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_LENGTH_00022);
         }
 
         if(!StringUtil.isAlphaNumeric(username)){
-            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
+            throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_ALPHANUMERIC_00023);
         }
 
         this.verifyUsername(username);

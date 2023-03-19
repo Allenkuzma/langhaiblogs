@@ -1,10 +1,8 @@
 package cc.langhai.controller.user;
 
-import cc.langhai.exception.BusinessException;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.RegisterService;
-import cc.langhai.utils.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +25,13 @@ public class RegisterController {
     private RegisterService registerService;
 
     /**
-     * 跳转到 注册页面
+     * 跳转到注册页面
      *
      * @return
      */
     @GetMapping("/registerPage")
     public String registerPage(){
+
         return "blogs/user/register";
     }
 
@@ -41,10 +40,11 @@ public class RegisterController {
      *
      * @return
      */
-    @PostMapping("/sendEmailCode")
     @ResponseBody
+    @PostMapping("/sendEmailCode")
     public ResultResponse sendEmailCode(@RequestParam("email") String email, HttpServletRequest request){
         registerService.sendEmailCode(email, request);
+
         return ResultResponse.success(UserReturnCode.EMAIL_CODE_00000);
     }
 
@@ -73,6 +73,7 @@ public class RegisterController {
                                    @RequestParam("email") String email,
                                    @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session){
         registerService.register(username, password, nickname, email, verifyCodeText, session);
+
         return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);
     }
 

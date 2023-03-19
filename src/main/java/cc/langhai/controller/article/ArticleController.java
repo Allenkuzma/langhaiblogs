@@ -296,9 +296,9 @@ public class ArticleController {
      * 跳转到展示文章详细内容的页面 新版
      *
      * @param   id 文章id
-     * @return 文章公开的情况下，页面 blogs/article/articleShow。
+     * @return 文章公开的情况下，页面 blogs-new/read。
      *         文章不公开的情况下，验证当前用户与文章作者是否匹配。
-     *                          匹配页面 blogs/article/articleShow
+     *                          匹配页面 blogs-new/read
      *                          不匹配页面 blogs/user/login
      */
     @GetMapping("/articleShowNew")

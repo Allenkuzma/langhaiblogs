@@ -38,4 +38,10 @@ public class SystemConfig {
      *
      */
     private Integer registerDayUserCount;
+
+    /**
+     * 首页友情链接标识语
+     *
+     */
+    public static final String INDEX_SLOGAN = "再小的个体,也有自己的品牌。";
 }

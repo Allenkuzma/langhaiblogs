@@ -49,6 +49,10 @@ public enum UserReturnCode implements ReturnCode {
     USER_LOGIN_PARAM_VERIFY_CODE_FAIL_00020(500, "验证码校验失败。"),
 
     USER_LOGIN_LOCK_STATUS_00021(500, "用户处于锁定状态，请于5分钟后重试。"),
+
+    USER_REGISTER_PARAM_VERIFY_LENGTH_00022(500, "用户名长度不符合要求，3到8位。"),
+
+    USER_REGISTER_PARAM_VERIFY_ALPHANUMERIC_00023(500, "用户名必须由字母和数字组成。"),
     ;
 
     private Integer code;

@@ -1,13 +1,11 @@
 package cc.langhai.listener;
 
-import org.springframework.stereotype.Component;
-
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 /**
- * 登录session 监听器 限制一个账号只能一处登录
+ * 登录session监听器 限制一个账号只能一处登录
  *
  * @author langhai
  * @date 2023-01-12 14:53

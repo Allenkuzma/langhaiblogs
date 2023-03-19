@@ -2,6 +2,7 @@ package cc.langhai.controller;
 
 import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.config.constant.LinksConstant;
+import cc.langhai.config.system.SystemConfig;
 import cc.langhai.domain.Links;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
@@ -37,7 +38,7 @@ public class IndexController {
     private LinksService linksService;
 
     /**
-     * 跳转到 浪海博客 首页
+     * 跳转到浪海博客首页
      *
      * @return 首页页面 blogs/index.html
      */
@@ -73,6 +74,10 @@ public class IndexController {
             List<Links> bottomLinks = linksList.subList(6, linksList.size());
             model.addAttribute("bottomLinks", bottomLinks);
         }
+
+        // 首页友情链接标识语
+        model.addAttribute("slogan", SystemConfig.INDEX_SLOGAN);
+
         return "blogs/index";
     }
 

@@ -41,7 +41,7 @@ public class EmailUtil {
         simpleMailMessage.setText("注册验证码：" + random + "~~ 网址www.langhai.cc ~~" + "有效期5分钟");
         simpleMailMessage.setSubject("浪海博客注册验证码");
         simpleMailMessage.setFrom(from);
-        //收件人的邮箱地址
+        // 收件人的邮箱地址
         simpleMailMessage.setTo(email);
 
         try {

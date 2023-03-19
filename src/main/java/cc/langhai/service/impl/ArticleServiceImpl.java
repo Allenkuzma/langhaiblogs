@@ -116,6 +116,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article getById(Long id) {
         Article article = articleMapper.getById(id);
+
         return article;
     }
 
@@ -159,9 +160,11 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
 
+        // 处理热点排名前十的文章
         if(article.getPublicShow().equals(1)){
-            this.handleHeatTopMap(article);
+            this.handleHeatTopSet(article);
         }
+
         return article;
     }
 
@@ -235,6 +238,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow(searchArticleStr, labelId);
         PageInfo<Article> pageInfo = new PageInfo<>(allArticlePublicShow);
+
         return pageInfo;
     }
 
@@ -361,8 +365,9 @@ public class ArticleServiceImpl implements ArticleService {
      *
      * @param articleSave
      */
-    private void handleHeatTopMap(Article articleSave){
+    private void handleHeatTopSet(Article articleSave){
         TreeSet<Article> articleHeatTop10 = ArticleConstant.ARTICLE_HEAT_TOP_10;
+        // 删除已经存在的文章
         if(CollectionUtil.isNotEmpty(articleHeatTop10)){
             Iterator<Article> iterator = articleHeatTop10.iterator();
             while (iterator.hasNext()){
@@ -372,7 +377,9 @@ public class ArticleServiceImpl implements ArticleService {
                 }
             }
         }
+        // 添加到set集合
         articleHeatTop10.add(articleSave);
+        // 只存储十篇文章
         if(articleHeatTop10.size() > 10){
             TreeSet<Article> articleTreeSet = new TreeSet<>();
             for (Article article : articleHeatTop10) {
