@@ -1,4 +1,4 @@
-#浪海博客系统配置参数
+# 浪海博客系统配置参数
 langhai:
   blogs:
     registerDayEmailCount: 20
@@ -7,7 +7,7 @@ langhai:
     secret: NB-20K-langhai-8
 
 
-#程序端口号
+# 程序端口号
 server:
   port: 80
 
@@ -24,17 +24,17 @@ spring:
 
   # 邮件发送配置
   mail:
-    #配置SMTP的服务器地址
+    # 配置SMTP的服务器地址
     host: smtp.qq.com
-    #发送者的QQ邮箱
+    # 发送者的QQ邮箱
     username:
-    #配置秘钥，授权码（不是QQ密码）
+    # 配置秘钥，授权码（不是QQ密码）
     password:
-    #端口号配置
+    # 端口号配置
     port: 587
-    #邮件的编码格式
+    # 邮件的编码格式
     default-encoding: utf-8
-    #配置SSL加密
+    # 配置SSL加密
     properties:
       mail:
         smtp:
@@ -93,4 +93,10 @@ es:
 logging:
   level:
     root: info
+
+netty:
+  # 监听websocket连接的端口
+  port: 20202
+  # websocket连接地址
+  ws: ws://127.0.0.1:${netty.port}/ws
 

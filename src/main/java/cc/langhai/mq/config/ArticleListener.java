@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * mq Listener
+ * mq文章模块Listener
  *
  * @author langhai
  * @date 2023-01-09 10:47
  */
 @Component
-public class HotelListener {
+public class ArticleListener {
 
     @Autowired
     private ESService esService;
@@ -26,7 +26,7 @@ public class HotelListener {
     private ArticleService articleService;
 
     /**
-     * 监听酒店新增或修改的业务
+     * 监听文章新增或修改的业务
      *
      * @param id 酒店id
      */
@@ -46,7 +46,7 @@ public class HotelListener {
     }
 
     /**
-     * 监听酒店删除的业务
+     * 监听文章删除的业务
      * @param id 酒店id
      */
     @RabbitListener(queues = MqConstants.BLOGS_DELETE_QUEUE)

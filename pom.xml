@@ -20,7 +20,7 @@
     </properties>
 
     <dependencies>
-        <!-- springboot web场景启动器-->
+        <!-- springboot web场景启动器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -152,6 +152,13 @@
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
         </dependency>
+        <!-- netty核心组件 -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.36.Final</version>
+        </dependency>
+        
     </dependencies>
 
     <build>
