@@ -9,6 +9,8 @@ import cc.langhai.domain.UserInfo;
 import cc.langhai.domain.UserRole;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.listener.LonginUserSessionConfig;
+import cc.langhai.response.NettyCode;
+import cc.langhai.response.SystemReturnCode;
 import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.*;
 import cc.langhai.utils.*;
@@ -271,6 +273,8 @@ public class RegisterServiceImpl implements RegisterService {
         // 记住我功能
         if("on".equals(remember)){
             this.remember(username, response);
+        }else {
+            this.temporaryRemember(username, response);
         }
     }
 
@@ -376,5 +380,33 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         return jsonObject;
+    }
+
+    @Override
+    public void temporaryRemember(String username, HttpServletResponse response) {
+        String md5 = DigestUtil.md5Hex(username + systemConfig.getSecret());
+        UUID uuid = UUID.randomUUID();
+        // 秘钥生成规则 MD5 + UUID
+        String cipher = uuid + md5;
+        Cookie cookie = new Cookie("userLoginCipher" + username, cipher);
+        cookie.setPath("/");
+        cookie.setMaxAge(2 * 60 * 60);
+        response.addCookie(cookie);
+
+        // 存储到 redis 当中
+        redisTemplate.opsForValue().set("userLoginCipher" + username, cipher, 2 * 60, TimeUnit.MINUTES);
+    }
+
+    @Override
+    public void verifyUserWebSocket(String userName, String userPassword) {
+        // 进行用户信息参数非空校验
+        if(StrUtil.isBlank(userName) || StrUtil.isBlank(userPassword)){
+            throw new BusinessException(NettyCode.USER_INFO_VERIFY_PARAM_NULL_FAIL_00000);
+        }
+        // 开始校验用户信息
+        String redis = redisTemplate.opsForValue().get("userLoginCipher" + userName);
+        if(!userPassword.equals(redis)){
+            throw new BusinessException(NettyCode.USER_INFO_VERIFY_PARAM_FAIL_00000);
+        }
     }
 }

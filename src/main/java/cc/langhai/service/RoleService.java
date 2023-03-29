@@ -1,7 +1,10 @@
 package cc.langhai.service;
 
 import cc.langhai.domain.Role;
+import cc.langhai.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * 角色 service接口
@@ -32,4 +35,12 @@ public interface RoleService extends IService<Role> {
      * @param name
      */
     void updateUserRole(Long id, String name);
+
+    /**
+     * 获取指定角色名称的用户
+     *
+     * @param roleName 角色名称
+     * @return
+     */
+    List<User> getUserByRoleName(String roleName);
 }

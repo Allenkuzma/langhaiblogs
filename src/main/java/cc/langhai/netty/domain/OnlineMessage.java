@@ -12,14 +12,19 @@ import lombok.Data;
 public class OnlineMessage {
 
     /**
-     * 消息发送者id
+     * 消息发送者名字
      */
-    private String sendId;
+    private String userName;
 
     /**
-     * 消息接受者id
+     * 消息发送者密码
      */
-    private String acceptId;
+    private String userPassword;
+
+    /**
+     * 消息接受者名字
+     */
+    private String acceptName;
 
     /**
      * 消息内容

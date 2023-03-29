@@ -85,4 +85,20 @@ public interface RegisterService {
      * @return
      */
     JSONObject enter(HttpServletRequest request);
+
+    /**
+     * 临时记住我功能 在cookie和redis存储信息用户信息
+     *
+     * @param username
+     * @param response
+     */
+    void temporaryRemember(String username, HttpServletResponse response);
+
+    /**
+     * 用于websocket用户信息校验
+     *
+     * @param userName      用户账号相关信息
+     * @param userPassword  用户秘钥相关信息
+     */
+    void verifyUserWebSocket(String userName, String userPassword);
 }

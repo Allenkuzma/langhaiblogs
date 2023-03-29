@@ -22,4 +22,21 @@
             r.id = ul.role_id
     </select>
 
+    <select id="getUserByRoleName" resultType="cc.langhai.domain.User">
+        SELECT
+            u.*
+        FROM
+            role AS r
+                INNER JOIN
+            user AS u
+                INNER JOIN
+            user_role AS ul
+            ON
+                    u.id = ul.user_id
+                AND
+                    r.id = ul.role_id
+            WHERE
+                    r.name = #{roleName}
+    </select>
+
 </mapper>

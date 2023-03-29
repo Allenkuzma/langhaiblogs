@@ -1,21 +1,24 @@
 package cc.langhai.netty.config;
 
 import cc.langhai.netty.handler.WebSocketHandler;
+import cn.hutool.core.util.StrUtil;
 import io.netty.channel.ChannelId;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.HashMap;
 
 /**
- * session超时, 移除 websocket对应的channel。
+ * session超时,移除websocket对应的channel。
  *
  * @author langhai
  * @date 2023-03-23 19:23
  */
 @Slf4j
+@WebListener
 public class MySessionListener implements HttpSessionListener {
 
     @Override
@@ -58,11 +61,11 @@ public class MySessionListener implements HttpSessionListener {
             }
         }
 
-        public static synchronized HttpSession getSession(String session_id) {
-            if (session_id == null) {
+        public static synchronized HttpSession getSession(String sessionId) {
+            if (StrUtil.isNotBlank(sessionId)) {
                 return null;
             }
-            return (HttpSession) myMap.get(session_id);
+            return (HttpSession) myMap.get(sessionId);
         }
     }
 }
