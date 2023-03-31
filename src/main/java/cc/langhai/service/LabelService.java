@@ -15,7 +15,6 @@ import java.util.Set;
  */
 public interface LabelService {
 
-
     /**
      * 获取用户的所有标签
      *
