@@ -1,6 +1,8 @@
 package cc.langhai.netty.config;
 
-import cc.langhai.netty.handler.WebSocketHandler;
+import cc.langhai.domain.User;
+import cc.langhai.netty.handler.OnlineWebSocketHandler;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.ChannelId;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +32,15 @@ public class MySessionListener implements HttpSessionListener {
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
         HttpSession session = httpSessionEvent.getSession();
-        Integer userId = session.getAttribute("userId") == null ? null : Integer.parseInt(session.getAttribute("userId").toString());
+        User user = (User) session.getAttribute("user");
         // 销毁时从websocket channel中移除
-        if (userId != null) {
-            ChannelId channelId = WebSocketHandler.userMap.get(userId);
+        if (ObjectUtil.isNotNull(user)) {
+            ChannelId channelId = OnlineWebSocketHandler.userMap.get(user.getUsername());
             if (channelId != null) {
                 // 移除了私聊的channel对象, 群聊的还未移除
-                WebSocketHandler.userMap.remove(userId);
-                WebSocketHandler.channelGroup.remove(channelId);
-                log.info("session timeout,remove channel, userId={}", userId);
+                OnlineWebSocketHandler.userMap.remove(user.getUsername());
+                OnlineWebSocketHandler.channelGroup.remove(channelId);
+                log.info("session timeout,remove channel, userName={}", user.getUsername());
             }
         }
         MySessionContext.DelSession(session);

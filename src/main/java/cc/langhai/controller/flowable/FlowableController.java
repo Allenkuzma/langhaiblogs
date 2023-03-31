@@ -15,8 +15,8 @@ import java.util.List;
  * @author langhai
  * @date 2023-03-28 11:54
  */
-// @RestController
-// @RequestMapping("/flowableTest")
+@RestController
+@RequestMapping("/flowableTest")
 public class FlowableController {
 
     @Autowired
