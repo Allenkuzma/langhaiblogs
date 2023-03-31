@@ -22,7 +22,7 @@ public class OnlineMessage {
     private String userPassword;
 
     /**
-     * 消息接受者名字
+     * 消息接收者名字
      */
     private String acceptName;
 

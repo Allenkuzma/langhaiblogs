@@ -2,6 +2,7 @@ package cc.langhai.netty.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,6 +19,7 @@ public class NettyInitListen implements CommandLineRunner {
     @Value("${server.port}")
     Integer serverPort;
 
+    @Async
     @Override
     public void run(String... args) throws Exception {
         try {

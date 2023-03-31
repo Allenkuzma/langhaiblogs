@@ -2,12 +2,15 @@ package cc.langhai.controller;
 
 import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.config.constant.LinksConstant;
+import cc.langhai.config.constant.RoleConstant;
 import cc.langhai.config.system.SystemConfig;
 import cc.langhai.domain.Links;
+import cc.langhai.domain.Role;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserInfo;
 import cc.langhai.service.LinksService;
 import cc.langhai.service.RegisterService;
+import cc.langhai.service.RoleService;
 import cc.langhai.service.UserInfoService;
 import cn.hutool.core.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,9 @@ public class IndexController {
     @Autowired
     private LinksService linksService;
 
+    @Autowired
+    private RoleService roleService;
+
     /**
      * 跳转到浪海博客首页
      *
@@ -51,6 +57,12 @@ public class IndexController {
         User user = (User) session.getAttribute("user");
         if(ObjectUtil.isNotNull(user)){
             userId = user.getId();
+            // 权限相关处理
+            Role role = roleService.getRole(userId);
+            if(RoleConstant.ADMIN.equals(role.getName())){
+                user.setAdmin(true);
+            }
+
         }
 
         UserInfo userInfo = userInfoService.getUserInfoById(userId);

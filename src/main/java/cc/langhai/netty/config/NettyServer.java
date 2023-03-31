@@ -1,7 +1,6 @@
 package cc.langhai.netty.config;
 
 import cc.langhai.netty.handler.OnlineWebSocketHandler;
-import cc.langhai.netty.handler.WebSocketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -53,8 +52,6 @@ public class NettyServer {
                             ch.pipeline().addLast(new HttpObjectAggregator(8192));
                             // 添加在线客服聊天消息处理类
                             ch.pipeline().addLast(new OnlineWebSocketHandler());
-                            // 添加测试的聊天消息处理类
-                            // ch.pipeline().addLast(new WebSocketHandler());
                             ch.pipeline().addLast(new WebSocketServerProtocolHandler("/ws", null, true, 65536 * 10));
                         }
                     });

@@ -17,7 +17,9 @@ windows ==>> java -jar langhai-blogs.jar
 技术选型：  
 springboot 后端快速构建框架  
 thymeleaf 数据模板引擎  
-hutool java工具集
+hutool java工具集  
+netty websocket flowable  
+redis minio elasticSearch rabbitMQ
 
 版权/引用声明  
 浪海博客系统的主要前端模板来自html5up.net网站。  

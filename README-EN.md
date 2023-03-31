@@ -19,7 +19,9 @@ windows ==>> java -jar langhai-blogs.jar
 Technical selection:  
 springboot Back-end rapid building framework   
 thymeleaf Data template engine  
-hutool Java toolset
+hutool Java toolset  
+netty websocket flowable  
+redis minio elasticSearch rabbitMQ
 
 Copyright/citation statement  
 The main front-end template of Langhai blog system comes from the html5up.net website.  

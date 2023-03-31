@@ -47,6 +47,10 @@
 							<ul class="actions">
 								<li><a href="#one" class="button">了解更多</a></li>
 								<li><a href="/image/imagePage" class="button">图库</a></li>
+								<li th:switch="${session.user?.isAdmin()}">
+									<a th:case="true" href="/netty/customer" class="button">客服聊天</a>
+									<a th:case="*" href="/netty/tourist" class="button">客户聊天</a>
+								</li>
 							</ul>
 							<ul class="actions">
 								<li><a href="/article/articleSearchPageNew" class="button">文章库</a></li>

@@ -1,5 +1,6 @@
 package cc.langhai.domain;
 
+import cc.langhai.config.constant.RoleConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -34,5 +35,10 @@ public class User {
     private Date updateTime;
 
     private String role;
+
+    /**
+     * 是否为管理员
+     */
+    private boolean isAdmin;
 
 }
