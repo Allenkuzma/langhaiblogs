@@ -48,9 +48,9 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public List<String> getAllLabelContentByUser() {
         List<Label> labelList = this.getAllLabelByUser();
-
         // collect 用来存储文章标签的内容
         List<String> collect = labelList.stream().map(label -> label.getContent()).collect(Collectors.toList());
+
         return collect;
     }
 

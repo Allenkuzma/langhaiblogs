@@ -21,7 +21,7 @@
     <ul class="layui-nav layui-bg-green" lay-filter="">
         <li class="layui-nav-item"><a href="/">首页</a></li>
         <li class="layui-nav-item layui-this"><a href="/article/newArticlePage">发表新文章</a></li>
-        <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
+        <li class="layui-nav-item"><a href="/pear/index.html">后台管理</a></li>
         <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
     </ul>
 
@@ -31,32 +31,34 @@
 
     <form class="layui-form" action="">
         <div class="layui-form-item">
-            <label class="layui-form-label">文章标题</label>
-            <div class="layui-input-block">
-                <input type="text" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入文章标题" class="layui-input">
+            <div class="layui-inline">
+                <label class="layui-form-label">文章标题</label>
+                <div class="layui-input-block">
+                    <input type="text" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入文章标题" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">标签名字</label>
+                <div class="layui-input-block">
+                    <input type="text" id="content" name="content" lay-verify="title" autocomplete="off" placeholder="请输入标签名字（新增）" class="layui-input">
+                </div>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">标签名字</label>
-            <div class="layui-input-block">
-                <input type="text" id="content" name="content" lay-verify="title" autocomplete="off" placeholder="请输入标签名字（新增）" class="layui-input">
+            <div class="layui-inline">
+                <label class="layui-form-label">标签名字</label>
+                <div class="layui-input-inline">
+                    <select name="label-langhai" id="label-langhai" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                    </select>
+                </div>
             </div>
-        </div>
-
-        <div class="layui-inline">
-            <label class="layui-form-label">标签名字</label>
-            <div class="layui-input-inline">
-                <select name="label-langhai" id="label-langhai" lay-verify="required" lay-search="">
-                    <option value="">直接选择或搜索选择</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否公开-默认不公开</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否公开</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
+                </div>
             </div>
         </div>
 

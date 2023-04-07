@@ -18,23 +18,24 @@ public interface LabelMapper {
     /**
      * 获取用户的所有标签
      *
-     * @return
+     * @param userId 用户唯一标识
+     * @return  用户拥有的所有标签
      */
     List<Label> getAllLabelByUser(Long userId);
 
     /**
      * 新增标签
      *
-     * @param label
+     * @param label 标签实体类
      */
     void insertLabel(Label label);
 
     /**
      * 查询用户的标签
      *
-     * @param userId
-     * @param content
-     * @return
+     * @param userId    用户唯一标识
+     * @param content   标签内容
+     * @return 标签实体类
      */
     Label getLabelByUserAndContent(Long userId, String content);
 

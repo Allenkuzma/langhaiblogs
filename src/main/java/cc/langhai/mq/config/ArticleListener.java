@@ -28,7 +28,7 @@ public class ArticleListener {
     /**
      * 监听文章新增或修改的业务
      *
-     * @param id 酒店id
+     * @param id 文章id
      */
     @RabbitListener(queues = MqConstants.BLOGS_INSERT_QUEUE)
     public void listenHotelInsertOrUpdate(Long id) throws IOException {

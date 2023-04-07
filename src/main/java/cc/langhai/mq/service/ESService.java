@@ -15,22 +15,23 @@ public interface ESService {
     /**
      * 删除索引库当中的文档
      *
-     * @param id
+     * @param id 文章id
      */
     void deleteById(Long id);
 
     /**
-     * 增加 / 更新 索引库当中的文档
+     * 增加/更新 索引库当中的文档
      *
-     * @param id
+     * @param id 文章id
      */
     void insertById(Long id);
 
     /**
      * id 查询文档
      *
-     * @param id
-     * @return
+     * @param id 文章id
+     * @return 文章实体类
+     * @throws IOException io异常
      */
     Article getById(Long id) throws IOException;
 }

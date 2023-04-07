@@ -18,14 +18,14 @@ public interface LabelService {
     /**
      * 获取用户的所有标签
      *
-     * @return
+     * @return 用户拥有的所有标签
      */
     List<Label> getAllLabelByUser();
 
     /**
      * 获取用户的所有标签内容
      *
-     * @return
+     * @return 标签内容集合
      */
     List<String> getAllLabelContentByUser();
 
@@ -33,7 +33,7 @@ public interface LabelService {
      * 新增标签的时候进行校验
      *
      * @param content 标签内容
-     * @return
+     * @return 标签实体类
      */
     Label verifyAddLabel(String content);
 
@@ -81,8 +81,8 @@ public interface LabelService {
     /**
      * 判断标签是否存在文章
      *
-     * @param context
-     * @return
+     * @param context 标签内容
+     * @return 标签实体类
      */
     Label labelExist(String context);
 

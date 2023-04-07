@@ -7,7 +7,6 @@ import cc.langhai.service.VisitService;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.http.useragent.Platform;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -93,10 +92,10 @@ public class VisitController {
     /**
      * 获取今天用户访问次数
      *
-     * @return
+     * @return 今天用户访问次数
      */
-    @GetMapping("/today")
     @ResponseBody
+    @GetMapping("/today")
     public ResultResponse today(){
         String[] nowDayScope = cc.langhai.utils.DateUtil.getNowDayScope();
         int count = visitService.count(Wrappers.<Visit>lambdaQuery()

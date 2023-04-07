@@ -21,7 +21,7 @@ public interface ArticleService {
     /**
      * 用户发布文章，保存到数据库。
      *
-     * @param articleDTO
+     * @param articleDTO 文章实体类 传输对象DTO
      */
     void issue(ArticleDTO articleDTO);
 
@@ -38,7 +38,7 @@ public interface ArticleService {
      * 获取一篇文章
      *
      * @param id 文章id
-     * @return
+     * @return 文章实体类
      */
     Article getById(Long id);
 

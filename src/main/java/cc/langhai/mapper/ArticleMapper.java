@@ -17,13 +17,17 @@ public interface ArticleMapper {
     /**
      * 获取用户某天发表文章数量
      *
-     * @return
+     * @param userId 用户唯一标识
+     * @param beginDate 起始时间
+     * @param endDate   结束时间
+     * @return 发表文章数量
      */
     Integer getDayCount(Long userId, String beginDate, String endDate);
 
     /**
      * 新增文章
      *
+     * @param article 文章实体类
      */
     void insertArticle(Article article);
 
@@ -40,8 +44,8 @@ public interface ArticleMapper {
     /**
      * 获取一篇文章
      *
-     * @param id
-     * @return
+     * @param id 文章id
+     * @return 文章实体类
      */
     Article getById(Long id);
 

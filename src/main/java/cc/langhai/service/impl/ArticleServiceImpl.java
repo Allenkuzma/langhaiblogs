@@ -80,7 +80,6 @@ public class ArticleServiceImpl implements ArticleService {
         String nowDay = DateUtil.getNowDay();
         Integer dayCount = articleMapper.getDayCount(userId, nowDay + " 00:00:00",
                 nowDay + " 23:59:59");
-
         if(dayCount >= ArticleConstant.ARTICLE_COUNT_TODAY){
             throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_COUNT_DAY_FAIL_00002);
         }
@@ -332,18 +331,18 @@ public class ArticleServiceImpl implements ArticleService {
      *
      * @param label 下拉框选择标签
      * @param content 新增标签内容
-     * @return
+     * @return 标签实体类
      */
     private Label labelHandle(String label, String content){
         Long userId = UserContext.getUserId();
 
         // 判断标签是新增还是使用原来的标签
         if(StrUtil.isBlank(label) && StrUtil.isBlank(content)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+            throw new BusinessException(ArticleReturnCode.ARTICLE_LABEL_PARAM_NULL_FAIL_00009);
         }
 
         if(StrUtil.isBlank(content) && "直接选择或搜索选择".equals(label)){
-            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+            throw new BusinessException(ArticleReturnCode.ARTICLE_LABEL_PARAM_NULL_FAIL_00009);
         }
 
         Label labelMysql = null;

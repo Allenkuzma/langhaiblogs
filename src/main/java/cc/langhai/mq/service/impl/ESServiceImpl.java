@@ -50,7 +50,6 @@ public class ESServiceImpl implements ESService {
         try {
             // 0.根据id查询文章数据
             Article article = articleService.getById(id);
-
             // 1.准备Request对象
             IndexRequest request = new IndexRequest("langhaiblogs").id(article.getId().toString());
             // 2.准备Json文档
@@ -70,8 +69,8 @@ public class ESServiceImpl implements ESService {
         GetResponse response = restHighLevelClient.get(request, RequestOptions.DEFAULT);
         // 3.解析响应结果
         String json = response.getSourceAsString();
-
         Article article = JSON.parseObject(json, Article.class);
+
         return article;
     }
 }

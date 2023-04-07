@@ -15,6 +15,7 @@ public enum ESReturnCode implements ReturnCode{
     ;
 
     private Integer code;
+
     private String message;
 
     ESReturnCode(Integer code, String message){

@@ -1,9 +1,6 @@
 package cc.langhai.utils;
 
-import cn.hutool.core.util.StrUtil;
-
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 时间工具类
@@ -16,7 +13,7 @@ public class DateUtil {
     /**
      * 获取当天日期 yyyy-MM-dd
      *
-     * @return
+     * @return 例如 2023-04-05
      */
     public static String getNowDay(){
         String format = cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss");
@@ -26,10 +23,8 @@ public class DateUtil {
 
     /**
      * 获取当天日期 yyyy-MM-dd 开始结束时间
-     *  nowDay + " 00:00:00"
-     *  nowDay + " 23:59:59"
      *
-     * @return
+     * @return nowDay + " 00:00:00" nowDay + " 23:59:59"
      */
     public static String[] getNowDayScope(){
         String format = cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss");
@@ -37,6 +32,7 @@ public class DateUtil {
         String[] strings = new String[2];
         strings[0] = date + " 00:00:00";
         strings[1] = date + " 23:59:59";
+
         return strings;
     }
 }
