@@ -26,7 +26,8 @@
     </ul>
 
     <blockquote class="layui-elem-quote">
-        本页面推荐使用 平板/电脑 进行操作。
+        本页面推荐使用 平板/电脑 进行操作。访问密码可以无需设置，设置之后需要输入访问密码才能查看文章详情内容。<br />
+        文章访问密码请设置为6个字符，例如：lh8888。
     </blockquote>
 
     <form class="layui-form" action="">
@@ -52,6 +53,12 @@
                     <select name="label-langhai" id="label-langhai" lay-verify="required" lay-search="">
                         <option value="">直接选择或搜索选择</option>
                     </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">访问密码</label>
+                <div class="layui-input-block">
+                    <input type="text" id="password" name="password" lay-verify="password" autocomplete="off" placeholder="请输入文章访问密码" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
@@ -124,7 +131,8 @@
                     "content": $("#content").val(),
                     "label": $("#label-langhai option:selected").text(),
                     "publicShow": $("input[name='public']:checked").val(),
-                    "abstractText": $("#abstractText").val()
+                    "abstractText": $("#abstractText").val(),
+                    "password": $("#password").val()
                 }),
                 success: function (data) {
                     if(data.code == 200){

@@ -13,7 +13,7 @@ public enum ArticleReturnCode implements ReturnCode{
 
     ARTICLE_ISSUE_COUNT_DAY_FAIL_00002(500, "文章发布当天次数上限。"),
 
-    ARTICLE_UPDATE_OK_00003(200, "文章更新成功"),
+    ARTICLE_UPDATE_OK_00003(200, "文章更新成功。"),
 
     ARTICLE_UPDATE_PARAM_FAIL_00004(500, "文章更新参数校验失败。"),
 
@@ -26,9 +26,12 @@ public enum ArticleReturnCode implements ReturnCode{
     ARTICLE_SORT_FAIL_00008(500, "文章排序错误。"),
 
     ARTICLE_LABEL_PARAM_NULL_FAIL_00009(500, "标签内容为空。"),
+
+    ARTICLE_PASSWORD_PARAM_LENGTH_FAIL_00010(500, "文章访问密码请设置为六个字符。"),
     ;
 
     private Integer code;
+
     private String message;
 
     ArticleReturnCode(Integer code, String message){

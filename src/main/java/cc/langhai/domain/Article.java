@@ -30,6 +30,8 @@ public class Article implements Comparable{
 
     private String abstractText;
 
+    private String password;
+
     private Integer publicShow;
 
     private Integer deleteFlag;

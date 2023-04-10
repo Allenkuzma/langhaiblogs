@@ -26,4 +26,10 @@ public class ArticleConstant {
      */
     public static TreeSet<Article> ARTICLE_HEAT_TOP_10 = new TreeSet<>();
 
+    /**
+     * 文章访问密码长度
+     *
+     */
+    public static final Integer ARTICLE_PASSWORD_LENGTH = 6;
+
 }

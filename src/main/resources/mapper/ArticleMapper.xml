@@ -22,9 +22,9 @@
 
     <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into
-            article(user_id, label_id, title, html, public_show, delete_flag, add_time, abstract_text)
+            article(user_id, label_id, title, html, public_show, delete_flag, add_time, abstract_text, password)
         values
-            (#{userId}, #{labelId}, #{title}, #{html}, #{publicShow}, #{deleteFlag}, #{addTime}, #{abstractText})
+            (#{userId}, #{labelId}, #{title}, #{html}, #{publicShow}, #{deleteFlag}, #{addTime}, #{abstractText}, #{password})
     </insert>
 
     <select id="getAllArticle" resultType="cc.langhai.domain.Article">
@@ -82,7 +82,8 @@
             html = #{html},
             public_show = #{publicShow},
             update_time = #{updateTime},
-            abstract_text = #{abstractText}
+            abstract_text = #{abstractText},
+            password = #{password}
         where
             id = #{id}
     </update>

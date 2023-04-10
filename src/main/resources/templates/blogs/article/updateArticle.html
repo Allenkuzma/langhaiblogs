@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>文章编辑 - 浪海博客</title>
@@ -22,51 +22,58 @@
         <li class="layui-nav-item"><a href="/">首页</a></li>
         <li class="layui-nav-item layui-this"><a th:href="'/article/updateArticlePage?id=' + ${article.id}">编辑文章</a></li>
         <li class="layui-nav-item"><a href="/article/newArticlePage">发表新文章</a></li>
-        <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
-        <li class="layui-nav-item"><a href="/label/labelPage">标签管理</a></li>
+        <li class="layui-nav-item"><a href="/pear/index.html">后台管理</a></li>
         <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
     </ul>
 
     <blockquote class="layui-elem-quote">
-        本页面推荐使用 平板/电脑 进行操作。
-        <p id="issueResult" style="color: red"></p>
+        本页面推荐使用 平板/电脑 进行操作。访问密码可以无需设置，设置之后需要输入访问密码才能查看文章详情内容。<br />
+        文章访问密码请设置为6个字符，例如：lh8888。
     </blockquote>
 
     <form class="layui-form" action="">
         <div class="layui-form-item">
-            <label class="layui-form-label">文章标题</label>
-            <div class="layui-input-block">
-                <input type="text" th:value="${article.title}" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入文章标题" class="layui-input">
+            <div class="layui-inline">
+                <label class="layui-form-label">文章标题</label>
+                <div class="layui-input-block">
+                    <input type="text" th:value="${article.title}" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入文章标题" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">标签名字</label>
+                <div class="layui-input-block">
+                    <input type="text" id="content" name="content" lay-verify="title" autocomplete="off" placeholder="请输入标签名字（新增）" class="layui-input">
+                </div>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">标签名字</label>
-            <div class="layui-input-block">
-                <input type="text" id="content" name="content" lay-verify="title" autocomplete="off" placeholder="请输入标签名字（新增）" class="layui-input">
+            <div class="layui-inline">
+                <label class="layui-form-label">标签名字</label>
+                <div class="layui-input-inline">
+                    <select name="label-langhai" id="label-langhai" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                    </select>
+                </div>
             </div>
-        </div>
-
-        <div class="layui-inline">
-            <label class="layui-form-label">标签名字</label>
-            <div class="layui-input-inline">
-                <select name="label-langhai" id="label-langhai" lay-verify="required" lay-search="">
-                    <option value="">直接选择或搜索选择</option>
-                </select>
+            <div class="layui-inline">
+                <label class="layui-form-label">访问密码</label>
+                <div class="layui-input-block">
+                    <input type="text" th:value="${article.password}" id="password" name="password" lay-verify="password" autocomplete="off" placeholder="请输入文章访问密码" class="layui-input">
+                </div>
             </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否公开-默认不公开</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否公开</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
+                </div>
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">摘要</label>
             <div class="layui-input-block">
-                <textarea id="abstractText" th:text="${article.abstractText}" placeholder="请输入摘要 小于等于30个字 必填" class="layui-textarea"></textarea>
+                <textarea th:text="${article.abstractText}" id="abstractText" placeholder="请输入摘要 小于等于30个字 必填" class="layui-textarea"></textarea>
             </div>
         </div>
     </form>
@@ -82,9 +89,14 @@
 
     <blockquote class="layui-elem-quote">
         <ul class="menu">
-            <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
-            <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
-            <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
+            <li>
+                &copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.
+                个人网站 2021 ~ 2029年
+            </li>
+            <li>
+                <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a>
+                <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a>
+            </li>
         </ul>
     </blockquote>
 
@@ -129,16 +141,22 @@
                     "label": $("#label-langhai option:selected").text(),
                     "publicShow": $("input[name='public']:checked").val(),
                     "id": [[${article.id}]],
-                    "abstractText": $("#abstractText").val()
+                    "abstractText": $("#abstractText").val(),
+                    "password": $("#password").val()
                 }),
                 success: function (data) {
                     if(data.code == 200){
-                        $("#issueResult").html("文章更新成功，即将跳转到个人空间！");
-                        setTimeout(function(){
+                        layer.msg(data.message, {
+                            icon: 1,
+                            time: 2000
+                        }, function () {
                             window.location.href = "/user/personalPage";
-                        }, 1000);
+                        })
                     }else {
-                        $("#issueResult").text(data.message);
+                        layer.msg(data.message, {
+                            icon: 2,
+                            time: 2000
+                        });
                     }
                 }
             })

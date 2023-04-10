@@ -72,7 +72,7 @@ public interface ArticleService {
     /**
      * 用户更新文章，保存到数据库。
      *
-     * @param articleDTO
+     * @param articleDTO 文章传输DTO对象
      */
     void updateArticle(ArticleDTO articleDTO);
 
@@ -108,7 +108,7 @@ public interface ArticleService {
      * 判断文章是否有权限操作
      *
      * @param id 文章实体类id
-     * @return
+     * @return 文章实体类
      */
     Article articlePermission(Long id);
 

@@ -27,6 +27,8 @@ public class ArticleDTO implements Serializable {
     @Length(min = 1, max = 30, message = "文章摘要长度最大为30个字符")
     private String abstractText;
 
+    private String password;
+
     /**
      * 新增文章标签
      *

@@ -84,6 +84,9 @@ public class ArticleServiceImpl implements ArticleService {
             throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_COUNT_DAY_FAIL_00002);
         }
 
+        // 文章访问密码处理
+        this.handleArticlePassword(articleDTO);
+
         // 标签处理
         Label labelMysql = this.labelHandle(articleDTO.getLabel(), articleDTO.getContent());
 
@@ -196,6 +199,9 @@ public class ArticleServiceImpl implements ArticleService {
         if(ObjectUtil.isNull(articleDTO.getId())){
             throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
         }
+
+        // 文章访问密码处理
+        this.handleArticlePassword(articleDTO);
 
         // 文章是否有权限操作
         Article article = this.articlePermission(articleDTO.getId());
@@ -387,6 +393,20 @@ public class ArticleServiceImpl implements ArticleService {
                 }
             }
             ArticleConstant.ARTICLE_HEAT_TOP_10 = articleTreeSet;
+        }
+    }
+
+    /**
+     * 处理文章访问密码长度
+     *
+     * @param articleDTO 文章传输DTO对象
+     */
+    private void handleArticlePassword(ArticleDTO articleDTO){
+        if(StrUtil.isNotBlank(articleDTO.getPassword())){
+            // 长度必须为六个字符
+            if(ArticleConstant.ARTICLE_PASSWORD_LENGTH != articleDTO.getPassword().length()){
+                throw new BusinessException(ArticleReturnCode.ARTICLE_PASSWORD_PARAM_LENGTH_FAIL_00010);
+            }
         }
     }
 

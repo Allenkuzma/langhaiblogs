@@ -54,7 +54,7 @@
                                     </small>
                                     <small class="ml10">围观群众：<i class="readcount" th:text="${article.heat}"></i></small>
                                     <small class="ml10">更新于 <label th:text="${article.updateTimeShow}"></label> </small>
-                                    <small class="ml10">使用以前的显示 <a th:href="'/article/articleShow?id=' + ${article.id}">以前的显示器</a> </small>
+                                    <small class="ml10">使用以前的显示 <a th:href="'/article/articleShow?id=' + ${article.id} + '&password=' + ${password}">以前的显示器</a> </small>
                                 </p>
                             </aside>
                             <div class="time mt10" style="padding-bottom:0;">
@@ -84,7 +84,7 @@
                                 <ol class="b-relation">
                                     <li th:each="articleHeat : ${articleHeatTop}"> <a target="_blank" th:href="'/article/articleShowNew?id=' + ${articleHeat.id}"><span th:text="${articleHeat.title}"></span></a></li>
                                 </ol>
-                                <h6>如果出现代码等内容显示不正常，使用以前的显示器：<a th:href="'/article/articleShow?id=' + ${article.id}">以前的显示器</a></h6>
+                                <h6>如果出现代码等内容显示不正常，使用以前的显示器：<a th:href="'/article/articleShow?id=' + ${article.id} + '&password=' + ${password}">以前的显示器</a></h6>
                             </div>
                             <div class="bdsharebuttonbox share" data-tag="share_1">
                                 <ul>

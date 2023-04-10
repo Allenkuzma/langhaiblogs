@@ -9,6 +9,7 @@ import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -140,22 +141,38 @@ public class ArticleController {
     /**
      * 跳转到展示文章详细内容的页面
      *
-     * @param   id 文章id
+     * @param id 文章id
+     * @param password 访问密码
      * @return 文章公开的情况下，页面 blogs/article/articleShow。
      *         文章不公开的情况下，验证当前用户与文章作者是否匹配。
      *                          匹配页面 blogs/article/articleShow
      *                          不匹配页面 blogs/user/login
      */
     @GetMapping("/articleShow")
-    public String articleShow(Long id, Model model, HttpSession session){
+    public String articleShow(Long id, String password, Model model, HttpSession session){
         Article article = articleService.getById(id);
         if(ObjectUtil.isNull(article)){
             return "blogs/user/login";
         }
 
+        // 访问密码处理
+        if(StrUtil.isNotBlank(article.getPassword())){
+            model.addAttribute("id", id);
+            if(StrUtil.isBlank(password)){
+                return "blogs/article/articlePassword";
+            }else {
+                // 密码输入错误
+                if(!password.equals(article.getPassword())){
+                    model.addAttribute("info", "文章访问密码输入错误！！！");
+                    return "blogs/article/articlePassword";
+                }
+            }
+        }
+
         // 判断文章是否具有访问权限
         if(articleService.judgeShow(session, article)){
             model.addAttribute("article", articleService.getArticleHeat(article));
+            model.addAttribute("password", password);
             return "blogs/article/articleShow";
         }
 
@@ -165,7 +182,8 @@ public class ArticleController {
     /**
      * 跳转到文章编辑页面
      *
-     * @return
+     * @return 文章编辑页面 更新文章有权限操作
+     *         用户登录页面 更新文章无权限操作
      */
     @GetMapping("/updateArticlePage")
     public String updateArticlePage(Model model, Long id){
@@ -186,13 +204,14 @@ public class ArticleController {
     /**
      * 场景：用户更新文章，保存到数据库。
      *
-     * @param articleDTO
+     * @param articleDTO 文章传输DTO对象
      * @return 数据 200代表成功 其他代表失败
      */
-    @PostMapping("/updateArticle")
     @ResponseBody
+    @PostMapping("/updateArticle")
     public ResultResponse updateArticle(@RequestBody @Validated ArticleDTO articleDTO){
         articleService.updateArticle(articleDTO);
+
         return ResultResponse.success(ArticleReturnCode.ARTICLE_UPDATE_OK_00003);
     }
 
@@ -294,22 +313,38 @@ public class ArticleController {
     /**
      * 跳转到展示文章详细内容的页面 新版
      *
-     * @param   id 文章id
+     * @param id 文章id
+     * @param password 访问密码
      * @return 文章公开的情况下，页面 blogs-new/read。
      *         文章不公开的情况下，验证当前用户与文章作者是否匹配。
      *                          匹配页面 blogs-new/read
      *                          不匹配页面 blogs/user/login
      */
     @GetMapping("/articleShowNew")
-    public String articleShowNew(Long id, Model model, HttpSession session){
+    public String articleShowNew(Long id, String password, Model model, HttpSession session){
         Article article = articleService.getById(id);
         if(ObjectUtil.isNull(article)){
             return "blogs/user/login";
         }
 
+        // 访问密码处理
+        if(StrUtil.isNotBlank(article.getPassword())){
+            model.addAttribute("id", id);
+            if(StrUtil.isBlank(password)){
+                return "blogs/article/articlePassword";
+            }else {
+                // 密码输入错误
+                if(!password.equals(article.getPassword())){
+                    model.addAttribute("info", "文章访问密码输入错误！！！");
+                    return "blogs/article/articlePassword";
+                }
+            }
+        }
+
         // 判断文章是否具有访问权限
         if(articleService.judgeShow(session, article)){
             model.addAttribute("article", articleService.getArticleHeat(article));
+            model.addAttribute("password", password);
 
             // 获取热点前十文章
             Set<Article> articleHeatTop = articleService.getArticleHeatTop();

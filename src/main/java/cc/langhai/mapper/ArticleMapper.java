@@ -52,7 +52,7 @@ public interface ArticleMapper {
     /**
      * 更新文章信息
      *
-     * @param article
+     * @param article 文章实体类
      */
     void updateArticle(Article article);
 
