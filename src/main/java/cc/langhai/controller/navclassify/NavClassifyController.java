@@ -43,13 +43,14 @@ public class NavClassifyController {
     /**
      * 跳转到公共导航页面
      *
-     * @return
+     * @return 公共导航页面
      */
     @GetMapping("/navPage")
     public String navPage(Model model){
         // 获取公共导航页面网站数据
         List<NavClassify> list = navClassifyService.getPublicNav();
         model.addAttribute("navClassifyList", list);
+
         return "blogs/nav/nav";
     }
 

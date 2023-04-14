@@ -61,7 +61,7 @@
                         <div><i th:class="${'iconfont ' + nav.icon}"></i><span th:text="${nav.name}"></span></div>
                     </div>
                     <div th:each="website : ${nav.websiteList}">
-                        <a target="_blank" th:href="${website.url}">
+                        <a target="_blank" th:href="'/navWebsite/navWebsiteInfo?id=' + ${website.websiteId}" >
                             <div class="item">
                                 <div class="logo"><img th:src="${website.imageUrl}" th:alt="${website.name}"><span th:text="${website.name}"></span></div>
                                 <div class="desc" th:text="${website.description}"></div>

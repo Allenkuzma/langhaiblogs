@@ -12,9 +12,9 @@ import lombok.Data;
 public class NavWebsiteConstant {
 
     /**
-     * 每一个分类下最多可以设置二十个公共导航网站。
+     * 每一个分类下最多可以设置三十个公共导航网站。
      *
      */
-    public static final Integer NAV_WEBSITE_CLASSIFY_COUNT_ALL = 20;
+    public static final Integer NAV_WEBSITE_CLASSIFY_COUNT_ALL = 30;
 
 }

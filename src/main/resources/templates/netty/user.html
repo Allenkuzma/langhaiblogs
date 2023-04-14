@@ -14,6 +14,12 @@
 		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
 	</head>
+	<script type="text/javascript">
+		var targetProtocol = "http:";
+		if (window.location.protocol != targetProtocol)
+			window.location.href = targetProtocol +
+					window.location.href.substring(window.location.protocol.length);
+	</script>
 	<body class="is-preload">
 
 		<!-- Header -->

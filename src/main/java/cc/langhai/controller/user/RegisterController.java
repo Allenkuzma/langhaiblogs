@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
@@ -71,8 +72,8 @@ public class RegisterController {
                                    @RequestParam("password") String password,
                                    @RequestParam("nickname") String nickname,
                                    @RequestParam("email") String email,
-                                   @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session){
-        registerService.register(username, password, nickname, email, verifyCodeText, session);
+                                   @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session, HttpServletResponse response){
+        registerService.register(username, password, nickname, email, verifyCodeText, session, response);
 
         return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);
     }

@@ -38,8 +38,9 @@ public interface RegisterService {
      * @param email
      * @param verifyCodeText
      * @param session
+     * @param response
      */
-    void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session);
+    void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session, HttpServletResponse response);
 
     /**
      * 用户登录

@@ -11,7 +11,7 @@
 <body class="pear-container">
 
 <blockquote class="layui-elem-quote">
-    在这里可以管理你网站首页公共导航网站。每一个分类下最多可以设置二十个公共导航网站。
+    在这里可以管理你网站首页公共导航网站。每一个分类下最多可以设置三十个公共导航网站。
 </blockquote>
 
 <table class="layui-hide" id="navWebsite" lay-filter="navWebsite"></table>
@@ -60,8 +60,11 @@
                 ,{field:'id', title: 'ID', align: 'center'}
                 ,{field:'name', title: '网站名字', width:180, align: 'center'}
                 ,{field:'imageUrl', title: 'logo图片地址', width:280, align: 'center'}
+                ,{field:'indexImageUrl', title: '网站首页图片地址', width:280, align: 'center'}
                 ,{field:'url', title: '网站路径', width:180, align: 'center'}
                 ,{field:'description', title: '网站描述', width:280, align: 'center'}
+                ,{field:'score', title: '网站评分', width:280, align: 'center'}
+                ,{field:'details', title: '网站详情信息', width:280, align: 'center'}
                 ,{field:'addTime', title: '新增时间', width:180, align: 'center'}
                 ,{field:'updateTime', title: '修改时间', width:180, align: 'center'}
                 ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}

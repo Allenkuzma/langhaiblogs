@@ -28,6 +28,13 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">导航网站首页图片地址</label>
+                <div class="layui-input-block">
+                    <input type="text" th:value="${navWebsite.indexImageUrl}" name="indexImageUrl" lay-verify="indexImageUrl" autocomplete="off" placeholder="请输入导航网站首页图片地址"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">导航网站路径</label>
                 <div class="layui-input-block">
                     <input type="text" th:value="${navWebsite.url}" name="url" lay-verify="url" autocomplete="off" placeholder="请输入导航网站路径"
@@ -39,6 +46,19 @@
                 <div class="layui-input-block">
                     <input type="text" th:value="${navWebsite.description}" name="description" lay-verify="description" autocomplete="off" placeholder="请输入导航网站描述"
                            class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">导航网站评分</label>
+                <div class="layui-input-block">
+                    <input type="text" th:value="${navWebsite.score}" name="score" lay-verify="number" autocomplete="off" placeholder="请输入导航网站评分"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">导航网站详细信息</label>
+                <div class="layui-input-block">
+                    <textarea th:text="${navWebsite.details}" name="details" placeholder="请输入导航网站详细信息" class="layui-textarea"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">

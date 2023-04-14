@@ -50,7 +50,7 @@ spring:
 
   # mysql数据库配置
   datasource:
-    url: jdbc:mysql://x.x.x.x:3306/langhaiblogs?userUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://x.x.x.x:3306/langhaiblogs?userUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver

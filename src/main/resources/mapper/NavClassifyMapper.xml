@@ -12,12 +12,15 @@
             <result column="image_url" property="imageUrl" />
             <result column="url" property="url" />
             <result column="description" property="description" />
+            <result column="nw_id" property="websiteId" />
+            <result column="nw_add_time_show" property="addTimeShow" />
         </collection>
     </resultMap>
 
     <select id="getPublicNav" resultMap="BaseResultMap">
         SELECT
-            nc.*, nw.name AS nw_name, nw.image_url, nw.url, nw.description
+            nc.*, nw.id AS nw_id, nw.name AS nw_name, nw.image_url, nw.url, nw.description,
+            DATE_FORMAT(nw.add_time, "%Y-%m-%d %H:%i:%s") as nw_add_time_show
         FROM
             nav_classify AS nc
         LEFT JOIN

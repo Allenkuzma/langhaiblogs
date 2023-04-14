@@ -126,7 +126,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session) {
+    public void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session, HttpServletResponse response) {
 
         if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(nickname)
                 || StrUtil.isBlank(email) || StrUtil.isBlank(verifyCodeText)){
@@ -203,6 +203,8 @@ public class RegisterServiceImpl implements RegisterService {
 
         session.setAttribute("user", user);
         session.setMaxInactiveInterval(60 * 60);
+
+        this.temporaryRemember(username, response);
     }
 
     @Override
