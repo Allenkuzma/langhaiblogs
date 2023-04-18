@@ -28,6 +28,8 @@ public enum ArticleReturnCode implements ReturnCode{
     ARTICLE_LABEL_PARAM_NULL_FAIL_00009(500, "标签内容为空。"),
 
     ARTICLE_PASSWORD_PARAM_LENGTH_FAIL_00010(500, "文章访问密码请设置为六个字符。"),
+
+    ARTICLE_SYSTEM_DELETE_OK_00011(200, "文章真实删除成功"),
     ;
 
     private Integer code;

@@ -36,16 +36,17 @@
         INNER JOIN
             user AS u
         ON
-            a.user_id = #{userId}
-          AND
-            a.delete_flag = 0
-          AND
             a.user_id = u.id
+        WHERE
+            a.delete_flag = 0
+          <if test="userId != null and userId != 0">
+              AND a.user_id = #{userId}
+          </if>
           <if test="title != null and title != ''">
-              and a.title like concat( '%' , #{title}, '%')
+              AND a.title like concat( '%' , #{title}, '%')
           </if>
           <if test="abstractText != null and abstractText != ''">
-              and a.abstract_text like concat( '%' , #{abstractText}, '%')
+              AND a.abstract_text like concat( '%' , #{abstractText}, '%')
           </if>
         ORDER BY a.add_time DESC
     </select>
@@ -128,5 +129,12 @@
             a.label_id = l.id
         ORDER BY a.add_time DESC
     </select>
+
+    <delete id="systemDeleteArticle" >
+        delete from
+            article
+        where
+            id = #{id}
+    </delete>
 
 </mapper>

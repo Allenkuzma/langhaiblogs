@@ -28,11 +28,12 @@ public interface ArticleService {
     /**
      * 获取用户发布的所有文章
      *
-     * @param title
-     * @param abstractText
+     * @param title 文章标题
+     * @param abstractText 文章摘要
+     * @param param 此参数传入为 system 查询所有用户文章数据
      * @return 用户发布的所有文章list集合数据
      */
-    List<Article> getAllArticle(String title, String abstractText);
+    List<Article> getAllArticle(String title, String abstractText, String param);
 
     /**
      * 获取一篇文章
@@ -118,5 +119,12 @@ public interface ArticleService {
      * @return
      */
     Set<Article> getArticleHeatTop();
+
+    /**
+     * 管理员永久真实删除文章，保存到数据库。
+     *
+     * @param id 文章id
+     */
+    void systemDeleteArticle(Long id);
 
 }

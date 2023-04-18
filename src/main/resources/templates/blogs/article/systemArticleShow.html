@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title th:text="${article.title} + ' ~ 浪海博客'">文章详情内容 - 浪海博客</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" th:content="${article.title} + ',浪海博客,' + ${article.author}" />
+		<meta name="description" th:content="${article.author} + '编写的' + ${article.title}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="/" class="title">浪海博客</a>
+				<nav>
+					<ul>
+						<li><a href="/">主页</a></li>
+						<li><a href="/user/personalPage" >个人空间</a></li>
+						<li><a href="javascript:void(0)" id="loginOut">安全退出</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major" th:text="${article.title} + ' ~ ' + ${article.author}"></h1>
+							<span class="image fit"><img src="/blogs/images/personal.jpg" alt="林书豪" /></span>
+							<section>
+								<div th:text="${article.addTimeShow}"></div>
+								<div>
+									<span th:text="${article.title}"></span>
+									<span th:text="'浪海值：' + ${article.heat} + '度'"></span><br />
+									<span th:text="'文章标签：' + ${article.labelContent}"></span><br />
+									<span th:text="'文章摘要：' + ${article.abstractText}"></span><br />
+								</div>
+								<div th:utext="${article.html}">
+
+								</div>
+							</section>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
+						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="/blogs/assets/js/jquery.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/blogs/assets/js/browser.min.js"></script>
+			<script src="/blogs/assets/js/breakpoints.min.js"></script>
+			<script src="/blogs/assets/js/util.js"></script>
+			<script src="/blogs/assets/js/main.js"></script>
+
+		<script>
+			// 退出登录
+			$("#loginOut").click(function () {
+				$.ajax({
+					url: "/user/loginOut",
+					async: true,
+					type: "POST",
+					success: function (data) {
+						if(data.code == 200){
+							$("#vCodeStatus").html("用户安全退出，3秒后为你跳转到首页。");
+							setTimeout(function(){
+								window.location.href = "/";
+							}, 3000);
+						}else {
+							 $("#vCodeStatus").html(data.message);
+						}
+					}
+				})
+			})
+
+			// 图片自适应处理
+			$(function (){
+				$("img").addClass("image fit");
+			})
+		</script>
+	</body>
+</html>

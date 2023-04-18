@@ -35,8 +35,8 @@ public interface ArticleMapper {
      * 获取用户发布的所有文章
      *
      * @param userId 用户唯一标识
-     * @param title
-     * @param abstractText
+     * @param title 文章标题
+     * @param abstractText 文章摘要
      * @return 用户发布的所有文章list集合数据
      */
     List<Article> getAllArticle(Long userId, String title, String abstractText);
@@ -71,4 +71,11 @@ public interface ArticleMapper {
      * @return
      */
     List<Article> getAllArticlePublicShow(String searchArticleStr, Long labelId);
+
+    /**
+     * 管理员永久真实删除文章，保存到数据库。
+     *
+     * @param id 文章id
+     */
+    void systemDeleteArticle(Long id);
 }

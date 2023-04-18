@@ -81,9 +81,10 @@ public class ArticleController {
     }
 
     /**
-     * 获取文章列表页面数据
+     * 获取用户文章列表页面数据
+     * 场景：用户自己管理自己的文章
      *
-     * @return
+     * @return 文章列表
      */
     @ResponseBody
     @GetMapping("/articleList")
@@ -92,7 +93,7 @@ public class ArticleController {
                                   String title, String abstractText){
         // 开启分页助手
         PageHelper.startPage(page, limit);
-        List<Article> allArticle = articleService.getAllArticle(title, abstractText);
+        List<Article> allArticle = articleService.getAllArticle(title, abstractText, "user");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);
         jsonObject.put("data", allArticle);
@@ -115,7 +116,7 @@ public class ArticleController {
         PageHelper.startPage(page, limit);
 
         JSONObject jsonObject = new JSONObject();
-        List<Article> allArticle = articleService.getAllArticle(title, abstractText);
+        List<Article> allArticle = articleService.getAllArticle(title, abstractText, "user");
         PageInfo<Article> pageInfo = new PageInfo<>(allArticle);
         jsonObject.put("count", pageInfo.getTotal());
         jsonObject.put("msg", "not data");
@@ -158,6 +159,7 @@ public class ArticleController {
         // 访问密码处理
         if(StrUtil.isNotBlank(article.getPassword())){
             model.addAttribute("id", id);
+            model.addAttribute("title", article.getTitle());
             if(StrUtil.isBlank(password)){
                 return "blogs/article/articlePassword";
             }else {
@@ -330,6 +332,7 @@ public class ArticleController {
         // 访问密码处理
         if(StrUtil.isNotBlank(article.getPassword())){
             model.addAttribute("id", id);
+            model.addAttribute("title", article.getTitle());
             if(StrUtil.isBlank(password)){
                 return "blogs/article/articlePassword";
             }else {

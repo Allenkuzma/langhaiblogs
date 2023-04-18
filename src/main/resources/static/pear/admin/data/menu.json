@@ -48,46 +48,12 @@
 			"openType": "_iframe",
 			"href": "/devLog/devLogListPage"
 		}, {
-			"id": 202,
-			"title": "弹层组件",
+			"id": 19,
+			"title": "用户文章管理",
 			"icon": "layui-icon layui-icon-console",
-			"type": 0,
-			"children": [{
-				"id": 2021,
-				"title": "抽屉组件",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/drawer.html"
-			}, {
-				"id": 2022,
-				"title": "消息通知 (过时)",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/notice.html"
-			}, {
-				"id": 2025,
-				"title": "消息通知 (新增)",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/toast.html"
-			}, {
-				"id": 2024,
-				"title": "加载组件",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/loading.html"
-			}, {
-				"id": 2023,
-				"title": "弹层组件",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/document/popup.html"
-			}]
+			"type": 1,
+			"openType": "_iframe",
+			"href": "/system/article/systemArticleListPage"
 		},{
 			"id": 60331,
 			"title": "高级组件",

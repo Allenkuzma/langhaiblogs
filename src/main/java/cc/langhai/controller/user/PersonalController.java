@@ -112,7 +112,7 @@ public class PersonalController {
 
         PageHelper.startPage(1, 10);
         // 用户最近十篇文章
-        List<Article> articleList = articleService.getAllArticle(null, null);
+        List<Article> articleList = articleService.getAllArticle(null, null, "user");
         model.addAttribute("articleList", articleList);
 
         return "blogs/user/person";

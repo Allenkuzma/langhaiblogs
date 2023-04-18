@@ -108,8 +108,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getAllArticle(String title, String abstractText) {
+    public List<Article> getAllArticle(String title, String abstractText, String param) {
         Long userId = UserContext.getUserId();
+        if("system".equals(param)){
+            userId = null;
+        }
         List<Article> allArticle = articleMapper.getAllArticle(userId, title, abstractText);
 
         return allArticle;
@@ -330,6 +333,25 @@ public class ArticleServiceImpl implements ArticleService {
         }*/
 
         return ArticleConstant.ARTICLE_HEAT_TOP_10;
+    }
+
+    @Override
+    public void systemDeleteArticle(Long id) {
+        // 文章id不能为空
+        if(ObjectUtil.isNull(id)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+        }
+
+        Article article = articleMapper.getById(id);
+        if(ObjectUtil.isNull(article)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
+        }
+        articleMapper.systemDeleteArticle(id);
+
+        if(article.getPublicShow().equals(1)){
+            // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
+            rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_DELETE_KEY, article.getId());
+        }
     }
 
     /**
