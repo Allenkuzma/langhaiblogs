@@ -28,7 +28,7 @@ public class AdminInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         try {
-            // 统一拦截（查询当前session是否存在user）(这里user会在每次登陆成功后，写入session)
+            // 统一拦截（查询当前session是否存在user）(这里user会在每次登录成功后，写入session)
             User user = (User)request.getSession().getAttribute("user");
             if(ObjectUtil.isNotNull(user)){
                 UserContext.set(user);
