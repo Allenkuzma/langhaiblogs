@@ -2,6 +2,7 @@ package cc.langhai.mapper;
 
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Image;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @date 2022-01-03 11:31
  */
 @Mapper
-public interface ImageMapper {
+public interface ImageMapper extends BaseMapper<Image> {
 
     /**
      * 获取用户的所有图片

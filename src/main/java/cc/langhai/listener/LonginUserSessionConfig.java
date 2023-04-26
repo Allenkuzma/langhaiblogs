@@ -19,7 +19,6 @@ public class LonginUserSessionConfig {
 
     /**
      * 用户和Session绑定关系
-     *
      */
     public static final Map<String, HttpSession> USER_SESSION = new HashMap<String, HttpSession>();
 }

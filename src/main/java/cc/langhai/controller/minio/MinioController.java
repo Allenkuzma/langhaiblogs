@@ -1,11 +1,18 @@
 package cc.langhai.controller.minio;
 
+import cc.langhai.domain.Image;
+import cc.langhai.domain.User;
+import cc.langhai.exception.BusinessException;
 import cc.langhai.minio.util.MinioUtils;
+import cc.langhai.response.ImageReturnCode;
 import cc.langhai.response.MinioReturnCode;
 import cc.langhai.response.ResultResponse;
+import cc.langhai.service.ImageService;
+import cc.langhai.service.UserService;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +38,12 @@ public class MinioController {
  
     @Autowired
     private MinioUtils minioUtils;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 上传图片到minio服务器系统
@@ -64,12 +77,10 @@ public class MinioController {
         jsonObject.put("errno", 0);
         try {
             String url = minioUtils.uploadFile(file, "product");
-            StringBuffer requestURL = request.getRequestURL();
-            String urlPrefix = String.valueOf(requestURL.substring(0, requestURL.length() - request.getRequestURI().length()));
             HashMap<String, Object> hashMap = MapUtil.newHashMap();
-            hashMap.put("url", urlPrefix + "/minio/download?minioName=" + url);
+            hashMap.put("url", "/minio/download?minioName=" + url);
             hashMap.put("alt", file.getOriginalFilename());
-            hashMap.put("href", urlPrefix + "/minio/download?minioName=" + url);
+            hashMap.put("href", "/minio/download?minioName=" + url);
             jsonObject.put("data", hashMap);
             return jsonObject;
         } catch (Exception e) {
@@ -83,13 +94,25 @@ public class MinioController {
     /**
      * 文件下载
      *
-     * @param minioName
-     * @param response
-     * @throws IOException
+     * @param minioName minio存储的文件名字
+     * @param response http响应
+     * @throws IOException io异常
      */
-    @GetMapping("/download")
     @ResponseBody
+    @GetMapping("/download")
     public void downloadFile(String minioName, HttpServletResponse response) throws IOException {
+        Image image = imageService.getOne(Wrappers.<Image>lambdaQuery()
+                .eq(Image::getMinioName, minioName));
+        if(ObjectUtil.isNull(image)){
+            throw new BusinessException(ImageReturnCode.IMAGE_PARAM_FAIL_00001);
+        }
+        // 查询图片用户的启用状态
+        User user = userService.getUserById(image.getUserId());
+        if(ObjectUtil.isNotNull(user)){
+            if(Boolean.valueOf(false).equals(user.getEnable())){
+                throw new BusinessException(ImageReturnCode.IMAGE_ENABLE_FAIL_00002);
+            }
+        }
         if (StringUtils.isBlank(minioName)) {
             response.setHeader("Content-type", "text/html;charset=UTF-8");
             String data = "文件下载失败";

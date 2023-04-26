@@ -32,13 +32,13 @@ public interface RegisterService {
     /**
      * 用户注册
      *
-     * @param username
-     * @param password
-     * @param nickname
-     * @param email
-     * @param verifyCodeText
-     * @param session
-     * @param response
+     * @param username 用户名
+     * @param password 密码
+     * @param nickname 昵称
+     * @param email    邮箱
+     * @param verifyCodeText 验证码内容
+     * @param session http session
+     * @param response http 响应
      */
     void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session, HttpServletResponse response);
 
@@ -58,8 +58,8 @@ public interface RegisterService {
     /**
      * 用户退出
      *
-     * @param session
-     * @param response
+     * @param session http session
+     * @param response 用户退出结果
      */
     void loginOut(HttpSession session, HttpServletResponse response);
 
@@ -74,8 +74,8 @@ public interface RegisterService {
     /**
      * 记住我的功能实现 ~ 检验cookie和redis的用户信息是否同步
      *
-     * @param request
-     * @param session
+     * @param request http 请求
+     * @param session http session
      */
     void remember(HttpServletRequest request, HttpSession session);
 

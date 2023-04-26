@@ -1,5 +1,6 @@
 package cc.langhai.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
@@ -27,14 +28,14 @@ public class Image {
 
     /**
      * 前端展示图片地址
-     *
      */
+    @TableField(exist = false)
     private String url;
 
     /**
      * 用来展示新增时间 yyyy-MM-dd HH:mm:ss
-     *
      */
+    @TableField(exist = false)
     private String addTimeShow;
 
 

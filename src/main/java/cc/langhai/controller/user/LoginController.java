@@ -89,13 +89,14 @@ public class LoginController {
     /**
      * 用户退出
      *
-     * @param session
-     * @return
+     * @param session http session
+     * @return 用户退出结果
      */
     @PostMapping("/loginOut")
     @ResponseBody
     public ResultResponse loginOut(HttpSession session, HttpServletResponse response){
         registerService.loginOut(session, response);
+
         return ResultResponse.success(UserReturnCode.USER_LOGOUT_YES_00017);
     }
 

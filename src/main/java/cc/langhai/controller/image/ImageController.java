@@ -44,15 +44,18 @@ public class ImageController {
 
         if(CollectionUtil.isNotEmpty(list)){
             for (Image image : list) {
-                StringBuffer requestURL = request.getRequestURL();
+                // 图片地址带域名
+                /*StringBuffer requestURL = request.getRequestURL();
                 String urlPrefix = requestURL.substring(0, requestURL.length() - request.getRequestURI().length());
-                image.setUrl(urlPrefix + "/minio/download?minioName=" + image.getMinioName());
+                image.setUrl(urlPrefix + "/minio/download?minioName=" + image.getMinioName());*/
+                image.setUrl("/minio/download?minioName=" + image.getMinioName());
             }
         }
         model.addAttribute("list", list);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());
+
         return "blogs/image/imageList";
     }
 

@@ -1,6 +1,7 @@
 package cc.langhai.service;
 
 import cc.langhai.domain.Image;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author langhai
  * @date 2022-01-03 11:28
  */
-public interface ImageService {
+public interface ImageService extends IService<Image> {
 
     /**
      * 判断用户存储的图片总大小

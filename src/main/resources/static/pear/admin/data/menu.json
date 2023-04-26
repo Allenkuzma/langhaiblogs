@@ -211,7 +211,7 @@
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/system/user.html"
+				"href": "/system/user/userPage"
 			},
 			{
 				"id": 602,

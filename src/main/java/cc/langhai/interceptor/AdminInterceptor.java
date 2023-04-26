@@ -31,6 +31,11 @@ public class AdminInterceptor implements HandlerInterceptor {
             // 统一拦截（查询当前session是否存在user）(这里user会在每次登陆成功后，写入session)
             User user = (User)request.getSession().getAttribute("user");
             if(ObjectUtil.isNotNull(user)){
+                // 判断账户是否被禁用
+                if (Boolean.valueOf(false).equals(user.getEnable())){
+                    request.getRequestDispatcher("/system/user/userEnablePage").forward(request, response);
+                    return false;
+                }
                 UserContext.set(user);
                 return true;
             }
@@ -40,6 +45,11 @@ public class AdminInterceptor implements HandlerInterceptor {
                 registerService.remember(request, request.getSession());
                 user = (User)request.getSession().getAttribute("user");
                 if(ObjectUtil.isNotNull(user)){
+                    // 判断账户是否被禁用
+                    if (Boolean.valueOf(false).equals(user.getEnable())){
+                        request.getRequestDispatcher("/system/user/userEnablePage").forward(request, response);
+                        return false;
+                    }
                     UserContext.set(user);
                     return true;
                 }

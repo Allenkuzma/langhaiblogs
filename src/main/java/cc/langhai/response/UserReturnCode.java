@@ -53,6 +53,10 @@ public enum UserReturnCode implements ReturnCode {
     USER_REGISTER_PARAM_VERIFY_LENGTH_00022(500, "用户名长度不符合要求，3到8位。"),
 
     USER_REGISTER_PARAM_VERIFY_ALPHANUMERIC_00023(500, "用户名必须由字母和数字组成。"),
+
+    USER_UPDATE_ENABLE_SUCCEED_00024(200, "修改用户启用状态成功。"),
+
+    USER_UPDATE_ENABLE_FAIL_00025(500, "修改用户启用状态失败。"),
     ;
 
     private Integer code;

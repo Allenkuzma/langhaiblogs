@@ -2,11 +2,13 @@ package cc.langhai.controller.article;
 
 import cc.langhai.domain.Article;
 import cc.langhai.domain.Label;
+import cc.langhai.domain.User;
 import cc.langhai.dto.ArticleDTO;
 import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.ArticleService;
 import cc.langhai.service.LabelService;
+import cc.langhai.service.UserService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -41,6 +43,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 跳转到文章新发布页面
@@ -156,6 +161,13 @@ public class ArticleController {
             return "blogs/user/login";
         }
 
+        // 查询文章用户的启用状态
+        User user = userService.getUserById(article.getUserId());
+        if(ObjectUtil.isNotNull(user)){
+            if(Boolean.valueOf(false).equals(user.getEnable())){
+                return "error/articleEnable";
+            }
+        }
         // 访问密码处理
         if(StrUtil.isNotBlank(article.getPassword())){
             model.addAttribute("id", id);
@@ -327,6 +339,14 @@ public class ArticleController {
         Article article = articleService.getById(id);
         if(ObjectUtil.isNull(article)){
             return "blogs/user/login";
+        }
+
+        // 查询文章用户的启用状态
+        User user = userService.getUserById(article.getUserId());
+        if(ObjectUtil.isNotNull(user)){
+            if(Boolean.valueOf(false).equals(user.getEnable())){
+                return "error/articleEnable";
+            }
         }
 
         // 访问密码处理

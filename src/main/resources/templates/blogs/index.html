@@ -42,6 +42,9 @@
 								<span th:text="${userInfo?.motto}" ></span><br />
 								<span th:if="${not #strings.isEmpty(session.user?.username)}">
 									<a href="javascript:void(0)" id="logout">安全退出</a><br />
+									<span th:if="not ${session.user?.enable}">
+										该账户已经被禁用，所有功能都被禁用，请联系网站管理员处理。
+									</span>
 								</span>
 							</p>
 							<ul class="actions">

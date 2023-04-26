@@ -16,7 +16,8 @@ public interface UserService extends IService<User> {
     /**
      * 获取用户信息 用户名称查询
      *
-     * @return
+     * @param username 用户名称
+     * @return 用户信息实体类
      */
     User getUserByUsername(String username);
 
@@ -31,14 +32,17 @@ public interface UserService extends IService<User> {
     /**
      * 新增一个用户信息
      *
-     * @return
+     * @param user 用户实体类
+     * @return 响应结果数量
      */
     Integer insertUser(User user);
 
     /**
      * 获取用户信息 用户名称和用户密码查询
      *
-     * @return
+     * @param username 用户名称
+     * @param password 用户密码
+     * @return 用户实体类
      */
     User getUserByUsernameAndPassword(String username, String password);
 
@@ -59,10 +63,17 @@ public interface UserService extends IService<User> {
     /**
      * 获取所有用户信息
      *
-     * @param username
-     * @param nickname
-     * @return
+     * @param username 用户名
+     * @param nickname 昵称
+     * @return 用户信息集合
      */
     List<User> getUserList(String username, String nickname);
 
+    /**
+     * 修改启用状态
+     *
+     * @param id 用户id
+     * @param enable 启用状态
+     */
+    void enable(Long id, Boolean enable);
 }

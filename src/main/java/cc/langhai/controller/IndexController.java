@@ -1,6 +1,5 @@
 package cc.langhai.controller;
 
-import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.config.constant.LinksConstant;
 import cc.langhai.config.constant.RoleConstant;
 import cc.langhai.config.system.SystemConfig;

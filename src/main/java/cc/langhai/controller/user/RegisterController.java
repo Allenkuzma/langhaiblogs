@@ -64,10 +64,10 @@ public class RegisterController {
     /**
      * 用户注册
      *
-     * @return
+     * @return 注册结果
      */
-    @PostMapping("/register")
     @ResponseBody
+    @PostMapping("/register")
     public ResultResponse register(@RequestParam("username") String username,
                                    @RequestParam("password") String password,
                                    @RequestParam("nickname") String nickname,

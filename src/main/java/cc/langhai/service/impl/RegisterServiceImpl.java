@@ -183,6 +183,7 @@ public class RegisterServiceImpl implements RegisterService {
         user.setPassword(encryptHexPassword);
         user.setNickname(nickname);
         user.setAddTime(new Date());
+        user.setEnable(true);
         userService.insertUser(user);
 
         // 用户信息注册时间前端显示填充
@@ -260,7 +261,7 @@ public class RegisterServiceImpl implements RegisterService {
 
             // 当前session销毁时删除当前session绑定的用户信息
             // 同时删除当前session绑定用户的HttpSession
-            LonginUserSessionConfig.SESSION_ID_USER.remove(session.getId());
+            LonginUserSessionConfig.SESSION_ID_USER.remove(sessionMap.getId());
         }
 
         // 添加用户与HttpSession的绑定
@@ -338,7 +339,7 @@ public class RegisterServiceImpl implements RegisterService {
 
                                     // 当前session销毁时删除当前session绑定的用户信息
                                     // 同时删除当前session绑定用户的HttpSession
-                                    LonginUserSessionConfig.SESSION_ID_USER.remove(session.getId());
+                                    LonginUserSessionConfig.SESSION_ID_USER.remove(sessionMap.getId());
                                 }
 
                                 // 添加用户与HttpSession的绑定
