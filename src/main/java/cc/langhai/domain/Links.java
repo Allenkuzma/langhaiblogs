@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @TableName("links")
-public class Links {
+public class Links implements Comparable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -36,6 +37,10 @@ public class Links {
     @NotBlank(message = "网站描述不能为空")
     private String description;
 
+    @TableField("sort")
+    @NotNull(message = "排序不能为空")
+    private Integer sort;
+
     @TableField(value = "add_time", fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date addTime;
@@ -43,4 +48,17 @@ public class Links {
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date updateTime;
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Links){
+            Links links = (Links) o;
+            if(Long.compare(Long.valueOf(this.getSort()), Long.valueOf(links.getSort())) == 0){
+                return Long.compare(this.getId(), links.getId());
+            }else {
+                return Long.compare(Long.valueOf(this.getSort()), Long.valueOf(links.getSort()));
+            }
+        }
+        return 0;
+    }
 }

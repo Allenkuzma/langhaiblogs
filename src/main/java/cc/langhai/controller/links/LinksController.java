@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class LinksController {
     /**
      * 跳转到友情链接管理页面
      *
-     * @return
+     * @return 友情链接管理页面
      */
     @GetMapping("/linksListPage")
     @RequestAuthority(value = {"admin"})
@@ -53,7 +54,7 @@ public class LinksController {
     /**
      * 跳转到友情链接新增页面
      *
-     * @return
+     * @return 友情链接新增页面
      */
     @GetMapping("/linksAddPage")
     @RequestAuthority(value = {"admin"})
@@ -65,7 +66,7 @@ public class LinksController {
     /**
      * 跳转到友情链接更新页面
      *
-     * @return
+     * @return 友情链接更新页面
      */
     @GetMapping("/linksUpdatePage")
     @RequestAuthority(value = {"admin"})
@@ -83,13 +84,14 @@ public class LinksController {
     /**
      * 获取友情链接列表页面数据
      *
-     * @return
+     * @return 友情链接列表页面数据
      */
     @ResponseBody
     @GetMapping("/linksList")
     @RequestAuthority(value = {"admin"})
     public JSONObject linksList(){
         List<Links> linksList = linksService.list();
+        Collections.sort(linksList);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);
         jsonObject.put("data", linksList);
@@ -101,7 +103,7 @@ public class LinksController {
     /**
      * 新增友情链接
      *
-     * @return
+     * @return 新增友情链接结果
      */
     @ResponseBody
     @PostMapping("/addLinks")
@@ -137,13 +139,14 @@ public class LinksController {
     /**
      * 更新友情链接
      *
-     * @return
+     * @return 更新友情链接结果
      */
+    @ResponseBody
     @PostMapping("/updateLinks")
     @RequestAuthority(value = {"admin"})
-    @ResponseBody
     public ResultResponse updateLinks(@RequestBody @Validated Links links){
         linksService.updateLinks(links);
+
         return ResultResponse.success(LinksReturnCode.LINKS_UPDATE_SUCCESS_00005);
     }
 

@@ -23,7 +23,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">超链接地址</label>
                     <div class="layui-input-block">
-                        <input type="text" th:value="${links.href}" name="href" lay-verify="href" autocomplete="off" placeholder="请输入超链接地址"
+                        <input type="text" th:value="${links.href}" name="href" lay-verify="url" autocomplete="off" placeholder="请输入超链接地址"
                                class="layui-input">
                     </div>
                 </div>
@@ -38,6 +38,13 @@
                     <label class="layui-form-label">网站描述</label>
                     <div class="layui-input-block">
                         <input type="text" th:value="${links.description}" name="description" lay-verify="description" autocomplete="off" placeholder="请输入网站描述"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:value="${links.sort}" name="sort" lay-verify="number" autocomplete="off" placeholder="请输入网站排序"
                                class="layui-input">
                     </div>
                 </div>

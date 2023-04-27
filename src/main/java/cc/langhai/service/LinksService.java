@@ -14,7 +14,7 @@ public interface LinksService extends IService<Links> {
     /**
      * 管理员添加友情链接
      *
-     * @param links
+     * @param links 友情链接实体类
      */
     void addLinks(Links links);
 
@@ -28,7 +28,7 @@ public interface LinksService extends IService<Links> {
     /**
      * 管理员更新友情链接
      *
-     * @param links
+     * @param links 友情链接实体类
      */
     void updateLinks(Links links);
 }

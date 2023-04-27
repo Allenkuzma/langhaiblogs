@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -69,6 +70,7 @@ public class IndexController {
 
         // 首页超链接
         List<Links> linksList = linksService.list();
+        Collections.sort(linksList);
         int count = linksList.size();
         if(linksList.size() < LinksConstant.LINKS_COUNT_ALL){
             for (int i = 0; i < LinksConstant.LINKS_COUNT_ALL - count; i++) {

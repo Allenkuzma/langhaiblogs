@@ -16,19 +16,16 @@ public class ArticleConstant {
 
     /**
      * 文章当天发布次数
-     *
      */
     public static final Integer ARTICLE_COUNT_TODAY = 10;
 
     /**
      * 热点排名前十的文章
-     *
      */
     public static TreeSet<Article> ARTICLE_HEAT_TOP_10 = new TreeSet<>();
 
     /**
      * 文章访问密码长度
-     *
      */
     public static final Integer ARTICLE_PASSWORD_LENGTH = 6;
 
