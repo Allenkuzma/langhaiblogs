@@ -25,7 +25,7 @@
 
     <select id="getUserByUsernameAndPassword" resultType="cc.langhai.domain.User">
         select
-            id, username, nickname, password, enable, add_time, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show, update_time
+            id, username, nickname, password, enable, image, add_time, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show, update_time
         from
             user
         where
