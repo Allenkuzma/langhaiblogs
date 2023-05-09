@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 图片 控制器
+ * 图片控制器
  *
  * @author langhai
  * @date 2023-01-04 10:20
@@ -62,11 +62,12 @@ public class ImageController {
     /**
      * 跳转到添加图片页面
      *
-     * @return
+     * @return 添加图片页面
      */
     @RequestMapping("/imageAddPage")
     public String imageAddPage(Model model){
         model.addAttribute("size", imageService.space());
+
         return "blogs/image/imageAdd";
     }
 

@@ -96,4 +96,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    @Override
+    public void image(Long id, Boolean image) {
+        User user = userMapper.getUserById(id);
+        if(ObjectUtil.isNull(user)){
+            throw new BusinessException(UserReturnCode.USER_UPDATE_IMAGE_FAIL_00027);
+        }
+
+        user.setImage(image);
+        userMapper.updateById(user);
+
+        // 判断其他地方是否登录
+        // 删除当前登录用户已绑定的HttpSession map中的remove方法返回删除value值
+        HttpSession sessionMap = LonginUserSessionConfig.USER_SESSION.remove(user.getUsername());
+
+        if (sessionMap != null){
+            // 删除已登录的sessionId绑定的用户
+            sessionMap.removeAttribute("user");
+
+            // 当前session销毁时删除当前session绑定的用户信息
+            // 同时删除当前session绑定用户的HttpSession
+            LonginUserSessionConfig.SESSION_ID_USER.remove(sessionMap.getId());
+        }
+    }
+
 }

@@ -76,4 +76,12 @@ public interface UserService extends IService<User> {
      * @param enable 启用状态
      */
     void enable(Long id, Boolean enable);
+
+    /**
+     * 修改用户图库功能状态
+     *
+     * @param id 用户id
+     * @param image 图库功能状态
+     */
+    void image(Long id, Boolean image);
 }

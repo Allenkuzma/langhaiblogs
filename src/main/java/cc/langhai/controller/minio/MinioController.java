@@ -7,6 +7,7 @@ import cc.langhai.minio.util.MinioUtils;
 import cc.langhai.response.ImageReturnCode;
 import cc.langhai.response.MinioReturnCode;
 import cc.langhai.response.ResultResponse;
+import cc.langhai.response.ReturnCode;
 import cc.langhai.service.ImageService;
 import cc.langhai.service.UserService;
 import cn.hutool.core.map.MapUtil;
@@ -27,7 +28,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 
 /**
- * minio 控制器
+ * minio控制器
  *
  * @author langhai
  * @date 2023-01-02 22:24
@@ -48,11 +49,11 @@ public class MinioController {
     /**
      * 上传图片到minio服务器系统
      *
-     * @param file
-     * @return
+     * @param file 上传的文件
+     * @return 上传图片的结果
      */
-    @PostMapping("/upload")
     @ResponseBody
+    @PostMapping("/upload")
     public ResultResponse upload(@RequestParam(name = "file", required = true) MultipartFile file) {
         try {
             String url = minioUtils.uploadFile(file, "product");
@@ -60,18 +61,17 @@ public class MinioController {
         } catch (Exception e) {
             return ResultResponse.fail(MinioReturnCode.MINIO_UPLOAD_FAIL_00001);
         }
-
     }
 
 
     /**
      * 上传图片到minio服务器系统 给富文本编辑器使用
      *
-     * @param file
-     * @return
+     * @param file 上传的文件
+     * @return 上传图片的结果
      */
-    @PostMapping("/upload/wangEditor")
     @ResponseBody
+    @PostMapping("/upload/wangEditor")
     public JSONObject uploadWangEditor(@RequestParam(name = "file", required = true) MultipartFile file, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("errno", 0);
@@ -82,13 +82,18 @@ public class MinioController {
             hashMap.put("alt", file.getOriginalFilename());
             hashMap.put("href", "/minio/download?minioName=" + url);
             jsonObject.put("data", hashMap);
-            return jsonObject;
+            jsonObject.put("message", "上传图片成功。");
         } catch (Exception e) {
-            jsonObject.put("errno", 1);
-            jsonObject.put("message", "上传失败");
-            return jsonObject;
+            if(e instanceof BusinessException){
+                BusinessException businessException = (BusinessException) e;
+                ReturnCode returnCode = businessException.getReturnCode();
+                jsonObject.put("message", returnCode.getMessage());
+            }else {
+                jsonObject.put("message", "上传图片失败。");
+            }
         }
 
+        return jsonObject;
     }
 
     /**

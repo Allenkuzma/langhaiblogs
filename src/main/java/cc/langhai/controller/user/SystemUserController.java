@@ -62,4 +62,20 @@ public class SystemUserController {
 
         return "error/enable";
     }
+
+    /**
+     * 修改用户图库功能状态
+     *
+     * @param id 用户id
+     * @param image 图库功能状态
+     * @return 修改用户图库功能状态结果
+     */
+    @ResponseBody
+    @PutMapping("/image")
+    @RequestAuthority(value = {"admin"})
+    public ResultResponse image(Long id, Boolean image){
+        userService.image(id, image);
+
+        return ResultResponse.success(UserReturnCode.USER_UPDATE_IMAGE_SUCCEED_00026);
+    }
 }

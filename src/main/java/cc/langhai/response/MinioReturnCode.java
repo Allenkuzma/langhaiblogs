@@ -18,6 +18,7 @@ public enum MinioReturnCode implements ReturnCode{
 
     MINIO_DELETE_FAIL_00004(500, "图片删除失败。"),
 
+    MINIO_IMAGE_FAIL_00005(500, "图库功能已经被禁用，请联系管理员开通。"),
     ;
 
     private Integer code;

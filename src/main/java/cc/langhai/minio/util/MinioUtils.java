@@ -1,10 +1,12 @@
 package cc.langhai.minio.util;
 
 import cc.langhai.domain.Image;
+import cc.langhai.domain.User;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.minio.config.MinioProp;
 import cc.langhai.response.MinioReturnCode;
 import cc.langhai.service.ImageService;
+import cc.langhai.service.UserService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -36,6 +38,9 @@ public class MinioUtils {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private UserService userService;
  
     /**
      * 创建bucket
@@ -54,12 +59,18 @@ public class MinioUtils {
      *
      * @param file       文件
      * @param bucketName 存储桶
-     * @return
+     * @return 上传文件结果
      */
-    public String uploadFile(MultipartFile file, String bucketName) throws Exception {
+    public String uploadFile(MultipartFile file, String bucketName) {
         // 判断上传文件是否为空
         if (ObjectUtil.isNull(file) || file.isEmpty()) {
             throw new BusinessException(MinioReturnCode.MINIO_UPLOAD_NULL_00002);
+        }
+
+        // 判断当前用户是否有图库功能
+        User user = UserContext.get();
+        if(!user.getImage()){
+            throw new BusinessException(MinioReturnCode.MINIO_IMAGE_FAIL_00005);
         }
 
         imageService.size();

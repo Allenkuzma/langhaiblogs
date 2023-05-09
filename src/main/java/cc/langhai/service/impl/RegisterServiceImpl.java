@@ -184,6 +184,7 @@ public class RegisterServiceImpl implements RegisterService {
         user.setNickname(nickname);
         user.setAddTime(new Date());
         user.setEnable(true);
+        user.setImage(false);
         userService.insertUser(user);
 
         // 用户信息注册时间前端显示填充

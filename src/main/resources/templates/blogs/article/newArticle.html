@@ -171,17 +171,9 @@
 
                 onSuccess(file, res) {
                     if(res.errno == 0 ){
-                        layer.msg('文件上传成功', {
+                        layer.msg(res.message, {
                             closeBtn: 1,
                             icon: 6,
-                            time: 3 * 1000,
-                            offset: '21px'
-                        });
-                        return
-                    }else {
-                        layer.msg('文件上传失败', {
-                            closeBtn: 1,
-                            icon: 2,
                             time: 3 * 1000,
                             offset: '21px'
                         });

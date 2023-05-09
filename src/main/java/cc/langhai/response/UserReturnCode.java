@@ -57,6 +57,10 @@ public enum UserReturnCode implements ReturnCode {
     USER_UPDATE_ENABLE_SUCCEED_00024(200, "修改用户启用状态成功。"),
 
     USER_UPDATE_ENABLE_FAIL_00025(500, "修改用户启用状态失败。"),
+
+    USER_UPDATE_IMAGE_SUCCEED_00026(200, "修改用户图库功能状态成功。"),
+
+    USER_UPDATE_IMAGE_FAIL_00027(500, "修改用户图库功能状态失败。"),
     ;
 
     private Integer code;

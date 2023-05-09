@@ -60,6 +60,10 @@
 			<input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" {{ d.enable== true ? 'checked' : '' }} />
 		</script>
 
+		<script type="text/html" id="user-image">
+			<input type="checkbox" name="image" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-image" {{ d.image== true ? 'checked' : '' }} />
+		</script>
+
 		<script type="text/html" id="user-sex">
 			{{#if (d.sex == 1) { }}
 		    <span>男</span>
@@ -106,9 +110,11 @@
 							templet: '#user-sex'
 						},
 						{
-							title: '电话',
-							field: 'phone',
-							align: 'center'
+							title: '图库功能',
+							field: 'image',
+							align: 'center',
+							templet: '#user-image',
+							width: 100
 						},
 						{
 							title: '启用',
@@ -181,6 +187,33 @@
 						data: {
 							"id": this.value,
 							"enable": obj.elem.checked
+						},
+						success: function (data) {
+							if(data.code == 200){
+								layer.msg(data.message, {
+									icon: 1,
+									time: 2000
+								});
+							}else {
+								layer.msg(data.message, {
+									icon: 2,
+									time: 2000
+								});
+							}
+						}
+					})
+				});
+
+				form.on('switch(user-image)', function(obj) {
+					layer.tips("停用图库功能，用户将无法使用图库功能。");
+					// 修改用户图库功能状态
+					$.ajax({
+						url: "/system/user/image",
+						async: true,
+						type: "PUT",
+						data: {
+							"id": this.value,
+							"image": obj.elem.checked
 						},
 						success: function (data) {
 							if(data.code == 200){

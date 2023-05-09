@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>添加图片 - 浪海博客</title>
@@ -56,8 +56,8 @@
   <blockquote class="layui-elem-quote">
     <ul class="menu">
       <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
-      <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
-      <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+      <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
+      <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
     </ul>
   </blockquote>
 
@@ -80,12 +80,12 @@
       offset: '21px'
     });
 
-    //拖拽上传
+    // 拖拽上传
     upload.render({
       elem: '#test10'
       ,url: '/minio/upload/wangEditor'
       ,done: function(res){
-        layer.msg('上传成功');
+        layer.msg(res.message);
         layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.data.url);
       }
     });
