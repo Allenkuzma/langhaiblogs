@@ -7,7 +7,10 @@
 在线演示：http://www.langhai.cc  
 实际效果以代码为准（演示站点是以前的版本） 联系方式QQ：676558206 技术交流QQ群 585975304
 
-部分页面截图  
+部分页面截图    
+首页页面截图
+![首页截图](./images/首页截图.png)  
+登录页面截图
 ![登录页面截图](./images/登录页面截图.png)
 
 部署方式：[详细说明](https://langhai.cc/article/articleShow?id=38)  
@@ -26,7 +29,8 @@ redis minio elasticSearch rabbitMQ
 博客前端模板 [燕十三博客模板](https://gitee.com/yssgit/yan_shisan_blog_template)  
 导航模块来自开源项目 [geekape](https://github.com/geekape/geek-navigation)    
 后台管理来自开源项目 [Pear Admin](https://gitee.com/pear-admin/Pear-Admin-Layui)  
-聚合搜索来自开源项目 [juso](https://github.com/yitd/juso.vip)
+聚合搜索来自开源项目 [juso](https://github.com/yitd/juso.vip)  
+音乐播放器来自开源项目 [QPlayer](https://github.com/Jrohy/QPlayer)
 
 基本组件：  
 关系型数据库 MySQL [MySQL 详细说明](http://www.langhai.cc/article/articleShow?id=53) 

@@ -10,6 +10,9 @@ The actual effect is subject to the code (the demo site is the previous version)
 contact information QQ：676558206 email 676558206@qq.com langhai666@gmail.com
 
 Screenshot of some pages  
+Screenshot of homepage
+![首页截图](./images/首页截图.png)  
+Screenshot of login page
 ![登录页面截图](./images/登录页面截图.png)
 
 Deployment method:  [detailed description](https://langhai.cc/article/articleShow?id=38)  
@@ -28,7 +31,8 @@ The main front-end template of Langhai blog system comes from the html5up.net we
 Blog front-end template [燕十三博客模板](https://gitee.com/yssgit/yan_shisan_blog_template)  
 The navigation module is from an open source project [geekape](https://github.com/geekape/geek-navigation)  
 Background management comes from open source projects [Pear Admin](https://gitee.com/pear-admin/Pear-Admin-Layui)  
-Aggregate search from open source projects [juso](https://github.com/yitd/juso.vip)
+Aggregate search from open source projects [juso](https://github.com/yitd/juso.vip)  
+Music player from open source project [QPlayer](https://github.com/Jrohy/QPlayer)
 
 Basic components:  
 Relational database MySQL  [MySQL All instructions](http://www.langhai.cc/article/articleShow?id=53)
