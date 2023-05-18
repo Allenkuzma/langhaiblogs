@@ -3,11 +3,10 @@ package cc.langhai.domain;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * 反馈消息 实体类
+ * 反馈消息实体类
  *
  * @author langhai
  * @date 2023-01-07 15:49
@@ -32,13 +31,11 @@ public class Message {
 
     /**
      * 查询数据库使用
-     *
      */
     private String beginDate;
 
     /**
      * 查询数据库使用
-     *
      */
     private String endDate;
 }

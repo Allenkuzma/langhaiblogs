@@ -34,23 +34,20 @@ public class MessageServiceImpl implements MessageService {
         String[] nowDayScope = DateUtil.getNowDayScope();
         message.setBeginDate(nowDayScope[0]);
         message.setEndDate(nowDayScope[1]);
-
+        // 获取请求ip地址
         String ip = IPUtil.getIP(request);
         message.setIp(ip);
-
+        // 判断今天提交上限
         List<Message> list = messageMapper.list(message);
-
         if(list.size() >= MessageConstant.IP_DAY_COUNT_ALL){
             throw new BusinessException(MessageReturnCode.MESSAGE_SAVE_FAIL_00000);
         }
-
         // 安全机制当天提交的总次数
         List<Message> messageList = messageMapper.sum(message);
-
         if(messageList.size() >= MessageConstant.IP_DAY_COUNT_SUM_ALL){
             throw new BusinessException(MessageReturnCode.MESSAGE_SAVE_FAIL_00000);
         }
-
+        // 新增反馈信息数据
         message.setAddTime(new Date());
         messageMapper.insertMessage(message);
     }

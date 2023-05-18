@@ -16,7 +16,8 @@ public interface MessageService {
     /**
      * 保存用户反馈消息
      *
-     * @param message
+     * @param message 反馈消息实体类
+     * @param request http请求
      */
     void save(Message message, HttpServletRequest request);
 }

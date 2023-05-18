@@ -20,11 +20,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
 import java.util.List;
 
 /**
- * 图片 service接口实现类
+ * 图片service接口实现类
  *
  * @author langhai
  * @date 2022-01-03 11:30
@@ -73,6 +72,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     @Override
     public List<Image> getAllImageByUser(Long userId) {
         List<Image> imageList = imageMapper.getAllImageByUser(userId);
+        // 返回用户所有图片集合
         return imageList;
     }
 

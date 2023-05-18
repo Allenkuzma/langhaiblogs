@@ -30,21 +30,21 @@ public class ImageController {
     /**
      * 跳转到图库页面
      *
-     * @return
+     * @return 图库页面
      */
     @RequestMapping("/imagePage")
-    public String imagePage(Model model, HttpServletRequest request,
+    public String imagePage(Model model,
                             @RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "8") Integer size){
         // 开启分页助手
         PageHelper.startPage(page, size);
-
+        // 获取用户所有图片
         List<Image> list = imageService.getAllImageByUser(UserContext.getUserId());
         PageInfo<Image> pageInfo = new PageInfo<>(list);
-
+        // 前端展示图片地址
         if(CollectionUtil.isNotEmpty(list)){
             for (Image image : list) {
-                // 图片地址带域名
+                // 图片地址带域名 需要带上域名 放开注释即可
                 /*StringBuffer requestURL = request.getRequestURL();
                 String urlPrefix = requestURL.substring(0, requestURL.length() - request.getRequestURI().length());
                 image.setUrl(urlPrefix + "/minio/download?minioName=" + image.getMinioName());*/

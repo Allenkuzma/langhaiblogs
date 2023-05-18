@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
- * 图片 service接口
+ * 图片service接口
  *
  * @author langhai
  * @date 2022-01-03 11:28
@@ -30,8 +30,8 @@ public interface ImageService extends IService<Image> {
     /**
      * 获取用户所有图片
      *
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 用户所有图片集合
      */
     List<Image> getAllImageByUser(Long userId);
 

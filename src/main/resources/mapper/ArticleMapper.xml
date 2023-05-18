@@ -13,8 +13,6 @@
         where
             user_id = #{userId}
         and
-            delete_flag = 0
-        and
             add_time &gt;= #{beginDate}
         and
             add_time &lt;= #{endDate}

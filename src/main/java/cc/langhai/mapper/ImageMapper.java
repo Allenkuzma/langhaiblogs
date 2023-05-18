@@ -1,6 +1,5 @@
 package cc.langhai.mapper;
 
-import cc.langhai.domain.Article;
 import cc.langhai.domain.Image;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -8,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 图片表 Mapper
+ * 图片表Mapper
  *
  * @author langhai
  * @date 2022-01-03 11:31
@@ -19,8 +18,8 @@ public interface ImageMapper extends BaseMapper<Image> {
     /**
      * 获取用户的所有图片
      *
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 用户所有图片集合
      */
     List<Image> getAllImageByUser(Long userId);
 
