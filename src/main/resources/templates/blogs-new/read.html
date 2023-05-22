@@ -103,18 +103,23 @@
                                 <div class="layui-field-box">
                                     <div class="leavemessage" style="text-align:initial">
                                         <form class="layui-form blog-editor" action="">
-                                            <input type="hidden" name="articleid" id="articleid" value="浪海博客">
+                                            <input type="hidden" name="articleId" id="articleId" th:value="${article.id}">
                                             <div class="layui-form-item">
-                                                <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容（暂时关闭评论功能）" class="layui-textarea"></textarea>
-                                            </div>
-                                            <div class="layui-form-item">
-                                                <button class="layui-btn layui-hide" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">提交留言</button>
+                                                <textarea name="content" lay-verify="content" id="content" placeholder="请输入内容" class="layui-textarea"></textarea>
                                             </div>
                                         </form>
+                                        <div>
+                                            <button class="layui-btn" id="submitComment">提交评论</button>
+                                        </div>
                                     </div>
                                 </div>
                             </fieldset>
-                            <ul class="blog-comment" id="blog-comment"></ul>
+                                <ul class="blog-comment" id="blog-comment">
+                                    <span th:each="comment : ${commentList}">
+                                        <li th:text="'评论时间：'+ ${comment.addTimeShow} + ' 用户昵称：' + ${comment.nickname}"></li>
+                                        <li th:text="'评论内容：'+ ${comment.content}"></li>
+                                    </span>
+                                </ul>
                         </section>
                     </article>
                 </div>
@@ -147,7 +152,6 @@
             NProgress.done();
         };
 
-
         // 图片自适应处理
         $(function (){
             $("img").attr("style", "max-width: 100%;");
@@ -156,6 +160,36 @@
         // 代码自适应处理
         $(function (){
             $("code").addClass("hljs");
+        })
+
+        // 提交文章评论
+        $(function () {
+            $("#submitComment").on("click", function () {
+                $.ajax({
+                    url: "/article/submitComment",
+                    async: true,
+                    type: "POST",
+                    data: {
+                        "articleId": $("#articleId").val(),
+                        "content": $("#content").val()
+                    },
+                    success: function (data) {
+                        if(data.code == 200){
+                            layer.msg(data.message, {
+                                icon: 1,
+                                time: 2000
+                            }, function () {
+                                window.location.reload();
+                            })
+                        }else {
+                            layer.msg(data.message, {
+                                icon: 2,
+                                time: 2000
+                            });
+                        }
+                    }
+                })
+            });
         })
     </script>
 </body>

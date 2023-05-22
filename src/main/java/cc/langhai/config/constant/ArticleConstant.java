@@ -29,4 +29,9 @@ public class ArticleConstant {
      */
     public static final Integer ARTICLE_PASSWORD_LENGTH = 6;
 
+    /**
+     * 一篇文章一个用户评论次数
+     */
+    public static final Integer ARTICLE_COMMENT_USER_COUNT = 3;
+
 }

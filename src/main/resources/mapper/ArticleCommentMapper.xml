@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.langhai.mapper.ArticleCommentMapper">
+
+    <select id="getCommentByArticleId" resultType="cc.langhai.domain.ArticleComment">
+        SELECT
+            ac.*, DATE_FORMAT(ac.add_time, "%Y-%m-%d %H:%i:%s") AS add_time_show, u.nickname
+        FROM
+            article_comment AS ac
+        LEFT JOIN
+            user AS u
+        ON
+            ac.user_id = u.id
+        WHERE
+            ac.article_id = #{articleId}
+    </select>
+</mapper>

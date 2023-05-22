@@ -14,7 +14,7 @@ import java.util.Date;
  * @date 2022-12-24 16:30
  */
 @Data
-public class Article implements Comparable{
+public class Article implements Comparable {
 
     private Long id;
 
@@ -62,15 +62,18 @@ public class Article implements Comparable{
 
     /**
      * 文章热度
-     *
      */
     private String heat;
 
     /**
      * 文章标签
-     *
      */
     private String labelContent;
+
+    /**
+     * 文章评论次数
+     */
+    private Integer commentCount;
 
     @Override
     public int compareTo(Object o) {

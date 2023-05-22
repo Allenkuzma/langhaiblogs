@@ -50,6 +50,21 @@
 								<div th:utext="${article.html}">
 
 								</div>
+								<div>
+									<p id="vCodeStatus"></p>
+									<input type="hidden" name="articleId" id="articleId" th:value="${article.id}">
+									<label for="content">发表评论</label>
+									<textarea name="content" id="content" placeholder="请输入内容" rows="5"></textarea>
+									<a href="javascript:void(0)" class="button primary" id="submitComment">提交评论</a>
+								</div>
+								<div>
+									<ul class="blog-comment" id="blog-comment">
+										<span th:each="comment : ${commentList}">
+											<li th:text="'评论时间：'+ ${comment.addTimeShow} + ' 用户昵称：' + ${comment.nickname}"></li>
+											<li th:text="'评论内容：'+ ${comment.content}"></li>
+										</span>
+									</ul>
+								</div>
 							</section>
 						</div>
 					</section>
@@ -99,6 +114,31 @@
 			// 图片自适应处理
 			$(function (){
 				$("img").addClass("image fit");
+			})
+
+			// 提交文章评论
+			$(function () {
+				$("#submitComment").on("click", function () {
+					$.ajax({
+						url: "/article/submitComment",
+						async: true,
+						type: "POST",
+						data: {
+							"articleId": $("#articleId").val(),
+							"content": $("#content").val()
+						},
+						success: function (data) {
+							if(data.code == 200){
+								$("#vCodeStatus").html(data.message);
+								setTimeout(function(){
+									window.location.reload();
+								}, 1000);
+							}else {
+								$("#vCodeStatus").html(data.message);
+							}
+						}
+					})
+				});
 			})
 		</script>
 	</body>

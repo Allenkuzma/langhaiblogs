@@ -1,9 +1,7 @@
 package cc.langhai.es;
 
 import cc.langhai.config.mybatisplus.MySQLConfig;
-import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
@@ -16,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * 代码生成器
@@ -34,7 +31,7 @@ public class CodeGenerator {
     @Test
     public void CodeGenerator() {
         // 表名字
-        String setModuleName = "nav_website";
+        String setModuleName = "article_comment";
 
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();

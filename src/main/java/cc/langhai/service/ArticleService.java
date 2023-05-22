@@ -47,8 +47,8 @@ public interface ArticleService {
      * 获取文章热度
      * 使用场景：个人空间文章列表的时候使用
      *
-     * @param articleList
-     * @return
+     * @param articleList 文章集合
+     * @return 文章集合
      */
     List<Article> getArticleHeat(List<Article> articleList);
 
@@ -127,4 +127,12 @@ public interface ArticleService {
      */
     void systemDeleteArticle(Long id);
 
+    /**
+     * 文章进行评论
+     *
+     * @param articleId 文章id
+     * @param content   评论内容
+     * @param session   session会话
+     */
+    void submitComment(Long articleId, String content, HttpSession session);
 }

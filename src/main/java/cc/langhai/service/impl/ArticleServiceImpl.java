@@ -1,18 +1,16 @@
 package cc.langhai.service.impl;
 
 import cc.langhai.config.constant.ArticleConstant;
-import cc.langhai.config.constant.LabelConstant;
-import cc.langhai.domain.Article;
-import cc.langhai.domain.Label;
-import cc.langhai.domain.User;
+import cc.langhai.config.constant.RoleConstant;
+import cc.langhai.domain.*;
 import cc.langhai.dto.ArticleDTO;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
 import cc.langhai.mq.config.MqConstants;
 import cc.langhai.response.ArticleReturnCode;
-import cc.langhai.response.LabelReturnCode;
 import cc.langhai.service.ArticleService;
+import cc.langhai.service.IArticleCommentService;
 import cc.langhai.service.LabelService;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.UserContext;
@@ -41,8 +39,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * article service 实现类
@@ -61,6 +57,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private LabelService labelService;
+
+    @Autowired
+    private IArticleCommentService articleCommentService;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -352,6 +351,33 @@ public class ArticleServiceImpl implements ArticleService {
             // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
             rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_DELETE_KEY, article.getId());
         }
+    }
+
+    @Override
+    public void submitComment(Long articleId, String content, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(ObjectUtil.isNull(user)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_SUBMIT_COMMENT_USER_FAIL_00014);
+        }
+
+        // 参数合法校验
+        if(ObjectUtil.isNull(articleId) || StrUtil.isBlank(content)){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_SUBMIT_COMMENT_PARAM_FAIL_00013);
+        }
+
+        // 当前用户对此篇文章只能评价三条
+        List<ArticleComment> list = articleCommentService.list(Wrappers.<ArticleComment>lambdaQuery()
+                .eq(ArticleComment::getUserId, user.getId())
+                .eq(ArticleComment::getArticleId, articleId));
+        if(list.size() >= ArticleConstant.ARTICLE_COMMENT_USER_COUNT){
+            throw new BusinessException(ArticleReturnCode.ARTICLE_SUBMIT_COMMENT_COUNT_FAIL_00015);
+        }
+
+        ArticleComment articleComment = new ArticleComment();
+        articleComment.setArticleId(articleId);
+        articleComment.setContent(content);
+        articleComment.setUserId(user.getId());
+        articleCommentService.save(articleComment);
     }
 
     /**

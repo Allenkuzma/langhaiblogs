@@ -29,7 +29,15 @@ public enum ArticleReturnCode implements ReturnCode{
 
     ARTICLE_PASSWORD_PARAM_LENGTH_FAIL_00010(500, "文章访问密码请设置为六个字符。"),
 
-    ARTICLE_SYSTEM_DELETE_OK_00011(200, "文章真实删除成功"),
+    ARTICLE_SYSTEM_DELETE_OK_00011(200, "文章真实删除成功。"),
+
+    ARTICLE_SUBMIT_COMMENT_OK_00012(200, "文章进行评论成功。"),
+
+    ARTICLE_SUBMIT_COMMENT_PARAM_FAIL_00013(500, "文章进行评论参数校验失败。"),
+
+    ARTICLE_SUBMIT_COMMENT_USER_FAIL_00014(500, "文章进行评论失败，请登录之后在评论。"),
+
+    ARTICLE_SUBMIT_COMMENT_COUNT_FAIL_00015(500, "文章进行评论失败，评论次数过多。"),
     ;
 
     private Integer code;

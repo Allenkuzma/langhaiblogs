@@ -6,9 +6,7 @@ import cc.langhai.domain.User;
 import cc.langhai.dto.ArticleDTO;
 import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.response.ResultResponse;
-import cc.langhai.service.ArticleService;
-import cc.langhai.service.LabelService;
-import cc.langhai.service.UserService;
+import cc.langhai.service.*;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -22,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,6 +45,12 @@ public class ArticleController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private IArticleCommentService articleCommentService;
+
+    @Autowired
+    private RegisterService registerService;
 
     /**
      * 跳转到文章新发布页面
@@ -187,6 +192,7 @@ public class ArticleController {
         if(articleService.judgeShow(session, article)){
             model.addAttribute("article", articleService.getArticleHeat(article));
             model.addAttribute("password", password);
+            model.addAttribute("commentList", articleCommentService.getCommentByArticleId(id));
             return "blogs/article/articleShow";
         }
 
@@ -292,7 +298,7 @@ public class ArticleController {
     /**
      * 跳转到文章搜索页面 新版
      *
-     * @return
+     * @return 文章搜索页面 新版
      */
     @GetMapping("/articleSearchPageNew")
     public String articleSearchPageNew(Model model,
@@ -301,7 +307,7 @@ public class ArticleController {
                                     String searchArticleStr, Long labelId){
         PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, labelId);
 
-        model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
+        model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(pageInfo.getList())));
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());
@@ -368,6 +374,7 @@ public class ArticleController {
         if(articleService.judgeShow(session, article)){
             model.addAttribute("article", articleService.getArticleHeat(article));
             model.addAttribute("password", password);
+            model.addAttribute("commentList", articleCommentService.getCommentByArticleId(id));
 
             // 获取热点前十文章
             Set<Article> articleHeatTop = articleService.getArticleHeatTop();
@@ -376,5 +383,22 @@ public class ArticleController {
         }
 
         return "blogs/user/login";
+    }
+
+    /**
+     * 文章进行评论
+     *
+     * @param articleId 文章id
+     * @param content   评论内容
+     * @return 文章进行评论结果
+     */
+    @ResponseBody
+    @PostMapping("/submitComment")
+    public ResultResponse submitComment(Long articleId, String content,
+                                        HttpServletRequest httpRequest, HttpSession session){
+        registerService.remember(httpRequest, session);
+        articleService.submitComment(articleId, content, session);
+
+        return ResultResponse.success(ArticleReturnCode.ARTICLE_SUBMIT_COMMENT_OK_00012);
     }
 }
