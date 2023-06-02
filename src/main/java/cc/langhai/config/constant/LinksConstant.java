@@ -13,7 +13,6 @@ public class LinksConstant {
 
     /**
      * 管理员友情链接总数量
-     *
      */
     public static final Integer LINKS_COUNT_ALL = 6;
 

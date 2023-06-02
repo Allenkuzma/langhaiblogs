@@ -13,7 +13,6 @@ public class LabelConstant {
 
     /**
      * 用户标签总数量
-     *
      */
     public static final Integer LABEL_COUNT_ALL = 30;
 

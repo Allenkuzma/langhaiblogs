@@ -17,25 +17,21 @@ public class SystemConfig {
 
     /**
      * 允许系统当天发送邮箱验证码最大次数
-     *
      */
     private Integer registerDayEmailCount;
 
     /**
      * 允许该ip24小时之内发送邮箱验证码次数
-     *
      */
     private Integer registerIPEmailCount;
 
     /**
      * AES算法秘钥 务必妥善保管
-     *
      */
     private String secret;
 
     /**
      * 用户当天注册上限数量
-     *
      */
     private Integer registerDayUserCount;
 

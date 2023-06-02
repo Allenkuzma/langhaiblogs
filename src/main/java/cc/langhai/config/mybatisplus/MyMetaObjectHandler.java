@@ -10,8 +10,8 @@ import java.util.Date;
 /**
  * mybatis-plus 自动填充
  *
- * @author : langhai
- * @date : 2023-01-14 10:58
+ * @author langhai
+ * @date 2023-01-14 10:58
  */
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {

@@ -14,19 +14,16 @@ public class RoleConstant {
 
     /**
      * admin 管理员
-     *
      */
     public static final String ADMIN = "admin";
 
     /**
      * user 普通用户
-     *
      */
     public static final String USER = "user";
 
     /**
      * vip 会员用户
-     *
      */
     public static final String VIP = "vip";
 }

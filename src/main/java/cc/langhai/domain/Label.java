@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 文章标签 实体类
+ * 文章标签实体类
  *
  * @author langhai
  * @date 2022-12-24 10:45
@@ -27,13 +27,11 @@ public class Label {
 
     /**
      * 用来展示新增时间 yyyy-MM-dd HH:mm:ss
-     *
      */
     private String addTimeShow;
 
     /**
      * 用来展示修改时间 yyyy-MM-dd HH:mm:ss
-     *
      */
     private String updateTimeShow;
 }

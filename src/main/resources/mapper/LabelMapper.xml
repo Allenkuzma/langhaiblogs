@@ -64,13 +64,13 @@
 
     <select id="article" resultType="cc.langhai.domain.Article">
         SELECT
-        a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") as add_time_show, l.content AS label_content
+            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") as add_time_show, l.content AS label_content
         FROM
-        article AS a
+            article AS a
         INNER JOIN
-        user AS u
+            user AS u
         INNER JOIN
-        label AS l
+            label AS l
         ON
             a.delete_flag = 0
         AND

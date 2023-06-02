@@ -36,6 +36,5 @@ public class ArticleCommandRunner implements CommandLineRunner {
             articleHeatTop10.addAll(articleHeat);
             log.info("10篇文章成功预热");
         }
-
     }
 }

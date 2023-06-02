@@ -37,7 +37,7 @@ public class LabelController {
     /**
      * 跳转到标签管理页面
      *
-     * @return
+     * @return 标签管理页面
      */
     @GetMapping("/labelPage")
     public String labelPage(){
@@ -48,7 +48,7 @@ public class LabelController {
     /**
      * 跳转到标签新增页面
      *
-     * @return
+     * @return 标签新增页面
      */
     @GetMapping("/labelAddPage")
     public String labelAddPage(){
@@ -59,7 +59,7 @@ public class LabelController {
     /**
      * 跳转到标签更新页面
      *
-     * @return
+     * @return 标签更新页面
      */
     @GetMapping("/labelUpdatePage")
     public String labelUpdatePage(Long id, Model model, String content){
@@ -72,7 +72,7 @@ public class LabelController {
     /**
      * 获取标签列表页面数据
      *
-     * @return
+     * @return 标签列表页面数据
      */
     @ResponseBody
     @GetMapping("/labelList")
@@ -93,7 +93,7 @@ public class LabelController {
     /**
      * 新增标签
      *
-     * @return
+     * @return 新增标签结果
      */
     @ResponseBody
     @PostMapping("/addLabel")
@@ -101,7 +101,7 @@ public class LabelController {
         if(StrUtil.isBlank(content)){
             return ResultResponse.fail(LabelReturnCode.LABEL_ADD_FAIL_00002);
         }
-
+        // 新增标签
         labelService.verifyAddLabel(content);
 
         return ResultResponse.success(LabelReturnCode.LABEL_ADD_SUCCESS_00001);
@@ -110,7 +110,7 @@ public class LabelController {
     /**
      * 删除标签
      *
-     * @return
+     * @return 删除标签结果
      */
     @ResponseBody
     @DeleteMapping("/deleteLabel")
@@ -118,7 +118,7 @@ public class LabelController {
         if(ObjectUtil.isNull(id)){
             return ResultResponse.fail(LabelReturnCode.LABEL_DELETE_FAIL_00004);
         }
-
+        // 删除标签
         labelService.deleteLabel(id);
 
         return ResultResponse.success(LabelReturnCode.LABEL_DELETE_SUCCESS_00003);
@@ -127,7 +127,7 @@ public class LabelController {
     /**
      * 更新标签
      *
-     * @return
+     * @return 更新标签结果
      */
     @ResponseBody
     @PostMapping("/updateLabel")
@@ -144,20 +144,19 @@ public class LabelController {
     /**
      * 跳转到用户该标签下所有的文章页面
      *
-     * @return
+     * @return 用户该标签下所有的文章页面
      */
     @GetMapping("/articleLabelPage")
-    public String articleLabelPage(Model model,
-                                    @RequestParam(defaultValue = "1") Integer page,
-                                    @RequestParam(defaultValue = "10") Integer size,
-                                    Long id){
+    public String articleLabelPage(Model model, Long id,
+                                   @RequestParam(defaultValue = "1") Integer page,
+                                   @RequestParam(defaultValue = "10") Integer size){
         PageInfo<Article> pageInfo = labelService.article(page, size, id);
         model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());
         model.addAttribute("search", id);
-
+        // 查询标签内容
         Label label = labelService.getById(id);
         model.addAttribute("label", label);
 

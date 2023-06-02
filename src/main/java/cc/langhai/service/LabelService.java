@@ -40,25 +40,25 @@ public interface LabelService {
     /**
      * 删除标签
      *
-     * @param id
+     * @param id 标签id
      */
     void deleteLabel(Long id);
 
     /**
      * 更新标签
      *
-     * @param id
-     * @param content
+     * @param id 标签id
+     * @param content 标签内容
      */
     void updateLabel(Long id, String content);
 
     /**
      * 用户该标签下所有的文章
      *
-     * @param page
-     * @param size
-     * @param id
-     * @return
+     * @param page 页数
+     * @param size 每页显示条数
+     * @param id 标签id
+     * @return 文章PageInfo对象
      */
     PageInfo<Article> article(Integer page, Integer size, Long id);
 

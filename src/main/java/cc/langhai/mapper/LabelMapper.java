@@ -50,8 +50,8 @@ public interface LabelMapper {
     /**
      * 查询标签下是否存在文章
      *
-     * @param label
-     * @return
+     * @param label 标签实体类
+     * @return 标签下文章集合
      */
     List<Label> selectArticleByLabel(Label label);
 
@@ -72,8 +72,8 @@ public interface LabelMapper {
     /**
      * 用户该标签下所有的文章
      *
-     * @param id
-     * @return
+     * @param id 标签id
+     * @return 文章集合
      */
     List<Article> article(Long id);
 }
