@@ -39,15 +39,16 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 
     @Override
     public Long size() {
+        // 获取用户的所有图片
         List<Image> allImageByUser = imageMapper.getAllImageByUser(UserContext.getUserId());
-
+        // 所有图片占用空间
         Long sum = 0L;
         if(CollectionUtil.isNotEmpty(allImageByUser)){
             for (Image image : allImageByUser) {
                 sum += image.getFileSize();
             }
         }
-
+        // 不同角色存储空间不同
         Role role = roleService.getRole();
         if(role.getName().equals(RoleConstant.ADMIN) || role.getName().equals(RoleConstant.VIP)){
             // 默认100M
@@ -60,7 +61,6 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
                 throw new BusinessException(ImageReturnCode.IMAGE_UPLOAD_FAIL_00000);
             }
         }
-
         return sum;
     }
 
@@ -101,7 +101,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         if(StrUtil.isBlank(objectName)){
             return false;
         }
-
+        // 判断图片的拥有者
         Long userId = UserContext.getUserId();
         Image imageByMinioName = imageMapper.getImageByMinioName(objectName);
         if(ObjectUtil.isNotNull(imageByMinioName)){
@@ -109,7 +109,6 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
                 return true;
             }
         }
-
         return false;
     }
 

@@ -23,7 +23,7 @@ public interface ImageService extends IService<Image> {
     /**
      * 保存图片
      *
-     * @param image
+     * @param image minio图片存储实体类
      */
     void saveImage(Image image);
 
@@ -45,15 +45,15 @@ public interface ImageService extends IService<Image> {
     /**
      * 判断是否有操作权限
      *
-     * @param objectName
-     * @return
+     * @param objectName 文件名称
+     * @return 是否有操作权限结果
      */
     boolean power(String objectName);
 
     /**
      * 删除图片
      *
-     * @param objectName
+     * @param objectName 文件名称
      */
     void delete(String objectName);
 }

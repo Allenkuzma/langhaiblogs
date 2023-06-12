@@ -84,6 +84,7 @@
     </div>
 
     <div class="layui-btn-container">
+        <button type="button" class="layui-btn layui-btn-radius" id="temporaryUpdates">临时更新文章</button>
         <button type="button" class="layui-btn layui-btn-radius" id="publish">更新文章</button>
     </div>
 
@@ -151,6 +152,38 @@
                             time: 2000
                         }, function () {
                             window.location.href = "/user/personalPage";
+                        })
+                    }else {
+                        layer.msg(data.message, {
+                            icon: 2,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+        });
+        // 临时更新文章
+        $("#temporaryUpdates").on("click", function () {
+            $.ajax({
+                url: "/article/updateArticle",
+                async: true,
+                type: "POST",
+                contentType : "application/json",
+                dataType : "json",
+                data: JSON.stringify({"html": editor.getHtml(),
+                    "title": $("#title").val(),
+                    "content": $("#content").val(),
+                    "label": $("#label-langhai option:selected").text(),
+                    "publicShow": $("input[name='public']:checked").val(),
+                    "id": [[${article.id}]],
+                    "abstractText": $("#abstractText").val(),
+                    "password": $("#password").val()
+                }),
+                success: function (data) {
+                    if(data.code == 200){
+                        layer.msg(data.message, {
+                            icon: 1,
+                            time: 2000
                         })
                     }else {
                         layer.msg(data.message, {

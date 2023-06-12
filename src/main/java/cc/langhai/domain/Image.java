@@ -38,5 +38,4 @@ public class Image {
     @TableField(exist = false)
     private String addTimeShow;
 
-
 }

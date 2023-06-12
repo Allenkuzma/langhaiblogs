@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * 反馈信息控制器
  *
@@ -28,13 +27,14 @@ public class MessageController {
     /**
      * 反馈信息提交
      *
+     * @param message 反馈消息实体类
      * @return 反馈信息提交结果
      */
     @ResponseBody
     @PostMapping("/message")
     public ResultResponse message(HttpServletRequest request, @RequestBody @Validated Message message){
+        // 保存用户反馈消息
         messageService.save(message, request);
-
         return ResultResponse.success(MessageReturnCode.MESSAGE_SAVE_SUCCESS_00001);
     }
 

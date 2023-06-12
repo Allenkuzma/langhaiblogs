@@ -66,15 +66,13 @@ public class MinioUtils {
         if (ObjectUtil.isNull(file) || file.isEmpty()) {
             throw new BusinessException(MinioReturnCode.MINIO_UPLOAD_NULL_00002);
         }
-
         // 判断当前用户是否有图库功能
         User user = UserContext.get();
         if(!user.getImage()){
             throw new BusinessException(MinioReturnCode.MINIO_IMAGE_FAIL_00005);
         }
-
+        // 判断用户存储的图片总大小
         imageService.size();
-
         try {
 	       	// 判断存储桶是否存在
 	        createBucket(bucketName);
@@ -84,7 +82,7 @@ public class MinioUtils {
 	        String fileName = bucketName + "_" + System.currentTimeMillis() + originalFilename.substring(originalFilename.lastIndexOf("."));
 	        // 开始上传
 	        client.putObject(bucketName, fileName, file.getInputStream(), file.getContentType());
-
+            // 保存图片到数据库
             Image image = new Image();
             image.setFileName(originalFilename);
             image.setMinioName(fileName);
@@ -92,13 +90,10 @@ public class MinioUtils {
             image.setFileSize(file.getSize());
             image.setUserId(UserContext.getUserId());
             imageService.saveImage(image);
-            // 返回的格式 http://127.0.0.1:xxxx/product/product_1672718197581.jpg
-            // return minioProp.getEndpoint() + "/" + bucketName + "/" + fileName;
             return fileName;
 		}catch (Exception e) {
             throw new BusinessException(MinioReturnCode.MINIO_UPLOAD_FAIL_00001);
         }
-
     }
 
 
@@ -118,8 +113,8 @@ public class MinioUtils {
     /**
      * 删除文件
      *
-     * @param bucketName
-     * @param objectName
+     * @param bucketName 桶名称
+     * @param objectName 文件名称
      */
     @SneakyThrows
     public void deleteFile(String bucketName, String objectName){

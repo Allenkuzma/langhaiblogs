@@ -17,13 +17,11 @@ public class MinioProp {
 
     /**
      * 连接url
-     *
      */
     private String endpoint;
 
     /**
      * 用户名
-     *
      */
     private String accessKey;
 

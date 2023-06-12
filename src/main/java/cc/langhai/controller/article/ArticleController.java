@@ -214,7 +214,7 @@ public class ArticleController {
         // 查询要更新的文章 判断是否有操作权限
         Article article = articleService.articlePermission(id);
         model.addAttribute("article", article);
-
+        // 获取用户的所有标签内容
         List<String> labelContent = labelService.getAllLabelContentByUser();
         model.addAttribute("labelList", labelContent);
 

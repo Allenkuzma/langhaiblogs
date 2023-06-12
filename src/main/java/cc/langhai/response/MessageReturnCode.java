@@ -15,6 +15,7 @@ public enum MessageReturnCode implements ReturnCode{
     ;
 
     private Integer code;
+
     private String message;
 
     MessageReturnCode(Integer code, String message){

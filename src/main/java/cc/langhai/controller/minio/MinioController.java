@@ -63,7 +63,6 @@ public class MinioController {
         }
     }
 
-
     /**
      * 上传图片到minio服务器系统 给富文本编辑器使用
      *
@@ -92,7 +91,6 @@ public class MinioController {
                 jsonObject.put("message", "上传图片失败。");
             }
         }
-
         return jsonObject;
     }
 
@@ -159,22 +157,20 @@ public class MinioController {
         }
     }
 
-
     /**
      * 文件删除
      *
-     * @param name
-     * @return
+     * @param name 文件名字
+     * @return 文件删除结果
      */
-    @DeleteMapping("/delete")
     @ResponseBody
+    @DeleteMapping("/delete")
     public ResultResponse delete(String name) {
         try {
             minioUtils.deleteFile("product", name);
         } catch (Exception e) {
             return ResultResponse.fail(MinioReturnCode.MINIO_DELETE_FAIL_00004);
         }
-
         return ResultResponse.success(MinioReturnCode.MINIO_DELETE_OK_00003);
     }
 

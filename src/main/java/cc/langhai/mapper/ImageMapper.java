@@ -26,22 +26,22 @@ public interface ImageMapper extends BaseMapper<Image> {
     /**
      * 新增图片
      *
-     * @param image
+     * @param image minio图片存储实体类
      */
     void insertImage(Image image);
 
     /**
      * 获取单张图片
      *
-     * @param objectName
-     * @return
+     * @param objectName 文件名称
+     * @return 单张图片
      */
     Image getImageByMinioName(String objectName);
 
     /**
      * 删除图片
      *
-     * @param objectName
+     * @param objectName 文件名称
      */
     void deleteImage(String objectName);
 }

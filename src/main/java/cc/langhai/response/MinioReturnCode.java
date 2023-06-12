@@ -22,6 +22,7 @@ public enum MinioReturnCode implements ReturnCode{
     ;
 
     private Integer code;
+
     private String message;
 
     MinioReturnCode(Integer code, String message){
