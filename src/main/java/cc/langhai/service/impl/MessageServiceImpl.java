@@ -8,7 +8,6 @@ import cc.langhai.response.MessageReturnCode;
 import cc.langhai.service.MessageService;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.IPUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +34,7 @@ public class MessageServiceImpl implements MessageService {
         message.setBeginDate(nowDayScope[0]);
         message.setEndDate(nowDayScope[1]);
         // 获取请求ip地址
-        String ip = IPUtil.getIP(request);
-        message.setIp(ip);
+        message.setIp(IPUtil.getIP(request));
         // 判断今天提交上限
         List<Message> list = messageMapper.list(message);
         if(list.size() >= MessageConstant.IP_DAY_COUNT_ALL){

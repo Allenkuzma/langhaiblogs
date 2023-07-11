@@ -24,7 +24,8 @@ public interface RoleService extends IService<Role> {
     /**
      * 获取用户的权限
      *
-     * @return
+     * @param userId 用户id
+     * @return 角色实体
      */
     Role getRole(Long userId);
 
@@ -43,4 +44,12 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     List<User> getUserByRoleName(String roleName);
+
+    /**
+     * 是否为管理员
+     *
+     * @param user 用户实体类
+     * @return 用户实体类
+     */
+    User determineAdmin(User user);
 }

@@ -2,9 +2,12 @@ package cc.langhai.service.impl;
 
 import cc.langhai.domain.Article;
 import cc.langhai.domain.ArticleComment;
+import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ArticleCommentMapper;
+import cc.langhai.response.ArticleCommentReturnCode;
 import cc.langhai.service.IArticleCommentService;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,6 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
     @Override
     public List<ArticleComment> getCommentByArticleId(Long articleId) {
         List<ArticleComment> result = articleCommentMapper.getCommentByArticleId(articleId);
-
         return result;
     }
 
@@ -40,7 +42,20 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
                 article.setCommentCount(count);
             }
         }
-
         return articleList;
+    }
+
+    @Override
+    public List<ArticleComment> getAllArticleComment(String content) {
+        List<ArticleComment> result = articleCommentMapper.getAllArticleComment(content);
+        return result;
+    }
+
+    @Override
+    public void deleteArticleComment(Long id) {
+        if(ObjectUtil.isNull(id)){
+            throw new BusinessException(ArticleCommentReturnCode.ARTICLE_COMMENT_DELETE_FAIL_00002);
+        }
+        this.removeById(id);
     }
 }

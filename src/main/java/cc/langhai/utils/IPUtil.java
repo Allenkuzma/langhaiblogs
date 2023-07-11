@@ -15,7 +15,7 @@ public class IPUtil {
     /**
      * 获取用户真实ip地址
      *
-     * @return
+     * @return 用户真实ip地址
      */
     public static String getIP(HttpServletRequest request){
         String remoteAddr = request.getRemoteAddr();
@@ -26,7 +26,6 @@ public class IPUtil {
         }else {
             ip = header;
         }
-
         return ip;
     }
 }

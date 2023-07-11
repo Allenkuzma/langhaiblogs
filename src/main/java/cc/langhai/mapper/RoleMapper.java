@@ -19,8 +19,8 @@ public interface RoleMapper extends BaseMapper<Role> {
     /**
      * 获取用户的权限
      *
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 角色实体类
      */
     Role getRole(Long userId);
 

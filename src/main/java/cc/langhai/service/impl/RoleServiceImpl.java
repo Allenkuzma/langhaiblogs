@@ -1,5 +1,6 @@
 package cc.langhai.service.impl;
 
+import cc.langhai.config.constant.RoleConstant;
 import cc.langhai.domain.Role;
 import cc.langhai.domain.User;
 import cc.langhai.domain.UserRole;
@@ -74,7 +75,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public List<User> getUserByRoleName(String roleName) {
         List<User> userList = roleMapper.getUserByRoleName(roleName);
-
         return userList;
+    }
+
+    @Override
+    public User determineAdmin(User user) {
+        // 权限相关处理
+        Role role = this.getRole(user.getId());
+        if(RoleConstant.ADMIN.equals(role.getName())){
+            user.setAdmin(true);
+        }else {
+            user.setAdmin(false);
+        }
+        return user;
     }
 }

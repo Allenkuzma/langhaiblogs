@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>管理员文章评论管理 - 浪海博客</title>
+  <meta name="keywords" content="浪海博客,管理员文章评论管理" />
+  <meta name="description" content="浪海博客的管理员文章评论管理。" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+</head>
+<body class="pear-container">
+
+<blockquote class="layui-elem-quote">
+  在这里可以管理用户发表的所有文章评论。删除操作将会对文章评论进行真实删除，请谨慎操作。
+</blockquote>
+
+<div class="layui-card">
+  <div class="layui-card-body">
+    <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <div class="layui-form-item layui-inline">
+          <label class="layui-form-label">评论内容</label>
+          <div class="layui-input-inline">
+            <input type="text" name="content" placeholder="请输入文章评论内容" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+          <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="articleComment-query">
+            <i class="layui-icon layui-icon-search"></i>
+            查询
+          </button>
+          <button type="reset" class="pear-btn pear-btn-md">
+            <i class="layui-icon layui-icon-refresh"></i>
+            重置
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="layui-card">
+  <div class="layui-card-body">
+    <table class="layui-hide" id="articleComment" lay-filter="articleComment"></table>
+  </div>
+</div>
+
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+</script>
+
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+
+  </div>
+</script>
+
+</body>
+<script src="/pear/component/layui/layui.js"></script>
+<script src="/pear/component/pear/pear.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script th:inline="none">
+  //注意：导航 依赖 element 模块，否则无法进行功能性操作
+  layui.use(['element', 'form', 'table', 'laypage', 'common'], function() {
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    var laypage = layui.laypage;
+    let common = layui.common;
+
+    layer.msg('使用电脑展示更佳', {
+      closeBtn: 1,
+      icon: 6,
+      time: 3 * 1000,
+      offset: '21px'
+    });
+
+    table.render({
+      elem: '#articleComment',
+      url: '/articleComment/articleComment',
+      toolbar: '#toolbarDemo',
+      skin: 'line',
+      cols: [[
+        {type: 'checkbox'}
+        ,{field:'id', title: 'ID', align: 'center'}
+        ,{field:'title', title: '文章标题', width: 280, align: 'center'}
+        ,{field:'content', title: '评论内容', width: 380, align: 'center'}
+        ,{field:'nickname', title: '评论人', width: 180, align: 'center'}
+        ,{field:'addTimeShow', title: '新增时间', width: 180, align: 'center'}
+        ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}
+      ]],
+      page: true,
+      defaultToolbar: [{
+        title: '刷新',
+        layEvent: 'refresh',
+        icon: 'layui-icon-refresh',
+      }, 'filter', 'print', 'exports']
+    })
+
+    // 工具栏事件
+    table.on('toolbar(articleComment)', function(obj){
+      var id = obj.config.id;
+      var checkStatus = table.checkStatus(id);
+      var othis = lay(this);
+      switch(obj.event){
+        case 'refresh':
+          window.refresh();
+          break;
+      };
+    });
+
+    // 触发单元格工具事件
+    table.on('tool(articleComment)', function(obj){ // 双击 toolDouble
+      var data = obj.data;
+      // console.log(obj)
+      if(obj.event === 'del'){
+        window.remove(obj);
+      } else if(obj.event === 'look'){
+        window.open("/article/articleShow?id=" + data.articleId)
+      }
+    });
+
+    window.refresh = function(param) {
+      table.reload('articleComment');
+    }
+
+    window.remove = function(obj) {
+      layer.confirm('确定要删除这条评论吗', {
+        icon: 3,
+        title: '提示'
+      }, function(index) {
+        layer.close(index);
+        let loading = layer.load();
+        $.ajax({
+          url: "/articleComment/deleteArticleComment",
+          data: {
+            "id": obj.data.id
+          },
+          type: 'delete',
+          success: function(result) {
+            layer.close(loading);
+            if (result.code == 200) {
+              layer.msg(result.message, {
+                icon: 1,
+                time: 2000
+              }, function() {
+                obj.del();
+              });
+            } else {
+              layer.msg(result.message, {
+                icon: 2,
+                time: 2000
+              });
+            }
+          }
+        })
+      });
+    }
+
+    form.on('submit(articleComment-query)', function(data) {
+      table.reload('articleComment', {
+        where: data.field
+      })
+      return false;
+    });
+
+  })
+</script>
+</html>

@@ -35,44 +35,41 @@ public class DevLogController {
     /**
      * 跳转到展示开发日志记录页面
      *
-     * @return
+     * @return 开发日志记录页面
      */
     @GetMapping("/devLogPage")
     public String devLogPage(Model model){
         List<DevLog> list = devLogService.list(Wrappers.<DevLog>lambdaQuery().orderByAsc(DevLog::getAddTime));
         model.addAttribute("list", list);
-
         return "blogs/devLog/devLogShow";
     }
 
     /**
      * 跳转到开发日志记录管理页面
      *
-     * @return
+     * @return 开发日志记录管理页面
      */
     @GetMapping("/devLogListPage")
     @RequestAuthority(value = {"admin"})
     public String devLogManage(){
-
         return "blogs/devLog/devLogList";
     }
 
     /**
      * 跳转到开发日志记录新增页面
      *
-     * @return
+     * @return 开发日志记录新增页面
      */
     @GetMapping("/devLogAddPage")
     @RequestAuthority(value = {"admin"})
     public String devLogAddPage(){
-
         return "blogs/devLog/devLogAdd";
     }
 
     /**
      * 跳转到开发日志记录更新页面
      *
-     * @return
+     * @return 开发日志记录更新页面
      */
     @GetMapping("/devLogUpdatePage")
     @RequestAuthority(value = {"admin"})
@@ -80,18 +77,17 @@ public class DevLogController {
         model.addAttribute("id", id);
         model.addAttribute("title", title);
         model.addAttribute("content", content);
-
         return "blogs/devLog/devLogUpdate";
     }
 
     /**
      * 获取开发日志记录列表页面数据
      *
-     * @return
+     * @return 开发日志记录列表页面数据
      */
+    @ResponseBody
     @GetMapping("/devLogList")
     @RequestAuthority(value = {"admin"})
-    @ResponseBody
     public JSONObject devLogList(@RequestParam(defaultValue = "1") Integer page,
                                 @RequestParam(defaultValue = "10") Integer limit){
         // 分页查询日志记录数据
@@ -103,55 +99,51 @@ public class DevLogController {
         jsonObject.put("code", 0);
         jsonObject.put("data", devLogList);
         jsonObject.put("count", devLogPageInfo.getTotal());
-
         return jsonObject;
     }
 
     /**
      * 新增开发日志记录
      *
-     * @return
+     * @return 新增开发日志记录结果
      */
-    @PostMapping("/addDevLog")
     @ResponseBody
+    @PostMapping("/addDevLog")
     @RequestAuthority(value = {"admin"})
     public ResultResponse addDevLog(@RequestBody @Validated DevLog devLog){
         devLogService.addDevLog(devLog);
-
         return ResultResponse.success(DevLogReturnCode.DEV_LOG_ADD_SUCCESS_00001);
     }
 
     /**
      * 更新开发日志记录
      *
-     * @return
+     * @return 更新开发日志记录结果
      */
-    @PostMapping("/updateDevLog")
     @ResponseBody
+    @PostMapping("/updateDevLog")
     @RequestAuthority(value = {"admin"})
     public ResultResponse updateDevLog(@RequestBody @Validated DevLog devLog){
         if(ObjectUtil.isNull(devLog.getId()) || StrUtil.isBlank(devLog.getContent())){
             return ResultResponse.fail(DevLogReturnCode.DEV_LOG_UPDATE_FAIL_00004);
         }
         devLogService.updateDevLog(devLog);
-
         return ResultResponse.success(DevLogReturnCode.DEV_LOG_UPDATE_SUCCESS_00003);
     }
 
     /**
      * 管理员删除开发日志记录
      *
-     * @return
+     * @return 删除开发日志记录结果
      */
-    @DeleteMapping("/deleteDevLog")
     @ResponseBody
+    @DeleteMapping("/deleteDevLog")
     @RequestAuthority(value = {"admin"})
     public ResultResponse deleteDevLog(Long id){
         if(ObjectUtil.isNull(id)){
             return ResultResponse.fail(DevLogReturnCode.DEV_LOG_DELETE_FAIL_00006);
         }
         devLogService.deleteDevLog(id);
-
         return ResultResponse.success(DevLogReturnCode.DEV_LOG_DELETE_SUCCESS_00005);
     }
 }

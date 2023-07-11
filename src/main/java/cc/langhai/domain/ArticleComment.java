@@ -62,4 +62,10 @@ public class ArticleComment implements Serializable {
      */
     @TableField(exist = false)
     private String addTimeShow;
+
+    /**
+     * 文章标题 展示使用
+     */
+    @TableField(exist = false)
+    private String title;
 }

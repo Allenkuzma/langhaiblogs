@@ -30,4 +30,19 @@ public interface IArticleCommentService extends IService<ArticleComment> {
      * @return 文章集合
      */
     List<Article> getArticleHeat(List<Article> articleList);
+
+    /**
+     * 获取所有的文章评论
+     *
+     * @param content 评论内容
+     * @return 文章评论集合
+     */
+    List<ArticleComment> getAllArticleComment(String content);
+
+    /**
+     * 删除文章评论
+     *
+     * @param id 文章评论id
+     */
+    void deleteArticleComment(Long id);
 }

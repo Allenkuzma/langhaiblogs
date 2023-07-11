@@ -22,4 +22,12 @@ public interface ArticleCommentMapper extends BaseMapper<ArticleComment> {
      * @return 文章评论集合
      */
     List<ArticleComment> getCommentByArticleId(Long articleId);
+
+    /**
+     * 获取所有的文章评论
+     *
+     * @param content 评论内容
+     * @return 文章评论集合
+     */
+    List<ArticleComment> getAllArticleComment(String content);
 }
