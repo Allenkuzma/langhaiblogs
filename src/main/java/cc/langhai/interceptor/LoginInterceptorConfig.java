@@ -6,7 +6,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
 /**
  * 拦截器配置
  *
@@ -14,11 +13,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2022-11-20 17:09
  */
 @Configuration
-public class LoginConfig implements WebMvcConfigurer {
+public class LoginInterceptorConfig implements WebMvcConfigurer {
 
     @Bean
-    public AdminInterceptor adminInterceptor(){
-        return new AdminInterceptor();
+    public LoginInterceptor adminInterceptor(){
+        return new LoginInterceptor();
     }
 
     @Override

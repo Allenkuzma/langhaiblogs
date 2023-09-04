@@ -82,9 +82,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public User determineAdmin(User user) {
         // 权限相关处理
         Role role = this.getRole(user.getId());
-        if(RoleConstant.ADMIN.equals(role.getName())){
+        if (RoleConstant.ADMIN.equals(role.getName())) {
             user.setAdmin(true);
-        }else {
+        } else {
             user.setAdmin(false);
         }
         return user;

@@ -98,13 +98,13 @@ netty:
   # websocket连接地址
   ws: ws://127.0.0.1:${netty.port}/ws
 
-flowable:
-  standalone:
-    server:
-      enabled: false # standalone 模式
-  async-executor-activate: false # 关闭定时任务JOB
-  idm:
-    enabled: false # 检测身份信息
-  database-schema-update: true # 没有数据库表的时候生成数据库表
-  process-definition-location-prefix: classpath*:/flowable/
-  process-definition-location-suffixes: "**.bpmn20.xml, **.bpmn"
+#flowable:
+#  standalone:
+#    server:
+#      enabled: false # standalone 模式
+#  async-executor-activate: false # 关闭定时任务JOB
+#  idm:
+#    enabled: false # 检测身份信息
+#  database-schema-update: true # 没有数据库表的时候生成数据库表
+#  process-definition-location-prefix: classpath*:/flowable/
+#  process-definition-location-suffixes: "**.bpmn20.xml, **.bpmn"

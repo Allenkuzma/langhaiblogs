@@ -50,7 +50,7 @@ public interface RegisterService {
      * @param verifyCodeText    验证码内容
      * @param session           session会话
      * @param remember          记住我字符内容为 "on" 开启此功能
-     * @param response
+     * @param response          响应
      */
     void loginEnter(String username, String password, String verifyCodeText,
                     HttpSession session, String remember, HttpServletResponse response);

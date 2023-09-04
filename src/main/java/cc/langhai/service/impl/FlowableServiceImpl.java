@@ -2,12 +2,12 @@ package cc.langhai.service.impl;
 
 import cc.langhai.service.IFlowableService;
 import cn.hutool.core.collection.CollUtil;
-import org.flowable.engine.HistoryService;
+/*import org.flowable.engine.HistoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.runtime.ProcessInstance;
-import org.flowable.task.api.Task;
+import org.flowable.task.api.Task;*/
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ import java.util.Map;
 @Service
 public class FlowableServiceImpl implements IFlowableService {
 
-    @Autowired
+    /*@Autowired
     private RuntimeService runtimeService;
 
     @Autowired
@@ -97,7 +97,7 @@ public class FlowableServiceImpl implements IFlowableService {
             System.out.println("instance.getAssignee() = " + instance.getAssignee());
             System.out.println("instance.getProcessInstanceId() = " + instance.getProcessInstanceId());
         }
-    }
+    }*/
 
 
 }

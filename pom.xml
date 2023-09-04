@@ -160,11 +160,11 @@
             <version>4.1.36.Final</version>
         </dependency>
         <!-- 工作流引擎 -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.flowable</groupId>
             <artifactId>flowable-spring-boot-starter-process</artifactId>
             <version>6.5.0</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>

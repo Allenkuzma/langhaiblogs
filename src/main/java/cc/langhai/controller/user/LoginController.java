@@ -34,33 +34,33 @@ public class LoginController {
     /**
      * 跳转到登录页面
      *
-     * @return
+     * @param session 会话
+     * @return 未登录情况下跳转到 blogs/user/login 页面
      */
     @GetMapping("/loginPage")
     public String loginPage(HttpSession session){
         Object user = session.getAttribute("user");
-        if(ObjectUtil.isNotNull(user)){
+        if (ObjectUtil.isNotNull(user)) {
             return "blogs/index";
         }
-
         return "blogs/user/login";
     }
 
     /**
      * 生成验证码图片
      *
-     * @param response
-     * @param session
-     * @throws IOException
+     * @param response 响应
+     * @param session 会话
+     * @throws IOException io异常
      */
     @GetMapping("/verifyCode")
     public void verifyCode(HttpServletResponse response, HttpSession session) throws IOException {
-        //生成验证码图片
+        // 生成验证码图片
         Map<String, Object> imageVerify = ImageVerifyCodeGenerator.generate(300, 45 ,4);
         BufferedImage image = (BufferedImage) imageVerify.get("image");
         String code = String.valueOf(imageVerify.get("code"));
         session.setAttribute("verifyCode", code);
-        //图片验证码输出到响应流
+        // 图片验证码输出到响应流
         ImageIO.write(image, "PNG", response.getOutputStream());
     }
 
@@ -76,10 +76,10 @@ public class LoginController {
     @ResponseBody
     @PostMapping("/loginEnter")
     public ResultResponse loginEnter(@RequestParam("username") String username,
-                             @RequestParam("password") String password,
-                             @RequestParam("verifyCodeText") String verifyCodeText,
-                             @RequestParam(value = "remember", required = false) String remember,
-                             HttpSession session, HttpServletResponse response){
+                                     @RequestParam("password") String password,
+                                     @RequestParam("verifyCodeText") String verifyCodeText,
+                                     @RequestParam(value = "remember", required = false) String remember,
+                                     HttpSession session, HttpServletResponse response){
         // 用户登录服务处理
         registerService.loginEnter(username, password, verifyCodeText, session, remember, response);
         // 用户登录成功

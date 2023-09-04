@@ -50,7 +50,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
         User user = userMapper.getUserByUsernameAndPassword(username, password);
-
         return user;
     }
 
