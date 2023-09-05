@@ -13,9 +13,9 @@ public interface PersonalService {
     /**
      * 更新用户个人信息
      *
-     * @param nickname
-     * @param motto
-     * @param session
+     * @param nickname 昵称
+     * @param motto 座右铭
+     * @param session 会话
      */
     void updateUserInfo(String nickname, String motto, HttpSession session);
 

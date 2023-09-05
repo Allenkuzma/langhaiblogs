@@ -36,9 +36,9 @@ public interface UserInfoService {
     Integer insertUserInfo(UserInfo userInfo);
 
     /**
-     * 更新 用户详情信息
+     * 更新用户详情信息
      *
-     * @param userInfo
+     * @param userInfo 用户详情信息实体类
      */
     void updateUserInfo(UserInfo userInfo);
 }

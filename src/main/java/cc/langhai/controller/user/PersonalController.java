@@ -13,7 +13,6 @@ import cc.langhai.service.UserInfoService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 用户个人空间 控制器
+ * 用户个人空间控制器
  *
  * @author langhai
  * @date 2022-12-10 16:30
@@ -49,48 +48,43 @@ public class PersonalController {
     /**
      * 跳转到个人空间页面
      *
-     * @return
+     * @return 个人空间页面 blogs/user/personal
      */
     @GetMapping("/personalPage")
     public String personalPage(Model model){
-        // 将用户详情信息存储到 model中
+        // 将用户详情信息存储到model中
         User user = UserContext.get();
         UserInfo userInfo = userInfoService.getUserInfoById(user.getId());
-
         // 计算两个日期的时间差
         long between = DateUtil.between(user.getAddTime(), new Date(), DateUnit.DAY);
         userInfo.setDay(between);
-
         model.addAttribute("userInfo", userInfo);
-
         return "blogs/user/personal";
     }
 
     /**
      * 跳转到更新用户个人信息页面
      *
-     * @return
+     * @return 更新用户个人信息页面 blogs/user/updateUserInfo
      */
     @GetMapping("/updateUserInfoPage")
     public String updateUserInfoPage(Model model){
-        // 将用户详情信息存储到 model中
+        // 将用户详情信息存储到model中
         UserInfo userInfo = userInfoService.getUserInfoById(UserContext.getUserId());
         model.addAttribute("userInfo", userInfo);
-
         return "blogs/user/updateUserInfo";
     }
 
     /**
      * 更新用户个人信息，提交至数据库。
      *
-     * @return
+     * @return 更新用户个人信息结果
      */
-    @PostMapping("/updateUserInfo")
     @ResponseBody
+    @PostMapping("/updateUserInfo")
     public ResultResponse updateUserInfo(@RequestParam("nickname") String nickname,
-                                   @RequestParam("motto") String motto, HttpSession session){
+                                         @RequestParam("motto") String motto, HttpSession session){
         personalService.updateUserInfo(nickname, motto, session);
-
         return ResultResponse.success(UserReturnCode.USER_PERSONAL_UPDATE_USER_INFO_YES_00018);
     }
 

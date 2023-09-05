@@ -56,7 +56,7 @@ public interface UserService extends IService<User> {
     /**
      * 更新用户信息
      *
-     * @param user
+     * @param user 用户实体类
      */
     void updateUser(User user);
 

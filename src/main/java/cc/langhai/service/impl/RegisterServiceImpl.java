@@ -216,68 +216,58 @@ public class RegisterServiceImpl implements RegisterService {
         if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(verifyCodeText)){
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_NULL_00015);
         }
-
         // 判断用户是否处于锁定状态
         String userLockFlag = redisTemplate.opsForValue().get("user:lock:" + username);
         if("lock".equals(userLockFlag)){
             throw new BusinessException(UserReturnCode.USER_LOGIN_LOCK_STATUS_00021);
         }
-
         // 构建AES加密工具
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, systemConfig.getSecret().getBytes());
         // 加密为16进制表示
         String encryptHex = aes.encryptHex(password);
         User user = userService.getUserByUsernameAndPassword(username, encryptHex);
-        if(ObjectUtil.isNull(user)){
+        if (ObjectUtil.isNull(user)) {
             String lockCount = redisTemplate.opsForValue().get("user:lock:count:" + username);
-            if(StrUtil.isNotBlank(lockCount)){
-                if(Integer.valueOf(lockCount) >= UserConstant.USER_LOGIN_ERROR_COUNT - 1){
+            if (StrUtil.isNotBlank(lockCount)) {
+                if (Integer.valueOf(lockCount) >= UserConstant.USER_LOGIN_ERROR_COUNT - 1) {
                     // 存储到redis当中
                     redisTemplate.opsForValue().set("user:lock:" + username,
                             "lock", 5, TimeUnit.MINUTES);
                 }
                 redisTemplate.opsForValue().increment("user:lock:count:" + username, 1);
-            }else {
+            } else {
                 // 存储到redis当中
                 redisTemplate.opsForValue().set("user:lock:count:" + username,
                         "1", 5, TimeUnit.MINUTES);
             }
-
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_00016);
         }
-
         // 验证码判断
         String verifyCode = (String) session.getAttribute("verifyCode");
-        if(StrUtil.isBlank(verifyCode) || !verifyCodeText.equalsIgnoreCase(verifyCode)){
+        if (StrUtil.isBlank(verifyCode) || !verifyCodeText.equalsIgnoreCase(verifyCode)) {
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_CODE_FAIL_00020);
         }
-
         // 判断其他地方是否登录
         // 删除当前登录用户已绑定的HttpSession map中的remove方法返回删除value值
         HttpSession sessionMap = LonginUserSessionConfig.USER_SESSION.remove(username);
-
-        if (sessionMap != null){
+        if (sessionMap != null) {
             // 删除已登录的sessionId绑定的用户
             sessionMap.removeAttribute("user");
-
             // 当前session销毁时删除当前session绑定的用户信息
             // 同时删除当前session绑定用户的HttpSession
             LonginUserSessionConfig.SESSION_ID_USER.remove(sessionMap.getId());
         }
-
         // 添加用户与HttpSession的绑定
         LonginUserSessionConfig.USER_SESSION.put(username, session);
         // 添加sessionId和用户的绑定
         LonginUserSessionConfig.SESSION_ID_USER.put(session.getId(), username);
-
         session.setAttribute("user", user);
         // session有效期1个小时
         session.setMaxInactiveInterval(60 * 60);
-
         // 记住我功能
-        if("on".equals(remember)){
+        if ("on".equals(remember)) {
             this.remember(username, response);
-        }else {
+        } else {
             this.temporaryRemember(username, response);
         }
     }
@@ -285,10 +275,9 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public void loginOut(HttpSession session, HttpServletResponse response) {
         User user = (User) session.getAttribute("user");
-        if(ObjectUtil.isNull(user)){
+        if (ObjectUtil.isNull(user)) {
             return;
         }
-
         // 覆盖掉带秘钥的cookie
         Cookie cookie = new Cookie("userLoginCipher" + user.getUsername(), "");
         cookie.setPath("/");
@@ -309,7 +298,6 @@ public class RegisterServiceImpl implements RegisterService {
         cookie.setPath("/");
         cookie.setMaxAge(7 * 24 * 60 * 60);
         response.addCookie(cookie);
-
         // 存储到 redis 当中
         redisTemplate.opsForValue().set("userLoginCipher" + username, cipher, 7 * 24 * 60, TimeUnit.MINUTES);
     }
@@ -317,37 +305,33 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public void remember(HttpServletRequest request, HttpSession session) {
         Cookie[] cookies = request.getCookies();
-        // 记住我的功能 校验信息cookie和redis当中是否一致
-        if(ObjectUtil.isNotNull(cookies)){
+        // 记住我的功能，校验信息cookie和redis当中是否一致。
+        if (ObjectUtil.isNotNull(cookies)) {
             for (Cookie cookie : cookies) {
-                if(cookie.getName().length() > 15){
+                if (cookie.getName().length() > 15) {
                     // cookie键的名字
                     String subKey = cookie.getName().substring(0, 15);
                     // 用户名
                     String subName = cookie.getName().substring(15);
-                    if("userLoginCipher".equals(subKey)){
+                    if ("userLoginCipher".equals(subKey)) {
                         String redis = redisTemplate.opsForValue().get(cookie.getName());
-                        if(cookie.getValue().equals(redis)){
+                        if (cookie.getValue().equals(redis)) {
                             User user = userService.getUserByUsername(subName);
-                            if (ObjectUtil.isNull(session.getAttribute("user"))){
+                            if (ObjectUtil.isNull(session.getAttribute("user"))) {
                                 // 判断其他地方是否登录
                                 // 删除当前登录用户已绑定的HttpSession map中的remove方法返回删除value值
                                 HttpSession sessionMap = LonginUserSessionConfig.USER_SESSION.remove(user.getUsername());
-
-                                if (sessionMap != null){
+                                if (sessionMap != null) {
                                     // 删除已登录的sessionId绑定的用户
                                     sessionMap.removeAttribute("user");
-
                                     // 当前session销毁时删除当前session绑定的用户信息
                                     // 同时删除当前session绑定用户的HttpSession
                                     LonginUserSessionConfig.SESSION_ID_USER.remove(sessionMap.getId());
                                 }
-
                                 // 添加用户与HttpSession的绑定
                                 LonginUserSessionConfig.USER_SESSION.put(user.getUsername(), session);
                                 // 添加sessionId和用户的绑定
                                 LonginUserSessionConfig.SESSION_ID_USER.put(session.getId(), user.getUsername());
-
                                 session.setAttribute("user", user);
                                 // session有效期1个小时
                                 session.setMaxInactiveInterval(60 * 60);
@@ -365,24 +349,19 @@ public class RegisterServiceImpl implements RegisterService {
     public JSONObject enter(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 200);
-
-        User user = (User)request.getSession().getAttribute("user");
-        if(ObjectUtil.isNotNull(user)){
+        jsonObject.put("data", "fail");
+        User user = (User) request.getSession().getAttribute("user");
+        if (ObjectUtil.isNotNull(user)) {
             UserContext.set(user);
             jsonObject.put("data", "ok");
         }else {
             this.remember(request, request.getSession());
-            user = (User)request.getSession().getAttribute("user");
-            if(ObjectUtil.isNotNull(user)){
+            user = (User) request.getSession().getAttribute("user");
+            if (ObjectUtil.isNotNull(user)) {
                 UserContext.set(user);
                 jsonObject.put("data", "ok");
             }
         }
-
-        if(ObjectUtil.isNull(user)){
-            jsonObject.put("data", "fail");
-        }
-
         return jsonObject;
     }
 
@@ -396,7 +375,6 @@ public class RegisterServiceImpl implements RegisterService {
         cookie.setPath("/");
         cookie.setMaxAge(2 * 60 * 60);
         response.addCookie(cookie);
-
         // 存储到 redis 当中
         redisTemplate.opsForValue().set("userLoginCipher" + username, cipher, 2 * 60, TimeUnit.MINUTES);
     }

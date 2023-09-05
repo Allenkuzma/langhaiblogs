@@ -31,19 +31,16 @@ public class ArticleDTO implements Serializable {
 
     /**
      * 新增文章标签
-     *
      */
     private String content;
 
     /**
      * 使用存在的文章标签
-     *
      */
     private String label;
 
     /**
      * 文章是否公开： 公开/不公开
-     *
      */
     private String publicShow;
 }

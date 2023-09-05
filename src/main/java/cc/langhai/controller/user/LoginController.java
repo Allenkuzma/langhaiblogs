@@ -92,22 +92,21 @@ public class LoginController {
      * @param session http session
      * @return 用户退出结果
      */
-    @PostMapping("/loginOut")
     @ResponseBody
+    @PostMapping("/loginOut")
     public ResultResponse loginOut(HttpSession session, HttpServletResponse response){
         registerService.loginOut(session, response);
-
         return ResultResponse.success(UserReturnCode.USER_LOGOUT_YES_00017);
     }
 
     /**
      * 判断用户是否登录
      *
+     * @return 用户是否登录结果
      */
-    @GetMapping("/enter")
     @ResponseBody
+    @GetMapping("/enter")
     public JSONObject enter(HttpServletRequest request){
-
         return registerService.enter(request);
     }
 

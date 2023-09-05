@@ -21,7 +21,6 @@ public class UserInfo {
 
     /**
      * 用户注册天数
-     *
      */
     private Long day;
 

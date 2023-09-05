@@ -64,15 +64,15 @@ public interface RegisterService {
     void loginOut(HttpSession session, HttpServletResponse response);
 
     /**
-     * 记住我功能 在cookie和redis存储信息用户信息
+     * 记住我功能，在cookie和redis存储信息用户信息。
      *
-     * @param username
-     * @param response
+     * @param username 用户账号
+     * @param response 响应
      */
     void remember(String username, HttpServletResponse response);
 
     /**
-     * 记住我的功能实现 ~ 检验cookie和redis的用户信息是否同步
+     * 记住我的功能实现，检验cookie和redis的用户信息是否同步。
      *
      * @param request http 请求
      * @param session http session
@@ -82,16 +82,16 @@ public interface RegisterService {
     /**
      * 判断用户是否登录
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 用户是否登录结果
      */
     JSONObject enter(HttpServletRequest request);
 
     /**
-     * 临时记住我功能 在cookie和redis存储信息用户信息
+     * 临时记住我功能，在cookie和redis存储信息用户信息。
      *
-     * @param username
-     * @param response
+     * @param username 用户账号
+     * @param response 响应
      */
     void temporaryRemember(String username, HttpServletResponse response);
 
