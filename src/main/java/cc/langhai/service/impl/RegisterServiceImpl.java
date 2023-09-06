@@ -14,6 +14,7 @@ import cc.langhai.response.SystemReturnCode;
 import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.*;
 import cc.langhai.utils.*;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -71,16 +72,15 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public void sendEmailCode(String email, HttpServletRequest request) {
-        if(StrUtil.isBlank(email)){
+        if (StrUtil.isBlank(email)) {
             throw new BusinessException(UserReturnCode.REGISTER_EMAIL_NULL_00005);
         }
-
         String ip = IPUtil.getIP(request);
         // 先从redis获得这个ip地址
         String ipCount = redisTemplate.opsForValue().get("email:register:" + ip);
-        if(StringUtils.isBlank(ipCount)){
+        if (StringUtils.isBlank(ipCount)) {
             redisTemplate.opsForValue().set("email:register:" + ip, "1", 24, TimeUnit.HOURS);
-        }else {
+        } else {
             Integer integer = Integer.valueOf(ipCount);
             Integer sum = integer + 1;
             if(integer >= systemConfig.getRegisterIPEmailCount()){
@@ -88,38 +88,37 @@ public class RegisterServiceImpl implements RegisterService {
             }
             redisTemplate.opsForValue().set("email:register:" + ip, sum.toString(), 24, TimeUnit.HOURS);
         }
-
         // 获取当天注册账号的次数信息
         String nowDay = DateUtil.getNowDay();
         String nowDayCount = redisTemplate.opsForValue().get("email:register:" + nowDay);
-        if(StrUtil.isBlank(nowDayCount)){
+        if (StrUtil.isBlank(nowDayCount)) {
             redisTemplate.opsForValue().set("email:register:" + nowDay, "1", 24, TimeUnit.HOURS);
-        }else {
+        } else {
             Integer integer = Integer.valueOf(nowDayCount);
-            if(integer >= systemConfig.getRegisterDayEmailCount()){
+            if (integer >= systemConfig.getRegisterDayEmailCount()) {
                 throw new BusinessException(UserReturnCode.REGISTER_DAY_EMAIL_COUNT_00003);
             }
             redisTemplate.opsForValue().set("email:register:" + nowDay, String.valueOf(integer + 1), 24, TimeUnit.HOURS);
         }
-
         // 检查用户信息邮箱是否被使用
         UserInfo userInfo = userInfoService.getUserInfoByEmail(email);
-        if(ObjectUtil.isNotNull(userInfo)){
+        if (ObjectUtil.isNotNull(userInfo)) {
             throw new BusinessException(UserReturnCode.USER_INFO_EXIST_EMAIL_00006);
         }
-
-        String send = emailUtil.send(email);
-        redisTemplate.opsForValue().set("email:register:" + email, send, 5, TimeUnit.MINUTES);
+        // 检查是否多次发送
+        String emailSendCode = redisTemplate.opsForValue().get("email:register:" + email);
+        if (StrUtil.isNotBlank(emailSendCode)) {
+            throw new BusinessException(UserReturnCode.USER_EMAIL_SEND_CODE_FAIL_00028);
+        }
+        redisTemplate.opsForValue().set("email:register:" + email, emailUtil.send(email), 5, TimeUnit.MINUTES);
     }
 
     @Override
     public void verifyUsername(String username) {
-        if(StrUtil.isBlank(username)){
+        if (StrUtil.isBlank(username)) {
             throw new BusinessException(UserReturnCode.USER_NAME_IS_NULL_00008);
         }
-
-        User user = userService.getUserByUsername(username);
-        if(ObjectUtil.isNotNull(user)){
+        if (ObjectUtil.isNotNull(userService.getUserByUsername(username))) {
             throw new BusinessException(UserReturnCode.USER_NAME_IS_NOT_NULL_00009);
         }
     }
@@ -127,24 +126,19 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void register(String username, String password, String nickname, String email, String verifyCodeText, HttpSession session, HttpServletResponse response) {
-
-        if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(nickname)
-                || StrUtil.isBlank(email) || StrUtil.isBlank(verifyCodeText)){
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(nickname)
+                || StrUtil.isBlank(email) || StrUtil.isBlank(verifyCodeText)) {
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_NULL_00011);
         }
-
-        // 对用户名进行合法判断 用户名（3到8位的数字和字母组合）
-        if(username.length() > 8 || username.length() < 3){
+        // 对用户名进行合法判断，用户名（3到8位的数字和字母组合）。
+        if (username.length() > 8 || username.length() < 3) {
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_LENGTH_00022);
         }
-
-        if(!StringUtil.isAlphaNumeric(username)){
+        if (!StringUtil.isAlphaNumeric(username)) {
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_ALPHANUMERIC_00023);
         }
-
         this.verifyUsername(username);
-
-        // 对用户密码进行合法校验 用户密码（6到18位的字符组合）
+        // 对用户密码进行合法校验，用户密码（6到18位的字符组合）。
         if(password.length() < 6 || password.length() > 18){
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
         }
@@ -152,31 +146,26 @@ public class RegisterServiceImpl implements RegisterService {
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, systemConfig.getSecret().getBytes());
         // 加密为16进制表示
         String encryptHexPassword = aes.encryptHex(password);
-
-        // 对昵称进行合法校验 昵称（1到12位的字符组合）
+        // 对昵称进行合法校验，昵称（1到12位的字符组合）。
         if(nickname.length() < 1 || nickname.length() > 12){
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
         }
-
         // 对邮箱地址合法校验
         // 检查用户信息邮箱是否被使用
         UserInfo userInfo = userInfoService.getUserInfoByEmail(email);
-        if(ObjectUtil.isNotNull(userInfo)){
+        if (ObjectUtil.isNotNull(userInfo)) {
             throw new BusinessException(UserReturnCode.USER_INFO_EXIST_EMAIL_00006);
         }
-
         // 对验证码校验
         String redisVerifyCodeText = redisTemplate.opsForValue().get("email:register:" + email);
-        if(StringUtils.isBlank(redisVerifyCodeText) || !verifyCodeText.equals(redisVerifyCodeText)){
+        if (StringUtils.isBlank(redisVerifyCodeText) || !verifyCodeText.equals(redisVerifyCodeText)) {
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
         }
-
-        // 当天注册机会限制 配置文件中registerDayUserCount可以配置
+        // 当天注册机会限制，配置文件中registerDayUserCount可以配置。
         List<User> userListByDay = userService.getUserListByDay(DateUtil.getNowDay());
-        if(userListByDay.size() > systemConfig.getRegisterDayUserCount()){
+        if (userListByDay.size() > systemConfig.getRegisterDayUserCount()) {
             throw new BusinessException(UserReturnCode.USER_REGISTER_DAY_COUNT_MAX_00013);
         }
-
         // 用户信息
         User user = new User();
         user.setUsername(username);
@@ -186,26 +175,28 @@ public class RegisterServiceImpl implements RegisterService {
         user.setEnable(true);
         user.setImage(false);
         userService.insertUser(user);
-
         // 用户信息注册时间前端显示填充
         user.setAddTimeShow(cn.hutool.core.date.DateUtil.format(user.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
-
         // 用户详情信息
         UserInfo userInfoSave = new UserInfo();
         userInfoSave.setId(user.getId());
         userInfoSave.setEmail(email);
         userInfoService.insertUserInfo(userInfoSave);
-
         // 用户角色填充
-        Role role = roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getName, RoleConstant.USER));
+        List<Role> roleList = roleService.list();
+        Role role = null;
+        if (CollUtil.isEmpty(roleList)) {
+            role = roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getName, RoleConstant.ADMIN));
+        } else {
+            role = roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getName, RoleConstant.USER));
+        }
         UserRole userRole = new UserRole();
         userRole.setUserId(user.getId());
         userRole.setRoleId(role.getId());
         userRoleService.save(userRole);
-
+        // 进行临时自动登录
         session.setAttribute("user", user);
         session.setMaxInactiveInterval(60 * 60);
-
         this.temporaryRemember(username, response);
     }
 

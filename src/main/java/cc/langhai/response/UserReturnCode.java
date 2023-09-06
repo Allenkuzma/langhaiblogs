@@ -61,6 +61,8 @@ public enum UserReturnCode implements ReturnCode {
     USER_UPDATE_IMAGE_SUCCEED_00026(200, "修改用户图库功能状态成功。"),
 
     USER_UPDATE_IMAGE_FAIL_00027(500, "修改用户图库功能状态失败。"),
+
+    USER_EMAIL_SEND_CODE_FAIL_00028(500, "邮箱验证码已经发送成功，请检查邮箱。"),
     ;
 
     private Integer code;

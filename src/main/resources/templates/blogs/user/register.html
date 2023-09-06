@@ -28,7 +28,6 @@
 
 		<!-- Wrapper -->
 			<div id="wrapper">
-
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
@@ -85,9 +84,7 @@
 								</section>
 							</div>
 						</div>
-
 					</section>
-
 			</div>
 
 		<!-- Footer -->
@@ -117,9 +114,9 @@
 			$("#sendVerifyCode").click(function () {
 				var reg = new RegExp(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/);
 				var flag = reg.test($("#email").val());
-				if(flag == false){
+				if (flag == false) {
 					$("#vCodeStatus").html("邮箱格式不正确");
-				}else {
+				} else {
 					$.ajax({
 						url: "/user/sendEmailCode",
 						async: true,
@@ -132,7 +129,6 @@
 						}
 					})
 				}
-
 			})
 
 			// 注册校验

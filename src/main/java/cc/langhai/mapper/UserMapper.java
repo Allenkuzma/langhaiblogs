@@ -16,7 +16,7 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     /**
-     * 获取用户信息 用户名称查询
+     * 获取用户信息，用户名称查询。
      *
      * @param username 用户名称
      * @return 用户信息实体类

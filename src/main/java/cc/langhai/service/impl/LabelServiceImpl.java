@@ -40,9 +40,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public List<Label> getAllLabelByUser() {
-        Long userId = UserContext.getUserId();
-
-        return labelMapper.getAllLabelByUser(userId);
+        return labelMapper.getAllLabelByUser(UserContext.getUserId());
     }
 
     @Override

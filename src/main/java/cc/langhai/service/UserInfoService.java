@@ -12,10 +12,10 @@ public interface UserInfoService {
 
 
     /**
-     * 获取用户详情信息 用户id查询
+     * 获取用户详情信息，用户id查询。
      *
-     * @param id
-     * @return
+     * @param id 用户id
+     * @return 用户详情信息
      */
     UserInfo getUserInfoById(Long id);
 

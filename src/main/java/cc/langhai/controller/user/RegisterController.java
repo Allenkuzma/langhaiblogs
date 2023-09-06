@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  * 用户注册控制器
  *
@@ -28,34 +27,32 @@ public class RegisterController {
     /**
      * 跳转到注册页面
      *
-     * @return
+     * @return 注册页面 blogs/user/register
      */
     @GetMapping("/registerPage")
     public String registerPage(){
-
         return "blogs/user/register";
     }
 
     /**
      * 发送注册邮箱验证码
      *
-     * @return
+     * @return 注册邮箱验证码结果
      */
     @ResponseBody
     @PostMapping("/sendEmailCode")
     public ResultResponse sendEmailCode(@RequestParam("email") String email, HttpServletRequest request){
         registerService.sendEmailCode(email, request);
-
         return ResultResponse.success(UserReturnCode.EMAIL_CODE_00000);
     }
 
     /**
      * 校验用户名的唯一性
      *
-     * @return
+     * @return 用户名
      */
-    @PostMapping("/verifyUsername")
     @ResponseBody
+    @PostMapping("/verifyUsername")
     public ResultResponse verifyUsername(@RequestParam("username") String username){
         registerService.verifyUsername(username);
         return ResultResponse.success(UserReturnCode.USER_NAME_SINGLE_OK_00007);
@@ -74,9 +71,7 @@ public class RegisterController {
                                    @RequestParam("email") String email,
                                    @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session, HttpServletResponse response){
         registerService.register(username, password, nickname, email, verifyCodeText, session, response);
-
         return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);
     }
-
 
 }

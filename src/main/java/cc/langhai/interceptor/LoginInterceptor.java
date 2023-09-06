@@ -44,7 +44,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 return true;
             }
             // 记住我功能实现登录
-            if(ObjectUtil.isNull(user)){
+            if (ObjectUtil.isNull(user)) {
                 registerService.remember(request, request.getSession());
                 user = (User)request.getSession().getAttribute("user");
                 if(ObjectUtil.isNotNull(user)){

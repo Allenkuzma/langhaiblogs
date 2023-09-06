@@ -32,8 +32,8 @@ public class EmailUtil {
     /**
      * 发送邮件验证码
      *
-     * @param email
-     * @return
+     * @param email 邮箱地址
+     * @return 验证码
      */
     public String send(String email){
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -43,13 +43,11 @@ public class EmailUtil {
         simpleMailMessage.setFrom(from);
         // 收件人的邮箱地址
         simpleMailMessage.setTo(email);
-
         try {
             javaMailSender.send(simpleMailMessage);
         } catch (MailException e) {
             throw new BusinessException(UserReturnCode.EMAIL_CODE_00001);
         }
-
         return random;
     }
 }

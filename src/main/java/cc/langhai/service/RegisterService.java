@@ -17,15 +17,15 @@ public interface RegisterService {
     /**
      * 发送验证码邮箱
      *
-     * @param email
-     * @param request
+     * @param email 邮箱
+     * @param request 请求
      */
     void sendEmailCode(String email, HttpServletRequest request);
 
     /**
      * 校验用户名的唯一性
      *
-     * @param username
+     * @param username 用户名
      */
     void verifyUsername(String username);
 

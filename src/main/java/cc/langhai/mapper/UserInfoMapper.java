@@ -13,10 +13,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserInfoMapper {
 
     /**
-     * 获取用户详情信息 用户id查询
+     * 获取用户详情信息，用户id查询。
      *
-     * @param id
-     * @return
+     * @param id 用户id
+     * @return 用户详情信息
      */
     UserInfo getUserInfoById(Long id);
 

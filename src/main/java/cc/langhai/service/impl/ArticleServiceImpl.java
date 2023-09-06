@@ -113,7 +113,6 @@ public class ArticleServiceImpl implements ArticleService {
             userId = null;
         }
         List<Article> allArticle = articleMapper.getAllArticle(userId, title, abstractText);
-
         return allArticle;
     }
 

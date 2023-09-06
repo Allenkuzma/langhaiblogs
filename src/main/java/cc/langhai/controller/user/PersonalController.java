@@ -91,24 +91,19 @@ public class PersonalController {
     /**
      * 跳转到个人空间页面-后台系统
      *
-     * @return
+     * @return blogs/user/person 后台系统个人空间页面
      */
     @GetMapping("/personPage")
     public String personPage(Model model){
-        // 将用户详情信息存储到 model中
-        User user = UserContext.get();
-        UserInfo userInfo = userInfoService.getUserInfoById(user.getId());
+        // 将用户详情信息存储到model中
+        UserInfo userInfo = userInfoService.getUserInfoById(UserContext.getUserId());
         model.addAttribute("userInfo", userInfo);
-
         // 用户标签信息
-        List<Label> labelList = labelService.getAllLabelByUser();
-        model.addAttribute("labelList", labelList);
-
+        model.addAttribute("labelList", labelService.getAllLabelByUser());
         PageHelper.startPage(1, 10);
         // 用户最近十篇文章
         List<Article> articleList = articleService.getAllArticle(null, null, "user");
         model.addAttribute("articleList", articleList);
-
         return "blogs/user/person";
     }
 }

@@ -21,9 +21,9 @@ public class UserContext {
     }
 
     /**
-     * 获取当前登录用户的ID 未登录返回null
+     * 获取当前登录用户的ID，未登录返回null。
      *
-     * @return
+     * @return 用户id
      */
     public static Long getUserId() {
         User user = get();
