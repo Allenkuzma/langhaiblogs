@@ -1,8 +1,10 @@
 package cc.langhai.controller.visit;
 
+import cc.langhai.domain.User;
 import cc.langhai.domain.Visit;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.response.VisitReturnCode;
+import cc.langhai.service.UserService;
 import cc.langhai.service.VisitService;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
@@ -31,77 +33,77 @@ public class VisitController {
     @Autowired
     private VisitService visitService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 获取最近七天的用户访问记录
      *
-     * @return
+     * @return 最近七天的用户访问记录
      */
-    @GetMapping("/day")
     @ResponseBody
-    public ResultResponse day(){
+    @GetMapping("/day")
+    public ResultResponse day() {
         HashMap<String, Integer> map = new LinkedHashMap<>(2);
-
         // 获取前七天的时间
         for (int i = 6; i >= 0; i--) {
             DateTime dateTime = DateUtil.offsetDay(new Date(), -i);
             String[] split = dateTime.toString().split(" ");
-
             List<Visit> list = visitService.list(Wrappers.<Visit>lambdaQuery()
                     .ge(Visit::getTime, split[0] + " 00:00:00")
                     .le(Visit::getTime, split[0] + " 23:59:59"));
-
             map.put(split[0], list.size());
         }
-
         return ResultResponse.success(VisitReturnCode.VISIT_DAY_SUCCESS_00000, map);
     }
 
     /**
      * 用户访问记录设备类型
      *
-     * @return
+     * @return 用户访问记录设备类型
      */
-    @GetMapping("/device")
     @ResponseBody
-    public ResultResponse device(){
+    @GetMapping("/device")
+    public ResultResponse device() {
         HashMap<String, Integer> map = new HashMap<>();
         String[] nowDayScope = cc.langhai.utils.DateUtil.getNowDayScope();
-
         List<Visit> list = visitService.list(Wrappers.<Visit>lambdaQuery()
                 .ge(Visit::getTime, nowDayScope[0])
                 .le(Visit::getTime, nowDayScope[1]));
-
-        if(CollUtil.isNotEmpty(list)){
+        if (CollUtil.isNotEmpty(list)) {
             for (Visit visit : list) {
                 String userAgent = visit.getUserAgent();
                 UserAgent ua = UserAgentUtil.parse(userAgent);
                 String name = ua.getPlatform().getName();
-                if(map.containsKey(name)){
+                if (map.containsKey(name)) {
                     Integer integer = map.get(name);
                     map.put(name, integer + 1);
-                }else {
+                } else {
                     map.put(name, 1);
                 }
-
             }
         }
-
         return ResultResponse.success(VisitReturnCode.DEVICE_DAY_SUCCESS_00001, map);
     }
 
     /**
-     * 获取今天用户访问次数
+     * 后台管理数据，今日访问，总注册人数。
      *
-     * @return 今天用户访问次数
+     * @return 后台管理数据
      */
     @ResponseBody
-    @GetMapping("/today")
-    public ResultResponse today(){
+    @GetMapping("/data")
+    public ResultResponse data() {
         String[] nowDayScope = cc.langhai.utils.DateUtil.getNowDayScope();
-        int count = visitService.count(Wrappers.<Visit>lambdaQuery()
+        Integer count = visitService.count(Wrappers.<Visit>lambdaQuery()
                 .ge(Visit::getTime, nowDayScope[0])
                 .le(Visit::getTime, nowDayScope[1]));
-
-        return ResultResponse.success(VisitReturnCode.VISIT_TODAY_SUCCESS_00002, count);
+        // 总注册人数
+        List<User> userList = userService.getUserList("", "");
+        // 返回结果
+        ArrayList<Integer> result = new ArrayList<>(4);
+        result.add(count);
+        result.add(userList.size());
+        return ResultResponse.success(VisitReturnCode.ADMIN_DATA_SUCCESS_00002, result);
     }
 }

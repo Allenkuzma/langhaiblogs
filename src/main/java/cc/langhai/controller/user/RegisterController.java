@@ -30,7 +30,7 @@ public class RegisterController {
      * @return 注册页面 blogs/user/register
      */
     @GetMapping("/registerPage")
-    public String registerPage(){
+    public String registerPage() {
         return "blogs/user/register";
     }
 
@@ -41,7 +41,7 @@ public class RegisterController {
      */
     @ResponseBody
     @PostMapping("/sendEmailCode")
-    public ResultResponse sendEmailCode(@RequestParam("email") String email, HttpServletRequest request){
+    public ResultResponse sendEmailCode(@RequestParam("email") String email, HttpServletRequest request) {
         registerService.sendEmailCode(email, request);
         return ResultResponse.success(UserReturnCode.EMAIL_CODE_00000);
     }
@@ -53,7 +53,7 @@ public class RegisterController {
      */
     @ResponseBody
     @PostMapping("/verifyUsername")
-    public ResultResponse verifyUsername(@RequestParam("username") String username){
+    public ResultResponse verifyUsername(@RequestParam("username") String username) {
         registerService.verifyUsername(username);
         return ResultResponse.success(UserReturnCode.USER_NAME_SINGLE_OK_00007);
     }
@@ -69,7 +69,7 @@ public class RegisterController {
                                    @RequestParam("password") String password,
                                    @RequestParam("nickname") String nickname,
                                    @RequestParam("email") String email,
-                                   @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session, HttpServletResponse response){
+                                   @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session, HttpServletResponse response) {
         registerService.register(username, password, nickname, email, verifyCodeText, session, response);
         return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);
     }

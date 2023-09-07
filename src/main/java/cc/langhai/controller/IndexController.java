@@ -45,24 +45,21 @@ public class IndexController {
      * @return 首页页面 blogs/index.html
      */
     @GetMapping(value = {"/", "/index"})
-    public String index(HttpServletRequest httpRequest, HttpSession session, Model model){
+    public String index(HttpServletRequest httpRequest, HttpSession session, Model model) {
         registerService.remember(httpRequest, session);
         // 存储用户详情信息
         User user = (User) session.getAttribute("user");
-        if(ObjectUtil.isNotNull(user)){
+        if (ObjectUtil.isNotNull(user)) {
             roleService.determineAdmin(user);
             model.addAttribute("userInfo", userInfoService.getUserInfoById(user.getId()));
         }
-
         // 首页超链接
         List<Links> linksList = linksService.getSortAllLinks();
         model.addAttribute("linksList", linksList);
-
         // 底部友情链接 超过六个放在底部
-        if(linksList.size() > LinksConstant.LINKS_COUNT_ALL){
+        if (linksList.size() > LinksConstant.LINKS_COUNT_ALL) {
             model.addAttribute("bottomLinks", linksList.subList(6, linksList.size()));
         }
-
         // 首页友情链接标识语
         model.addAttribute("slogan", SystemConfig.INDEX_SLOGAN);
         return "blogs/index";

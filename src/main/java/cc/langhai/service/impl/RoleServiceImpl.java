@@ -51,23 +51,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public void updateUserRole(Long id, String name) {
         // 需要变更到的角色
         Role role = this.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getName, name));
-        if(ObjectUtil.isNull(role)){
+        if (ObjectUtil.isNull(role)) {
             throw new BusinessException(UserRoleReturnCode.ROLE_AUTH_FAIL_00000);
         }
-
         // 查询现在的角色
         Role roleOld = this.getRole(id);
-        if(role.equals(roleOld)){
+        if (role.equals(roleOld)) {
             return;
         }
-
         UserRole userRole = userRoleService.getOne(Wrappers.<UserRole>lambdaQuery()
                 .eq(UserRole::getUserId, id)
                 .eq(UserRole::getRoleId, roleOld.getId()));
-        if(ObjectUtil.isNull(userRole)){
+        if (ObjectUtil.isNull(userRole)) {
             throw new BusinessException(UserRoleReturnCode.ROLE_AUTH_FAIL_00000);
         }
-
         userRole.setRoleId(role.getId());
         userRoleService.updateById(userRole);
     }

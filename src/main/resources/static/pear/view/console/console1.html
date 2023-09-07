@@ -45,7 +45,7 @@
 				</div>
 				<div class="layui-col-xs6 layui-col-md3">
 					<div class="layui-card top-panel">
-						<div class="layui-card-header">今日访问</div>
+						<div class="layui-card-header">注册人数</div>
 						<div class="layui-card-body">
 							<div class="layui-row layui-col-space5">
 								<div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value2">
@@ -216,36 +216,36 @@
 					count = layui.count,
 					echarts = layui.echarts;
 
-				let today = 0;
+				let dataArray = [];
 
 				$.ajax({
-					url: "/visit/today",
+					url: "/visit/data",
 					async: true,
 					type: "GET",
 					success: function (data) {
-						if(data.code == 200){
-							today = data.result;
-						}else {
-							today = 0;
+						if (data.code == 200) {
+							dataArray = data.result;
+						} else {
+							dataArray = [0, 0];
 						}
 
 						count.up("value1", {
 							time: 4000,
-							num: today,
+							num: dataArray[0],
 							bit: 2,
 							regulator: 50
 						})
 
 						count.up("value2", {
 							time: 4000,
-							num: today,
+							num: dataArray[1],
 							bit: 2,
 							regulator: 50
 						})
 
 						count.up("value3", {
 							time: 4000,
-							num: today,
+							num: dataArray[0],
 							bit: 2,
 							regulator: 50
 						})
@@ -253,7 +253,7 @@
 						count.up("value4", {
 							time: 4000,
 							bit: 2,
-							num: today,
+							num: dataArray[0],
 							regulator: 50
 						})
 					}

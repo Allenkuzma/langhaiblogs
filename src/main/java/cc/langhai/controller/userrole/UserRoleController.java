@@ -43,8 +43,7 @@ public class UserRoleController {
      */
     @GetMapping("/userRolePage")
     @RequestAuthority(value = {"admin"})
-    public String userRolePage(){
-
+    public String userRolePage() {
         return "blogs/userRole/userRoleList";
     }
 
@@ -60,7 +59,7 @@ public class UserRoleController {
     @RequestAuthority(value = {"admin"})
     public JSONObject userRoleList(@RequestParam(defaultValue = "1") Integer page,
                                    @RequestParam(defaultValue = "10") Integer limit,
-                                    String username, String nickname){
+                                   String username, String nickname) {
         PageHelper.startPage(page, limit);
         List<User> list = userService.getUserList(username, nickname);
         PageInfo<User> userPageInfo = new PageInfo<>(list);
@@ -68,7 +67,6 @@ public class UserRoleController {
         jsonObject.put("code", 0);
         jsonObject.put("data", list);
         jsonObject.put("count", userPageInfo.getTotal());
-
         return jsonObject;
     }
 
@@ -77,34 +75,30 @@ public class UserRoleController {
      *
      * @return 更新用户授权页面
      */
-    @GetMapping("/userRoleUpdatePage")
     @RequestAuthority(value = {"admin"})
-    public String userRoleUpdatePage(Long id, Model model){
+    @GetMapping("/userRoleUpdatePage")
+    public String userRoleUpdatePage(Long id, Model model) {
         model.addAttribute("id", id);
-
         Role role = roleService.getRole(id);
         model.addAttribute("role", role);
-
         List<Role> list = roleService.list();
         model.addAttribute("roleList", list);
-
         return "blogs/userRole/userRoleUpdate";
     }
 
     /**
      * 更新用户授权操作
      *
-     * @return
+     * @return 更新用户授权操作结果
      */
     @ResponseBody
     @PostMapping("/updateUserRole")
     @RequestAuthority(value = {"admin"})
-    public ResultResponse updateUserRole(Long id, String role){
-        if(ObjectUtil.isNull(id) || StrUtil.isBlank(role)){
+    public ResultResponse updateUserRole(Long id, String role) {
+        if (ObjectUtil.isNull(id) || StrUtil.isBlank(role)) {
             return ResultResponse.fail(UserRoleReturnCode.ROLE_AUTH_FAIL_00000);
         }
         roleService.updateUserRole(id, role);
-
         return ResultResponse.success(UserRoleReturnCode.ROLE_AUTH_SUCCESS_00001);
     }
 }

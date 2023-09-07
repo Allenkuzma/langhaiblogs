@@ -31,8 +31,7 @@ public class SystemUserController {
      */
     @GetMapping("/userPage")
     @RequestAuthority(value = {"admin"})
-    public String userPage(){
-
+    public String userPage() {
         return "blogs/user/systemUser";
     }
 
@@ -46,9 +45,8 @@ public class SystemUserController {
     @ResponseBody
     @PutMapping("/enable")
     @RequestAuthority(value = {"admin"})
-    public ResultResponse enable(Long id, Boolean enable){
+    public ResultResponse enable(Long id, Boolean enable) {
         userService.enable(id, enable);
-
         return ResultResponse.success(UserReturnCode.USER_UPDATE_ENABLE_SUCCEED_00024);
     }
 
@@ -58,8 +56,7 @@ public class SystemUserController {
      * @return 用户被禁用页面
      */
     @GetMapping("/userEnablePage")
-    public String userEnablePage(){
-
+    public String userEnablePage() {
         return "error/enable";
     }
 
@@ -73,9 +70,8 @@ public class SystemUserController {
     @ResponseBody
     @PutMapping("/image")
     @RequestAuthority(value = {"admin"})
-    public ResultResponse image(Long id, Boolean image){
+    public ResultResponse image(Long id, Boolean image) {
         userService.image(id, image);
-
         return ResultResponse.success(UserReturnCode.USER_UPDATE_IMAGE_SUCCEED_00026);
     }
 }

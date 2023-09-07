@@ -12,7 +12,7 @@ public enum VisitReturnCode implements ReturnCode{
 
     DEVICE_DAY_SUCCESS_00001(200, "用户访问设备类型获取成功。"),
 
-    VISIT_TODAY_SUCCESS_00002(200, "用户今天访问次数获取成功。"),
+    ADMIN_DATA_SUCCESS_00002(200, "后台管理统计数据获取成功。"),
     ;
 
     private Integer code;

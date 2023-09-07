@@ -32,8 +32,8 @@ public interface RoleService extends IService<Role> {
     /**
      * 更新用户角色授权
      *
-     * @param id
-     * @param name
+     * @param id 用户id
+     * @param name 角色名字
      */
     void updateUserRole(Long id, String name);
 
