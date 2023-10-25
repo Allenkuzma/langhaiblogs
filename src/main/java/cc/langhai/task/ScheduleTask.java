@@ -1,16 +1,12 @@
 package cc.langhai.task;
 
-import cc.langhai.domain.User;
-import cc.langhai.domain.UserInfo;
 import cc.langhai.domain.Visit;
 import cc.langhai.service.UserInfoService;
 import cc.langhai.service.UserService;
 import cc.langhai.service.VisitService;
-import cc.langhai.utils.EmailUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * 定时任务
