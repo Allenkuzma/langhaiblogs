@@ -1,28 +1,19 @@
 package cc.langhai.controller.links;
 
 import cc.langhai.config.annotation.RequestAuthority;
-import cc.langhai.domain.Article;
-import cc.langhai.domain.Label;
 import cc.langhai.domain.Links;
-import cc.langhai.domain.Message;
 import cc.langhai.exception.BusinessException;
-import cc.langhai.response.LabelReturnCode;
 import cc.langhai.response.LinksReturnCode;
 import cc.langhai.response.ResultResponse;
-import cc.langhai.service.ArticleService;
-import cc.langhai.service.LabelService;
 import cc.langhai.service.LinksService;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +38,6 @@ public class LinksController {
     @GetMapping("/linksListPage")
     @RequestAuthority(value = {"admin"})
     public String linksListPage(){
-
         return "blogs/links/linksList";
     }
 

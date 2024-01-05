@@ -3,6 +3,7 @@ package cc.langhai.exception;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.response.ReturnCode;
 import cc.langhai.response.SystemReturnCode;
+import cn.hutool.core.util.ObjectUtil;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,6 +31,9 @@ public class GlobalExceptionHandler {
         if(exception instanceof BusinessException){
             BusinessException businessException = (BusinessException) exception;
             ReturnCode returnCode = businessException.getReturnCode();
+            if (ObjectUtil.isNull(returnCode)) {
+                return new ResultResponse(businessException.getErrCode(), businessException.getErrMessage(), null);
+            }
             return new ResultResponse(returnCode.getCode(), returnCode.getMessage(), null);
         }
 
