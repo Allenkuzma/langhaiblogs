@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -55,7 +54,6 @@ public class ImageController {
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());
-
         return "blogs/image/imageList";
     }
 
@@ -67,7 +65,6 @@ public class ImageController {
     @RequestMapping("/imageAddPage")
     public String imageAddPage(Model model){
         model.addAttribute("size", imageService.space());
-
         return "blogs/image/imageAdd";
     }
 

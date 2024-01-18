@@ -15,6 +15,7 @@ import java.util.HashMap;
  * @date 2024-01-05 09:31
  */
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/token")
 public class TokenApiController {
 

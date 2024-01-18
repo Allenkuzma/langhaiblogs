@@ -46,7 +46,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             // 记住我功能实现登录
             if (ObjectUtil.isNull(user)) {
                 registerService.remember(request, request.getSession());
-                user = (User)request.getSession().getAttribute("user");
+                user = (User) request.getSession().getAttribute("user");
                 if(ObjectUtil.isNotNull(user)){
                     // 判断账户是否被禁用
                     if (Boolean.valueOf(false).equals(user.getEnable())){

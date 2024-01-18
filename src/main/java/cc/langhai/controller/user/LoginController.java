@@ -79,7 +79,7 @@ public class LoginController {
                                      @RequestParam("password") String password,
                                      @RequestParam("verifyCodeText") String verifyCodeText,
                                      @RequestParam(value = "remember", required = false) String remember,
-                                     HttpSession session, HttpServletResponse response){
+                                     HttpSession session, HttpServletResponse response) {
         // 用户登录服务处理
         registerService.loginEnter(username, password, verifyCodeText, session, remember, response);
         // 用户登录成功
@@ -94,7 +94,7 @@ public class LoginController {
      */
     @ResponseBody
     @PostMapping("/loginOut")
-    public ResultResponse loginOut(HttpSession session, HttpServletResponse response){
+    public ResultResponse loginOut(HttpSession session, HttpServletResponse response) {
         registerService.loginOut(session, response);
         return ResultResponse.success(UserReturnCode.USER_LOGOUT_YES_00017);
     }

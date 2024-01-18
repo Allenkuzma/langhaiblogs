@@ -3,13 +3,10 @@ package cc.langhai.minio.util;
 import cc.langhai.domain.Image;
 import cc.langhai.domain.User;
 import cc.langhai.exception.BusinessException;
-import cc.langhai.minio.config.MinioProp;
 import cc.langhai.response.MinioReturnCode;
 import cc.langhai.service.ImageService;
-import cc.langhai.service.UserService;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSONObject;
 import io.minio.MinioClient;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -34,13 +31,7 @@ public class MinioUtils {
     private MinioClient client;
 
     @Autowired
-    private MinioProp minioProp;
-
-    @Autowired
     private ImageService imageService;
-
-    @Autowired
-    private UserService userService;
  
     /**
      * 创建bucket
@@ -68,7 +59,7 @@ public class MinioUtils {
         }
         // 判断当前用户是否有图库功能
         User user = UserContext.get();
-        if(!user.getImage()){
+        if (!user.getImage()) {
             throw new BusinessException(MinioReturnCode.MINIO_IMAGE_FAIL_00005);
         }
         // 判断用户存储的图片总大小
@@ -96,7 +87,6 @@ public class MinioUtils {
         }
     }
 
-
     /**
      * 获取文件
      *
@@ -109,7 +99,6 @@ public class MinioUtils {
         return client.getObject(bucketName, objectName);
     }
 
-
     /**
      * 删除文件
      *
@@ -118,14 +107,13 @@ public class MinioUtils {
      */
     @SneakyThrows
     public void deleteFile(String bucketName, String objectName){
-        if(imageService.power(objectName)){
+        if (imageService.power(objectName)) {
             client.removeObject(bucketName, objectName);
             imageService.delete(objectName);
-        }else {
+        } else {
             throw new BusinessException(MinioReturnCode.MINIO_DELETE_FAIL_00004);
         }
     }
-
 
 }
  

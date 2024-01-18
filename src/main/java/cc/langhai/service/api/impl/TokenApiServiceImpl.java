@@ -28,7 +28,7 @@ public class TokenApiServiceImpl implements TokenApiService {
         List<String> consumerList = Arrays.asList("100", "200", "300", "400", "500");
         if (!consumerList.contains(consumer)) {
             throw new BusinessException(500, "token消费者校验失败。");
-        };
+        }
         // 生成token
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.SECOND, expTime);

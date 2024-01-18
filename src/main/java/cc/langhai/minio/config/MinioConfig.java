@@ -24,9 +24,9 @@ public class MinioConfig {
     /**
      * 获取 MinioClient
      *
-     * @return
-     * @throws InvalidPortException
-     * @throws InvalidEndpointException
+     * @return MinioClient
+     * @throws InvalidPortException InvalidPortException
+     * @throws InvalidEndpointException InvalidEndpointException
      */
     @Bean
     public MinioClient minioClient() throws InvalidPortException, InvalidEndpointException {

@@ -98,14 +98,14 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 
     @Override
     public boolean power(String objectName) {
-        if(StrUtil.isBlank(objectName)){
+        if (StrUtil.isBlank(objectName)) {
             return false;
         }
         // 判断图片的拥有者
         Long userId = UserContext.getUserId();
         Image imageByMinioName = imageMapper.getImageByMinioName(objectName);
-        if(ObjectUtil.isNotNull(imageByMinioName)){
-            if(imageByMinioName.getUserId().equals(userId)){
+        if (ObjectUtil.isNotNull(imageByMinioName)) {
+            if (imageByMinioName.getUserId().equals(userId)) {
                 return true;
             }
         }
