@@ -1,5 +1,6 @@
 package cc.langhai.interceptor.api;
 
+import cn.hutool.core.util.StrUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +16,20 @@ public class ApiInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 获取域名
-        String serverName = request.getServerName();
-        // TODO 域名校验
-        if ("localhost".equals(serverName) || "www.langhai.vip".equals(serverName)) {
-            return true;
+        String referer = request.getHeader("referer");
+        if (StrUtil.isNotBlank(referer)) {
+            boolean httpsBoolean = referer.startsWith("https://www.langhai.net");
+            boolean httpBoolean = referer.startsWith("http://www.langhai.net");
+            if (httpsBoolean || httpBoolean) {
+                return true;
+            }
+        } else {
+            String serverName = request.getServerName();
+            if ("localhost".equals(serverName)) {
+                return true;
+            }
         }
+
         return false;
     }
 }

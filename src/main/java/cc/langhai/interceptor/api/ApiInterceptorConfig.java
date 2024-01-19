@@ -25,5 +25,6 @@ public class ApiInterceptorConfig implements WebMvcConfigurer {
         InterceptorRegistration registration = registry.addInterceptor(apiInterceptor()).order(4);
         // 拦截地址配置
         registration.addPathPatterns("/api/token/**");
+        registration.addPathPatterns("/api/website/**");
     }
 }
