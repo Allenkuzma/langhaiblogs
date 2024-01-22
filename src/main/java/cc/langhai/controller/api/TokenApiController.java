@@ -15,8 +15,8 @@ import java.util.HashMap;
  * @date 2024-01-05 09:31
  */
 @Controller
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/token")
+@CrossOrigin(origins = {"https://www.langhai.net", "http://www.langhai.net"})
 public class TokenApiController {
 
     @Autowired

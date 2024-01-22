@@ -1,6 +1,7 @@
 package cc.langhai.service.api.impl;
 
 import cc.langhai.service.api.WebSiteApiService;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -10,9 +11,13 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -26,6 +31,9 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplateObject;
 
     @Override
     public String pageView(String websiteName, String serverName) {
@@ -45,7 +53,7 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
     }
 
     @Override
-    public String score(String websiteUrl, String whois) {
+    public String score(String websiteUrl, String whois, String serverName) {
         Integer score = 100;
         StringBuilder stringBuilder = new StringBuilder();
         // 访问速度测试
@@ -114,7 +122,59 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
             stringBuilder.append(" 网站域名信息获取失败减去10分 ");
         }
         stringBuilder.append(" 最终得分" + String.valueOf(score) + "分 ");
+        // 添加网站到redis
+        SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
+        setOperations.add("websiteSet:" + serverName, websiteUrl);
         return stringBuilder.toString();
+    }
+
+    @Override
+    public List<String> random(String serverName) {
+        ArrayList<String> infoList = CollUtil.newArrayList();
+        // 随机获取一个网站
+        SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
+        String websiteUrl = (String) setOperations.randomMember("websiteSet:" + serverName);
+        if (StrUtil.isBlank(websiteUrl)) {
+            websiteUrl =  "http://www.langhai.net";
+        }
+        infoList.add(websiteUrl);
+        // 域名信息接口查询
+        try {
+            String tdkJson = HttpUtil.get("https://www.yuanxiapi.cn/api/info/?url=" + websiteUrl);
+            JSONObject tdkBean = JSONUtil.toBean(tdkJson, JSONObject.class);
+            String title = (String) tdkBean.get("title");
+            if (StrUtil.isBlank(title)) {
+                title = "浪海导航，收录博客网站。";
+            }
+            infoList.add(title);
+        } catch (Exception e) {
+            infoList.add("浪海导航，收录博客网站。");
+        }
+        return infoList;
+    }
+
+    @Override
+    public String record(String serverName, String websiteUrl, String qq) {
+        // 每日提交最多15次
+        String recordCount = redisTemplate.opsForValue().get("record:count:" + serverName);
+        if (StrUtil.isBlank(recordCount)) {
+            // 存储到redis当中
+            redisTemplate.opsForValue().set("record:count:" + serverName,
+                    "1", 1 * 24 * 60, TimeUnit.MINUTES);
+        } else {
+            Long recordLong = Long.valueOf(recordCount);
+            if (recordLong >= 15L) {
+                return "当日提交次数过多，请联系网站管理员！";
+            } else {
+                // 存储到redis当中
+                redisTemplate.opsForValue().set("record:count:" + serverName,
+                        String.valueOf(recordLong + 1L), 1 * 24 * 60, TimeUnit.MINUTES);
+            }
+        }
+        // 存储到审核列表
+        SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
+        setOperations.add("record:set:" + serverName, websiteUrl + " ~ QQ：" + qq);
+        return "网站已成功提交，请耐心等待审核！";
     }
 
 }
