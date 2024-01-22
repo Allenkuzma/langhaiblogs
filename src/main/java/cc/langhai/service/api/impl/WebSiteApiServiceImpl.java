@@ -58,14 +58,20 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
         StringBuilder stringBuilder = new StringBuilder();
         // 访问速度测试
         try {
-            long startTime = System.currentTimeMillis();
+            // 服务器访问
+            /*long startTime = System.currentTimeMillis();
             String websiteHtml = HttpUtil.get(websiteUrl);
             long endTime = System.currentTimeMillis();
-            long visitTime = endTime - startTime;
-            if (visitTime >= 300 && visitTime <= 500) {
+            long visitTime = endTime - startTime;*/
+            String pingJson = HttpUtil.get("https://www.yuanxiapi.cn/api/pingspeed/?host=" + whois);
+            JSONObject pingBean = JSONUtil.toBean(pingJson, JSONObject.class);
+            String pingTimeAvg = (String) pingBean.get("ping_time_avg");
+            String pingTime = pingTimeAvg.split("\\.")[0];
+            Integer ping = Integer.valueOf(pingTime);
+            if (ping >= 50 && ping <= 150) {
                 score = score - 5;
                 stringBuilder.append(" 网站访问速度较慢减去5分 ");
-            } else if (visitTime > 500) {
+            } else if (ping > 150) {
                 stringBuilder.append(" 网站访问速度非常慢减去10分 ");
                 score = score - 10;
             }
