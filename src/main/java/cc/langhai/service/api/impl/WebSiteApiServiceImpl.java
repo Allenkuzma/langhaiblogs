@@ -54,6 +54,10 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
 
     @Override
     public String score(String websiteUrl, String whois, String serverName) {
+        String scoreApi = redisTemplate.opsForValue().get("scoreApi:" + serverName + ":" + whois);
+        if (StrUtil.isNotBlank(scoreApi)) {
+            return scoreApi;
+        }
         Integer score = 100;
         StringBuilder stringBuilder = new StringBuilder();
         // 访问速度测试
@@ -63,7 +67,7 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
             String websiteHtml = HttpUtil.get(websiteUrl);
             long endTime = System.currentTimeMillis();
             long visitTime = endTime - startTime;*/
-            String pingJson = HttpUtil.get("https://www.yuanxiapi.cn/api/pingspeed/?host=" + whois);
+            String pingJson = HttpUtil.get("https://api.linhun.vip/api/pingspeed?host=" + whois + "&apiKey=d34add5baf097a3e4c2ce68068551ab3");
             JSONObject pingBean = JSONUtil.toBean(pingJson, JSONObject.class);
             String pingTimeAvg = (String) pingBean.get("ping_time_avg");
             String pingTime = pingTimeAvg.split("\\.")[0];
@@ -109,9 +113,10 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
         }
         // 域名注册时间
         try {
-            String whoisJson = HttpUtil.get("https://www.yuanxiapi.cn/api/domain_whois/?domain=" + whois);
+            // String whoisJson = HttpUtil.get("https://www.yuanxiapi.cn/api/domain_whois/?domain=" + whois);
+            String whoisJson = HttpUtil.get("https://api.linhun.vip/api/Domaininformation?url=" + whois + "&apiKey=76ca0bc838abb532742a471a2c97f4cb");
             JSONObject whoisBean = JSONUtil.toBean(whoisJson, JSONObject.class);
-            String registrationTime = (String) whoisBean.get("Registration_Time");
+            String registrationTime = (String) whoisBean.get("CreationDate");
             long betweenDay = DateUtil.between(DateUtil.parse(registrationTime), new Date(), DateUnit.DAY);
             if (betweenDay >= 0L && betweenDay <= 365L) {
                 score = score - 5;
@@ -131,6 +136,8 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
         // 添加网站到redis
         SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
         setOperations.add("websiteSet:" + serverName, websiteUrl);
+        redisTemplate.opsForValue().set("scoreApi:" + serverName + ":" + whois,
+                stringBuilder.toString(), 7 * 24 * 60, TimeUnit.MINUTES);
         return stringBuilder.toString();
     }
 
