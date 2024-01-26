@@ -4,7 +4,7 @@ import cc.langhai.domain.Visit;
 import cc.langhai.service.VisitService;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.IPUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -38,7 +38,7 @@ public class VisitInterceptor implements HandlerInterceptor {
         String referer = request.getHeader("referer");
         // redis获取用户访问信息
         String redisIpAddr = redisTemplate.opsForValue().get("visit:ip:" + ip + " ~ " + DateUtil.getNowDay());
-        if(ObjectUtil.isNull(redisIpAddr)){
+        if(StrUtil.isBlank(redisIpAddr)){
             redisTemplate.opsForValue().set("visit:ip:" + ip + " ~ " + DateUtil.getNowDay(), userAgent, 10, TimeUnit.MINUTES);
             // 记录到mysql
             Visit visit = new Visit();
@@ -48,9 +48,7 @@ public class VisitInterceptor implements HandlerInterceptor {
             visit.setTime(new Date());
             visitService.save(visit);
         }
-
         return true;
     }
-
 
 }
