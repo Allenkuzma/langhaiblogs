@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -81,7 +80,7 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
             }
         } catch (Exception e) {
             score = score - 20;
-            stringBuilder.append(" 网站无法打开减去20分 ");
+            stringBuilder.append(" 网站无法打开减去20分（可能api调用错误） ");
         }
         // 百度网站流量评估
         try {
@@ -109,7 +108,7 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
                 stringBuilder.append(" 网站百度流量获取失败减去20分 ");
             }
         } catch (Exception e) {
-            stringBuilder.append(" 网站百度流量获取失败减去20分 ");
+            stringBuilder.append(" 网站百度流量获取失败减去20分（可能api调用错误） ");
         }
         // 域名注册时间
         try {
@@ -130,9 +129,9 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
             }
         } catch (Exception e) {
             score = score - 10;
-            stringBuilder.append(" 网站域名信息获取失败减去10分 ");
+            stringBuilder.append(" 网站域名信息获取失败减去10分（可能api调用错误） ");
         }
-        stringBuilder.append(" 最终得分" + String.valueOf(score) + "分 ");
+        stringBuilder.append(" 最终得分" + String.valueOf(score) + "分 结果仅供参考 ");
         // 添加网站到redis
         SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
         setOperations.add("websiteSet:" + serverName, websiteUrl);
@@ -188,6 +187,12 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
         SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
         setOperations.add("record:set:" + serverName, websiteUrl + " ~ QQ：" + qq);
         return "网站已成功提交，请耐心等待审核！";
+    }
+
+    @Override
+    public void fullScore(String whois, String serverName) {
+        redisTemplate.opsForValue().set("scoreApi:" + serverName + ":" + whois,
+                "本站属于专属卡片拥有站点，使用站点特权，最后得分为100分。（每次访问专属卡片即可激活七天满分特权）", 7 * 24 * 60, TimeUnit.MINUTES);
     }
 
 }

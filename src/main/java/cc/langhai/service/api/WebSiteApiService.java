@@ -47,4 +47,12 @@ public interface WebSiteApiService {
      * @return 提交收录网站结果
      */
     String record(String serverName, String websiteUrl, String qq);
+
+    /**
+     * 网站vip评分满分
+     *
+     * @param whois 域名主体
+     * @param serverName 服务站点
+     */
+    void fullScore(String whois, String serverName);
 }

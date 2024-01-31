@@ -57,6 +57,21 @@ public class WebSiteApiController {
     }
 
     /**
+     * 网站vip评分满分
+     *
+     * @param whois 域名主体
+     * @param serverName 服务站点
+     * @return 网站vip评分满分结果
+     */
+    @ResponseBody
+    @GetMapping("/fullScore")
+    public ResultResponse fullScore(@RequestParam(value = "whois") String whois,
+                                    @RequestParam(value = "serverName") String serverName) {
+        webSiteApiService.fullScore(whois, serverName);
+        return new ResultResponse<>(200, "网站vip评分满分成功", null);
+    }
+
+    /**
      * 随机获取一个网站
      *
      * @param serverName 服务站点
