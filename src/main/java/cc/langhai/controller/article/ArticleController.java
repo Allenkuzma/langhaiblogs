@@ -252,15 +252,12 @@ public class ArticleController {
     /**
      * 跳转到文章搜索页面
      *
-     * @return
+     * @return 文章搜索页面
      */
     @GetMapping("/articleSearchPage")
-    public String articleSearchPage(Model model,
-                                  @RequestParam(defaultValue = "1") Integer page,
-                                  @RequestParam(defaultValue = "10") Integer size,
-                                    String searchArticleStr){
+    public String articleSearchPage(Model model, @RequestParam(defaultValue = "1") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer size, String searchArticleStr) {
         PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, null);
-
         model.addAttribute("list", articleService.getArticleHeat(pageInfo.getList()));
         model.addAttribute("page", page);
         model.addAttribute("size", size);
@@ -268,7 +265,6 @@ public class ArticleController {
         model.addAttribute("search", searchArticleStr);
         return "blogs/article/articleSearch";
     }
-
 
     /**
      * 跳转到 文章 搜索页面 用于ES搜索引擎

@@ -40,7 +40,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     @Override
     public Long size() {
         // 获取用户的所有图片
-        List<Image> allImageByUser = imageMapper.getAllImageByUser(UserContext.getUserId());
+        List<Image> allImageByUser = imageMapper.getAllImageByUser(UserContext.getUserId(), "");
         // 所有图片占用空间
         Long sum = 0L;
         if(CollectionUtil.isNotEmpty(allImageByUser)){
@@ -70,8 +70,18 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     }
 
     @Override
-    public List<Image> getAllImageByUser(Long userId) {
-        List<Image> imageList = imageMapper.getAllImageByUser(userId);
+    public List<Image> getAllImageByUser(Long userId, String searchImageStr) {
+        List<Image> imageList = imageMapper.getAllImageByUser(userId, searchImageStr);
+        // 前端展示图片地址
+        if (CollectionUtil.isNotEmpty(imageList)) {
+            for (Image image : imageList) {
+                // 图片地址带域名 需要带上域名 放开注释即可
+                /*StringBuffer requestURL = request.getRequestURL();
+                String urlPrefix = requestURL.substring(0, requestURL.length() - request.getRequestURI().length());
+                image.setUrl(urlPrefix + "/minio/download?minioName=" + image.getMinioName());*/
+                image.setUrl("/minio/download?minioName=" + image.getMinioName());
+            }
+        }
         // 返回用户所有图片集合
         return imageList;
     }
@@ -79,7 +89,6 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     @Override
     public String space() {
         Long size = this.size();
-
         BigDecimal result = new BigDecimal(0);
         Role role = roleService.getRole();
         if(role.getName().equals(RoleConstant.ADMIN) || role.getName().equals(RoleConstant.VIP)){

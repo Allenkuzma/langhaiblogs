@@ -31,9 +31,10 @@ public interface ImageService extends IService<Image> {
      * 获取用户所有图片
      *
      * @param userId 用户id
+     * @param searchImageStr minio文件名字
      * @return 用户所有图片集合
      */
-    List<Image> getAllImageByUser(Long userId);
+    List<Image> getAllImageByUser(Long userId, String searchImageStr);
 
     /**
      * 返回用户使用空间

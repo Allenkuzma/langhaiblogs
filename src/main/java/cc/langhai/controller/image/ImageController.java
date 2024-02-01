@@ -32,28 +32,18 @@ public class ImageController {
      * @return 图库页面
      */
     @RequestMapping("/imagePage")
-    public String imagePage(Model model,
-                            @RequestParam(defaultValue = "1") Integer page,
-                            @RequestParam(defaultValue = "8") Integer size){
+    public String imagePage(Model model, @RequestParam(defaultValue = "1") Integer page,
+                            @RequestParam(defaultValue = "8") Integer size, String searchImageStr) {
         // 开启分页助手
         PageHelper.startPage(page, size);
         // 获取用户所有图片
-        List<Image> list = imageService.getAllImageByUser(UserContext.getUserId());
+        List<Image> list = imageService.getAllImageByUser(UserContext.getUserId(), searchImageStr);
         PageInfo<Image> pageInfo = new PageInfo<>(list);
-        // 前端展示图片地址
-        if(CollectionUtil.isNotEmpty(list)){
-            for (Image image : list) {
-                // 图片地址带域名 需要带上域名 放开注释即可
-                /*StringBuffer requestURL = request.getRequestURL();
-                String urlPrefix = requestURL.substring(0, requestURL.length() - request.getRequestURI().length());
-                image.setUrl(urlPrefix + "/minio/download?minioName=" + image.getMinioName());*/
-                image.setUrl("/minio/download?minioName=" + image.getMinioName());
-            }
-        }
         model.addAttribute("list", list);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());
+        model.addAttribute("search", searchImageStr);
         return "blogs/image/imageList";
     }
 

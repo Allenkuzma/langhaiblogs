@@ -12,6 +12,9 @@
             image
         where
             user_id = #{userId}
+            <if test="searchImageStr != null and searchImageStr != ''">
+                AND image.minio_name like concat( '%' , #{searchImageStr}, '%')
+            </if>
     </select>
 
     <insert id="insertImage" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
