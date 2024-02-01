@@ -86,6 +86,7 @@
                                 </ol>
                                 <h6>如果出现代码等内容显示不正常，使用以前的显示器：<a th:href="'/article/articleShow?id=' + ${article.id} + '&password=' + ${password}">以前的显示器</a></h6>
                             </div>
+                            <div id="vcomments"></div>
                             <div class="bdsharebuttonbox share" data-tag="share_1">
                                 <ul>
                                     <li >浪</li>
@@ -146,6 +147,7 @@
     <script src="/blogs-new/js/plugins/nprogress.js"></script>
     <script src="/blogs-new/js/pagecomment.js"></script>
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/blogs/assets/js/Valine.min.js"></script>
     <script>NProgress.start();</script>
     <script> 
         window.onload = function () {
@@ -190,6 +192,28 @@
                     }
                 })
             });
+        })
+    </script>
+    <script>
+        $(function() {
+            var url = window.location.href;
+            var queryString = url.split('?')[1];
+            var params = {};
+            var queries = queryString.split("&");
+            for (var i = 0; i < queries.length; i++) {
+                var temp = queries[i].split('=');
+                params[temp[0]] = temp[1];
+            }
+
+            var valineId = params['id'];
+            new Valine({
+                el: '#vcomments',
+                appId: 'Axey6XbAW71MYHWx340EexnY-gzGzoHsz',
+                appKey: 'XviuojwN4nJ4VL3agPeSynjB',
+                avatar: 'monsterid',
+                placeholder: "浪海博客欢迎你 ~ ",
+                path: valineId
+            })
         })
     </script>
 </body>

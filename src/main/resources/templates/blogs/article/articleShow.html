@@ -50,6 +50,7 @@
 								<div th:utext="${article.html}">
 
 								</div>
+								<div id="vcomments"></div>
 								<div>
 									<p id="vCodeStatus"></p>
 									<input type="hidden" name="articleId" id="articleId" th:value="${article.id}">
@@ -90,6 +91,7 @@
 			<script src="/blogs/assets/js/breakpoints.min.js"></script>
 			<script src="/blogs/assets/js/util.js"></script>
 			<script src="/blogs/assets/js/main.js"></script>
+			<script src="/blogs/assets/js/Valine.min.js"></script>
 
 		<script>
 			// 退出登录
@@ -139,6 +141,28 @@
 						}
 					})
 				});
+			})
+		</script>
+		<script>
+			$(function() {
+				var url = window.location.href;
+				var queryString = url.split('?')[1];
+				var params = {};
+				var queries = queryString.split("&");
+				for (var i = 0; i < queries.length; i++) {
+					var temp = queries[i].split('=');
+					params[temp[0]] = temp[1];
+				}
+
+				var valineId = params['id'];
+				new Valine({
+					el: '#vcomments',
+					appId: 'Axey6XbAW71MYHWx340EexnY-gzGzoHsz',
+					appKey: 'XviuojwN4nJ4VL3agPeSynjB',
+					avatar: 'monsterid',
+					placeholder: "浪海博客欢迎你 ~ ",
+					path: valineId
+				})
 			})
 		</script>
 	</body>
