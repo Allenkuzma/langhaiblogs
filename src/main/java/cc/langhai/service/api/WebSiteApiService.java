@@ -55,4 +55,13 @@ public interface WebSiteApiService {
      * @param serverName 服务站点
      */
     void fullScore(String whois, String serverName);
+
+    /**
+     * 随机获取一个专属卡片网站
+     *
+     * @param serverName 服务站点
+     * @param websiteUrl 网站链接
+     * @return 一个专属卡片网站
+     */
+    List<String> randomVip(String serverName, String websiteUrl);
 }

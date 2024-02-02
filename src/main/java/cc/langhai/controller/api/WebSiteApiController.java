@@ -100,4 +100,19 @@ public class WebSiteApiController {
         String record = webSiteApiService.record(serverName, websiteUrl, qq);
         return new ResultResponse<>(200, record, null);
     }
+
+    /**
+     * 随机获取一个专属卡片网站
+     *
+     * @param serverName 服务站点
+     * @param websiteUrl 网站链接
+     * @return 一个专属卡片网站
+     */
+    @ResponseBody
+    @GetMapping("/randomVip")
+    public ResultResponse<List<String>> randomVip(@RequestParam(value = "serverName") String serverName,
+                                                  @RequestParam(value = "websiteUrl", required = false) String websiteUrl) {
+        List<String> randomVip = webSiteApiService.randomVip(serverName, websiteUrl);
+        return new ResultResponse<>(200, "随机获取一个专属卡片网站成功。", randomVip);
+    }
 }

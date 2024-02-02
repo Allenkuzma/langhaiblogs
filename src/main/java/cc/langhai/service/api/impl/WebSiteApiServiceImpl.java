@@ -142,27 +142,10 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
 
     @Override
     public List<String> random(String serverName) {
-        ArrayList<String> infoList = CollUtil.newArrayList();
         // 随机获取一个网站
         SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
         String websiteUrl = (String) setOperations.randomMember("websiteSet:" + serverName);
-        if (StrUtil.isBlank(websiteUrl)) {
-            websiteUrl =  "http://www.langhai.net";
-        }
-        infoList.add(websiteUrl);
-        // 域名信息接口查询
-        try {
-            String tdkJson = HttpUtil.get("https://www.yuanxiapi.cn/api/info/?url=" + websiteUrl);
-            JSONObject tdkBean = JSONUtil.toBean(tdkJson, JSONObject.class);
-            String title = (String) tdkBean.get("title");
-            if (StrUtil.isBlank(title)) {
-                title = "浪海导航，收录博客网站。";
-            }
-            infoList.add(title);
-        } catch (Exception e) {
-            infoList.add("浪海导航，收录博客网站。");
-        }
-        return infoList;
+        return this.getWebsiteInfo(websiteUrl);
     }
 
     @Override
@@ -194,5 +177,51 @@ public class WebSiteApiServiceImpl implements WebSiteApiService {
         redisTemplate.opsForValue().set("scoreApi:" + serverName + ":" + whois,
                 "本站属于专属卡片拥有站点，使用站点特权，最后得分为100分。（每次访问专属卡片即可激活七天满分特权）", 7 * 24 * 60, TimeUnit.MINUTES);
     }
+
+    @Override
+    public List<String> randomVip(String serverName, String websiteUrl) {
+        SetOperations<String, Object> setOperations = redisTemplateObject.opsForSet();
+        // 设置专属卡片网站
+        if (StrUtil.isNotBlank(websiteUrl)) {
+            Boolean member = setOperations.isMember("vipWebsiteSet:" + serverName, websiteUrl);
+            if (member) {
+                return null;
+            } else {
+                setOperations.add("vipWebsiteSet:" + serverName, websiteUrl);
+                return null;
+            }
+        } else {
+            String url = (String) setOperations.randomMember("vipWebsiteSet:" + serverName);
+            return this.getWebsiteInfo(url);
+        }
+    }
+
+    /**
+     * 获取网站标题信息
+     *
+     * @param websiteUrl 网站url
+     * @return 网站信息
+     */
+    private List<String> getWebsiteInfo(String websiteUrl) {
+        ArrayList<String> infoList = CollUtil.newArrayList();
+        if (StrUtil.isBlank(websiteUrl)) {
+            websiteUrl =  "http://www.langhai.net";
+        }
+        infoList.add(websiteUrl);
+        // 域名信息接口查询
+        try {
+            String tdkJson = HttpUtil.get("https://www.yuanxiapi.cn/api/info/?url=" + websiteUrl);
+            JSONObject tdkBean = JSONUtil.toBean(tdkJson, JSONObject.class);
+            String title = (String) tdkBean.get("title");
+            if (StrUtil.isBlank(title)) {
+                title = "浪海导航，收录博客网站。";
+            }
+            infoList.add(title);
+        } catch (Exception e) {
+            infoList.add("浪海导航，收录博客网站。");
+        }
+        return infoList;
+    }
+
 
 }
