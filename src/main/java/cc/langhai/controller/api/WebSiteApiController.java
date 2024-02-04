@@ -14,9 +14,9 @@ import java.util.List;
  * @author langhai
  * @date 2024-01-19 11:57
  */
-@Controller
-@RequestMapping("/api/website")
-@CrossOrigin(origins = {"https://www.langhai.net", "http://www.langhai.net"})
+// @Controller
+// @RequestMapping("/api/website")
+// @CrossOrigin(origins = {"https://www.langhai.net", "http://www.langhai.net"})
 public class WebSiteApiController {
 
     @Autowired
