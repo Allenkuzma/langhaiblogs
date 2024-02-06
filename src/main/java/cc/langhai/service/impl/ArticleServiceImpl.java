@@ -146,51 +146,39 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticleHeat(Article article) {
-        if(ObjectUtil.isNotNull(article)){
+        if (ObjectUtil.isNotNull(article)) {
             String heat = redisTemplate.opsForValue().get("article" + article.getAuthor() + article.getId());
-
-            if(StrUtil.isBlank(heat)){
+            if (StrUtil.isBlank(heat)) {
                 // 存储到redis当中
                 redisTemplate.opsForValue().set("article" + article.getAuthor() + article.getId(),
                         "1", 7 * 24 * 60, TimeUnit.MINUTES);
                 article.setHeat("1");
             }else {
-                Long heatLong = Long.valueOf(heat);
-                Long heatLater = heatLong + 1;
+                Long heatLater = Long.parseLong(heat) + 1L;
                 redisTemplate.opsForValue().set("article" + article.getAuthor() + article.getId(),
                         heatLater.toString(), 7 * 24 * 60, TimeUnit.MINUTES);
                 article.setHeat(heatLater.toString());
             }
         }
-
         // 处理热点排名前十的文章
-        if(article.getPublicShow().equals(1)){
+        if (article.getPublicShow().equals(1)) {
             this.handleHeatTopSet(article);
         }
-
         return article;
     }
 
     @Override
     public boolean judgeShow(HttpSession session, Article article) {
-        // 文章如果是公开的 则直接放行
-        Integer publicShow = article.getPublicShow();
-        if(Integer.valueOf(1).equals(publicShow)){
+        // 文章如果是公开的，则直接放行。
+        if (Integer.valueOf(1).equals(article.getPublicShow())) {
             return true;
         }
-
-        // 文章如果是不公开的 则需要判断是否是作者本人
+        // 文章如果是不公开的，则需要判断是否是作者本人。
         User user = (User) session.getAttribute("user");
-        if(ObjectUtil.isNull(user)){
+        if (ObjectUtil.isNull(user)) {
             return false;
         }
-
-        Long userId = article.getUserId();
-        if(userId.equals(user.getId())){
-            return true;
-        }
-
-        return false;
+        return article.getUserId().equals(user.getId());
     }
 
     @Override
@@ -415,15 +403,15 @@ public class ArticleServiceImpl implements ArticleService {
     /**
      * 处理热点前十的文章排序集合Set
      *
-     * @param articleSave
+     * @param articleSave 文章
      */
-    private void handleHeatTopSet(Article articleSave){
+    private void handleHeatTopSet(Article articleSave) {
         TreeSet<Article> articleHeatTop10 = ArticleConstant.ARTICLE_HEAT_TOP_10;
         // 删除已经存在的文章
-        if(CollectionUtil.isNotEmpty(articleHeatTop10)){
+        if (CollectionUtil.isNotEmpty(articleHeatTop10)) {
             Iterator<Article> iterator = articleHeatTop10.iterator();
-            while (iterator.hasNext()){
-                if(articleSave.getId().equals(iterator.next().getId())){
+            while (iterator.hasNext()) {
+                if (articleSave.getId().equals(iterator.next().getId())) {
                     iterator.remove();
                     break;
                 }
@@ -432,10 +420,10 @@ public class ArticleServiceImpl implements ArticleService {
         // 添加到set集合
         articleHeatTop10.add(articleSave);
         // 只存储十篇文章
-        if(articleHeatTop10.size() > 10){
+        if (articleHeatTop10.size() > 10) {
             TreeSet<Article> articleTreeSet = new TreeSet<>();
             for (Article article : articleHeatTop10) {
-                if(articleTreeSet.size() < 10){
+                if (articleTreeSet.size() < 10) {
                     articleTreeSet.add(article);
                 }
             }

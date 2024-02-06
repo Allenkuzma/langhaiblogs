@@ -87,8 +87,8 @@ public class GlobalExceptionHandler {
     /**
      * 捕捉的是Exception异常
      *
-     * @param exception
-     * @return
+     * @param exception exception
+     * @return ModelAndView 异常页面
      */
     @ExceptionHandler(value = Exception.class)
     public ModelAndView exception(Exception exception){
@@ -96,7 +96,7 @@ public class GlobalExceptionHandler {
         modelAndView.setViewName("error/error");
         // 添加错误详细信息
         modelAndView.addObject("status", SystemReturnCode.SYSTEM_UNKNOWN_00000.getCode());
-        modelAndView.addObject("message", SystemReturnCode.SYSTEM_UNKNOWN_00000.getMessage());
+        modelAndView.addObject("message", "服务器压力暴涨，给您带来不便。");
         return modelAndView;
     }
 }

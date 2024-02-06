@@ -56,17 +56,17 @@ public interface ArticleService {
      * 获取文章热度并且增加一个热度
      * 使用场景：某一篇文章展示的时候使用
      *
-     * @param article
-     * @return
+     * @param article 文章
+     * @return 文章热度
      */
     Article getArticleHeat(Article article);
 
     /**
      * 判断文章是否具有访问权限
      *
-     * @param session
-     * @param article
-     * @return
+     * @param session 会话
+     * @param article 文章
+     * @return 访问权限
      */
     boolean judgeShow(HttpSession session, Article article);
 

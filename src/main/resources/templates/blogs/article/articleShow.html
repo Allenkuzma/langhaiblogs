@@ -6,7 +6,7 @@
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title th:text="${article.title} + ' ~ 浪海博客'">文章详情内容 - 浪海博客</title>
+		<title th:text="${article.title} + ' ~ 浪海博客'"></title>
 		<meta charset="utf-8" />
 		<meta name="keywords" th:content="${article.title} + ',浪海博客,' + ${article.author}" />
 		<meta name="description" th:content="${article.author} + '编写的' + ${article.title}" />
@@ -50,6 +50,7 @@
 									<span th:text="'文章摘要：' + ${article.abstractText}"></span><br />
 									<span>
 										使用新的显示器：<a th:href="'/article/articleShowNew?id=' + ${article.id} + '&password=' + ${password}">新的显示器</a>
+										<span>如果遇到图片单击即可放大/缩小。</span>
 									</span><br />
 								</div>
 								<div th:utext="${article.html}">
@@ -60,7 +61,7 @@
 									<p id="vCodeStatus"></p>
 									<input type="hidden" name="articleId" id="articleId" th:value="${article.id}">
 									<label for="content">发表评论</label>
-									<textarea name="content" id="content" placeholder="请输入内容" rows="5"></textarea>
+									<textarea name="content" id="content" placeholder="请输入内容 这里需要进行登录 上面的评论框无需登录" rows="5"></textarea>
 									<a href="javascript:void(0)" class="button primary" id="submitComment">提交评论</a>
 								</div>
 								<div>
@@ -147,6 +148,19 @@
 					})
 				});
 			})
+
+			var originalStyle;
+			// 图片放大处理
+			$("body").on("click", "img", function(){
+				if ($(this).hasClass("zoomed")) {
+					$(this).removeClass("zoomed"); // 移除放大样式类
+					$(this).attr("style", originalStyle);
+				} else {
+					originalStyle = $(this).attr("style");
+					$(this).addClass("zoomed"); // 添加放大样式类
+					$(this).attr("style", "width: 100%;");
+				}
+			})
 		</script>
 		<script>
 			$(function() {
@@ -165,7 +179,7 @@
 					appId: 'Axey6XbAW71MYHWx340EexnY-gzGzoHsz',
 					appKey: 'XviuojwN4nJ4VL3agPeSynjB',
 					avatar: 'monsterid',
-					placeholder: "浪海博客欢迎你 ~ ",
+					placeholder: "浪海博客欢迎你 无需登录更加方便 ~ ",
 					path: valineId
 				})
 			})

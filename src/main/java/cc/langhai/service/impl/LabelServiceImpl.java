@@ -148,7 +148,7 @@ public class LabelServiceImpl implements LabelService {
         HashSet<Label> labelHashSet = new HashSet<>();
         // 获取公开的文章
         List<Article> articleList = articleMapper.getAllArticlePublicShow("", null);
-        if(CollectionUtil.isNotEmpty(articleList)){
+        if (CollectionUtil.isNotEmpty(articleList)) {
             for (Article article : articleList) {
                 Long labelId = article.getLabelId();
                 String labelContent = article.getLabelContent();
@@ -158,7 +158,6 @@ public class LabelServiceImpl implements LabelService {
                 labelHashSet.add(label);
             }
         }
-
         return labelHashSet;
     }
 

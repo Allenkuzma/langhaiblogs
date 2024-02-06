@@ -30,6 +30,7 @@
                         <li><a href="/article/articleSearchPageNew">博客</a></li>
                         <li><a href="/#three">留言</a></li>
                         <li><a href="/#two">友链</a></li>
+                        <li><a href="https://www.langhai.net" target="_blank">浪海导航</a></li>
                     </ul>
                 </nav>
                 <a class="phone-menu">
@@ -77,8 +78,9 @@
 									</span>           
 									<span class="ml20">               
 										<i class="fa fa-comments fs-16"></i>               
-										<a href="javascript:void(0)" class="num fc-grey" th:text="${article.commentCount}"></a>
-									</span>       
+										<!--<a href="javascript:void(0)" class="num fc-grey" th:text="${article.commentCount}"></a>-->
+										<a th:href="'/article/articleShowNew?id=' + ${article.id} + '#vcomments'" class="num fc-grey" >开始评论</a>
+									</span>
 								</div>   
 							</aside>
 						</section>

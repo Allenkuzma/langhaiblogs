@@ -162,19 +162,18 @@ public class ArticleController {
     @GetMapping("/articleShow")
     public String articleShow(Long id, String password, Model model, HttpSession session){
         Article article = articleService.getById(id);
-        if(ObjectUtil.isNull(article)){
+        if (ObjectUtil.isNull(article)) {
             return "blogs/user/login";
         }
-
         // 查询文章用户的启用状态
         User user = userService.getUserById(article.getUserId());
-        if(ObjectUtil.isNotNull(user)){
-            if(Boolean.valueOf(false).equals(user.getEnable())){
+        if (ObjectUtil.isNotNull(user)) {
+            if (Boolean.valueOf(false).equals(user.getEnable())) {
                 return "error/articleEnable";
             }
         }
         // 访问密码处理
-        if(StrUtil.isNotBlank(article.getPassword())){
+        if (StrUtil.isNotBlank(article.getPassword())) {
             model.addAttribute("id", id);
             model.addAttribute("title", article.getTitle());
             if(StrUtil.isBlank(password)){
@@ -187,15 +186,13 @@ public class ArticleController {
                 }
             }
         }
-
         // 判断文章是否具有访问权限
-        if(articleService.judgeShow(session, article)){
+        if (articleService.judgeShow(session, article)) {
             model.addAttribute("article", articleService.getArticleHeat(article));
             model.addAttribute("password", password);
             model.addAttribute("commentList", articleCommentService.getCommentByArticleId(id));
             return "blogs/article/articleShow";
         }
-
         return "blogs/user/login";
     }
 
@@ -207,17 +204,15 @@ public class ArticleController {
      */
     @GetMapping("/updateArticlePage")
     public String updateArticlePage(Model model, Long id){
-        if(ObjectUtil.isNull(id)){
+        if (ObjectUtil.isNull(id)) {
             return "blogs/user/login";
         }
-
         // 查询要更新的文章 判断是否有操作权限
         Article article = articleService.articlePermission(id);
         model.addAttribute("article", article);
         // 获取用户的所有标签内容
         List<String> labelContent = labelService.getAllLabelContentByUser();
         model.addAttribute("labelList", labelContent);
-
         return "blogs/article/updateArticle";
     }
 
@@ -297,32 +292,26 @@ public class ArticleController {
      * @return 文章搜索页面 新版
      */
     @GetMapping("/articleSearchPageNew")
-    public String articleSearchPageNew(Model model,
-                                    @RequestParam(defaultValue = "1") Integer page,
-                                    @RequestParam(defaultValue = "10") Integer size,
-                                    String searchArticleStr, Long labelId){
+    public String articleSearchPageNew(Model model, @RequestParam(defaultValue = "1") Integer page,
+                                       @RequestParam(defaultValue = "10") Integer size, String searchArticleStr, Long labelId){
         PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, labelId);
-
         model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(pageInfo.getList())));
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());
         model.addAttribute("search", searchArticleStr);
         model.addAttribute("count", pageInfo.getTotal());
-
         // 获取公开文章的标签
         Set<Label> labelPublicShow = labelService.getLabelPublicShow();
         model.addAttribute("labelPublicShow", labelPublicShow);
-        if(ObjectUtil.isNull(labelId)){
+        if (ObjectUtil.isNull(labelId)) {
             model.addAttribute("labelId", 0);
-        }else {
+        } else {
             model.addAttribute("labelId", labelId);
         }
-
         // 获取热点前十文章
         Set<Article> articleHeatTop = articleService.getArticleHeatTop();
         model.addAttribute("articleHeatTop", articleHeatTop);
-
         return "blogs-new/article";
     }
 

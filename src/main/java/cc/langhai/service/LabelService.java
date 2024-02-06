@@ -89,7 +89,7 @@ public interface LabelService {
     /**
      * 获取公开文章的所有标签
      *
-     * @return
+     * @return 公开文章的所有标签
      */
     Set<Label> getLabelPublicShow();
 }
