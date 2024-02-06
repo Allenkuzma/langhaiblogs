@@ -62,7 +62,6 @@ public class ArticleController {
         // 获取用户的所有标签内容
         List<String> labelContent = labelService.getAllLabelContentByUser();
         model.addAttribute("labelList", labelContent);
-
         return "blogs/article/newArticle";
     }
 
