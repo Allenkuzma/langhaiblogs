@@ -7,7 +7,9 @@ which is simple and convenient to deploy and suitable for personal blog system c
 
 Online presentation：http://www.langhai.cc  
 The actual effect is subject to the code (the demo site is the previous version)   
-contact information QQ：676558206 email 676558206@qq.com langhai666@gmail.com
+contact information QQ：676558206 email 676558206@qq.com langhai666@gmail.com  
+Branch description: Master is the complete version, and the simplicity branch can be started with only the MySQL and Redis databases,   
+as well as the file storage component mini, without the need to introduce search engine ES and message queue MQ.
 
 Screenshot of some pages  
 Screenshot of homepage
