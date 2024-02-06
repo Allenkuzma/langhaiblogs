@@ -7,7 +7,6 @@ import cc.langhai.dto.ArticleDTO;
 import cc.langhai.exception.BusinessException;
 import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
-import cc.langhai.mq.config.MqConstants;
 import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.service.ArticleService;
 import cc.langhai.service.IArticleCommentService;
@@ -21,14 +20,6 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -64,12 +55,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @Autowired
-    private RestHighLevelClient restHighLevelClient;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void issue(ArticleDTO articleDTO) {
@@ -98,12 +83,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDeleteFlag(0);
         article.setAddTime(new Date());
         articleMapper.insertArticle(article);
-
-        // 公开的文章
-        if(article.getPublicShow().equals(1)){
-            // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
-            rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
-        }
     }
 
     @Override
@@ -204,9 +183,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setPublicShow("on".equals(articleDTO.getPublicShow()) ? 1 : 0);
         article.setUpdateTime(new Date());
         articleMapper.updateArticle(article);
-
-        // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
-        rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
     }
 
     @Override
@@ -218,11 +194,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDeleteFlag(1);
         article.setUpdateTime(new Date());
         articleMapper.deleteArticle(article);
-
-        if(article.getPublicShow().equals(1)){
-            // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
-            rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_DELETE_KEY, article.getId());
-        }
     }
 
     @Override
@@ -234,56 +205,6 @@ public class ArticleServiceImpl implements ArticleService {
         PageInfo<Article> pageInfo = new PageInfo<>(allArticlePublicShow);
 
         return pageInfo;
-    }
-
-    @Override
-    public HashMap<String, Object> searchES(Integer page, Integer size, String searchArticleStr) throws IOException {
-        // 1.准备Request
-        SearchRequest request = new SearchRequest("langhaiblogs");
-        // 2.准备DSL
-        // 2.1.query
-        if(StrUtil.isNotBlank(searchArticleStr)){
-            request.source()
-                    .query(QueryBuilders.multiMatchQuery(searchArticleStr, "title", "author", "labelContent"));
-        }else {
-            request.source()
-                    .query(QueryBuilders.matchAllQuery());
-        }
-        // 2.2.分页 from、size
-        request.source().from((page - 1) * size).size(size);
-        // 3.发送请求
-        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
-        // 4.解析响应
-        return handleResponse(response, size);
-    }
-
-    /**
-     * 处理搜索结果
-     *
-     * @param response
-     */
-    private HashMap<String, Object> handleResponse(SearchResponse response, Integer size) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        ArrayList<Article> articles = new ArrayList<>();
-
-        // 4.解析响应
-        SearchHits searchHits = response.getHits();
-        // 4.1.获取总条数
-        long total = searchHits.getTotalHits().value;
-        // 4.2.文档数组
-        SearchHit[] hits = searchHits.getHits();
-        // 4.3.遍历
-        for (SearchHit hit : hits) {
-            // 获取文档source
-            String json = hit.getSourceAsString();
-            // 反序列化
-            Article article = JSON.parseObject(json, Article.class);
-            articles.add(article);
-        }
-
-        hashMap.put("list", articles);
-        hashMap.put("pages", (total + size - 1) / size);
-        return hashMap;
     }
 
     @Override
@@ -333,11 +254,6 @@ public class ArticleServiceImpl implements ArticleService {
             throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
         }
         articleMapper.systemDeleteArticle(id);
-
-        if(article.getPublicShow().equals(1)){
-            // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
-            rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_DELETE_KEY, article.getId());
-        }
     }
 
     @Override

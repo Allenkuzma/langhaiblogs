@@ -262,31 +262,6 @@ public class ArticleController {
     }
 
     /**
-     * 跳转到 文章 搜索页面 用于ES搜索引擎
-     * 如果没有es搜索引擎组件 直接注释掉即可
-     * 还需要用到mq组件 所以需要安装 elasticSearch 和 rabbitMQ
-     *
-     * @return
-     */
-    @GetMapping("/articleSearchESPage")
-    public String articleSearchESPage(Model model,
-                                    @RequestParam(defaultValue = "1") Integer page,
-                                    @RequestParam(defaultValue = "10") Integer size,
-                                    String searchArticleStr) throws IOException {
-        HashMap<String, Object> hashMap = articleService.searchES(page, size, searchArticleStr);
-
-        List<Article> list = (List<Article>) hashMap.get("list");
-        Long pages = (Long) hashMap.get("pages");
-        model.addAttribute("list", articleService.getArticleHeat(list));
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
-        model.addAttribute("pages", pages);
-        model.addAttribute("search", searchArticleStr);
-        return "blogs/article/articleSearchES";
-    }
-
-
-    /**
      * 跳转到文章搜索页面 新版
      *
      * @return 文章搜索页面 新版

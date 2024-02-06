@@ -61,13 +61,6 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
 
-  rabbitmq:
-    host: 127.0.0.1 # 主机名
-    port: 5672 # 端口
-    virtual-host: / # 虚拟主机
-    username: xxx # 用户名
-    password: xxx # 密码
-
 #  profiles:
 #    active: test
 
@@ -81,13 +74,6 @@ minio:
   accessKey: minioadmin
   secretKey: minioadmin
 
-# 配置es相关信息
-es:
-  ip: 127.0.0.1
-  port: 9200
-  userName: xxx
-  password: xxx
-
 logging:
   level:
     root: info
@@ -97,14 +83,3 @@ netty:
   port: 20202
   # websocket连接地址
   ws: ws://127.0.0.1:${netty.port}/ws
-
-#flowable:
-#  standalone:
-#    server:
-#      enabled: false # standalone 模式
-#  async-executor-activate: false # 关闭定时任务JOB
-#  idm:
-#    enabled: false # 检测身份信息
-#  database-schema-update: true # 没有数据库表的时候生成数据库表
-#  process-definition-location-prefix: classpath*:/flowable/
-#  process-definition-location-suffixes: "**.bpmn20.xml, **.bpmn"

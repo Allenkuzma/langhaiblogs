@@ -133,16 +133,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- elasticsearch -->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-        </dependency>
-        <!-- amqp -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
         <!-- 代码生成器 -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -159,12 +149,6 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.36.Final</version>
         </dependency>
-        <!-- 工作流引擎 -->
-        <!--<dependency>
-            <groupId>org.flowable</groupId>
-            <artifactId>flowable-spring-boot-starter-process</artifactId>
-            <version>6.5.0</version>
-        </dependency>-->
         <!-- JWT -->
         <dependency>
             <groupId>com.auth0</groupId>
