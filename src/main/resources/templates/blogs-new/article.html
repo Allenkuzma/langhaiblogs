@@ -47,8 +47,8 @@
 		        <div class="inner">
 		            <article class="article-list bloglist" id="LAY_bloglist" >
 						<section class="article-item zoomIn article" th:each="article : ${list}">
-							<div class="fc-flag">置顶</div>   
-							<h5 class="title">       
+							<div class="fc-flag" th:if="${article.getTopFlag()}">置顶</div>
+							<h5 class="title">
 								<span class="fc-blue">【原创】</span>       
 								<a target="_blank" th:href="'/article/articleShowNew?id=' + ${article.id}" th:text="${article.getTitle()}"></a>
 							</h5>   

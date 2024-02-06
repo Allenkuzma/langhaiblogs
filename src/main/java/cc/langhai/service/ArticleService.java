@@ -125,4 +125,15 @@ public interface ArticleService {
      * @param session   session会话
      */
     void submitComment(Long articleId, String content, HttpSession session);
+
+    /**
+     * 获取置顶文章
+     *
+     * @param page 页数
+     * @param searchArticleStr 搜索内容
+     * @param labelId 标签id
+     *
+     * @return 置顶文章
+     */
+    List<Article> topArticle(Integer page, String searchArticleStr, Long labelId);
 }

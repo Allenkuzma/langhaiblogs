@@ -135,4 +135,31 @@
             id = #{id}
     </delete>
 
+    <select id="topArticle" resultType="cc.langhai.domain.Article">
+        SELECT
+            a.*,
+            DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") AS add_time_show,
+            DATE_FORMAT(a.add_time, "%Y") AS year,
+            DATE_FORMAT(a.add_time, "%m") AS month,
+            DATE_FORMAT(a.add_time, "%d") AS day,
+            u.username AS author,
+            l.content AS label_content
+        FROM
+            article AS a
+        INNER JOIN
+            user AS u
+        ON
+            a.user_id = u.id
+        INNER JOIN
+            label AS l
+        ON
+            a.label_id = l.id
+        WHERE
+            a.delete_flag = 0
+        AND
+            a.public_show = 1
+        AND
+            a.top_flag = 1
+        ORDER BY a.add_time DESC
+    </select>
 </mapper>
