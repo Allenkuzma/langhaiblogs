@@ -4,7 +4,7 @@ langhai:
     registerDayEmailCount: 20
     registerIPEmailCount: 5
     registerDayUserCount: 5
-    secret: NB-20K-langhai-8
+    secret: 88-888-langhai-8
 
 # 程序端口号
 server:
