@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>管理员聊天页面 - 浪海博客</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" content="浪海博客,管理员聊天页面" />
+		<meta name="description" content="浪海博客的管理员聊天页面。" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
+	</head>
+	<script type="text/javascript">
+		var targetProtocol = "http:";
+		if (window.location.protocol != targetProtocol)
+			window.location.href = targetProtocol +
+					window.location.href.substring(window.location.protocol.length);
+	</script>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="/" class="title">浪海博客</a>
+				<nav>
+					<ul>
+						<li><a href="/">主页</a></li>
+						<li><a href="/netty/customer" class="active">管理员聊天页面</a></li>
+						<li><a href="javascript:void(0)" id="loginOut">安全退出</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">管理员聊天页面</h1>
+							<span class="image fit"><img src="/blogs/images/personal.jpg" alt="林书豪" /></span>
+							<div class="split style1">
+								<section>
+									<div id="messageShow">
+
+									</div>
+								</section>
+								<section>
+									<div id="sendMessageShow">
+
+									</div>
+								</section>
+							</div>
+							<div>
+								<form id="messageFrom">
+									<label for="message">回复框</label>
+									<input type="text" id="message" name="message" required="required"   />
+									<label for="acceptName">消息接收者名字</label>
+									<input type="text" id="acceptName" name="acceptName" required="required"   />
+								</form>
+
+								<button id="messageSend">发送消息</button>
+								<button id="reset">重置消息</button>
+								<input type="hidden" id="ws" th:value="${ws}">
+								<input type="hidden" id="userId" th:value="${userId}">
+							</div>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
+						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="/blogs/assets/js/jquery.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/blogs/assets/js/browser.min.js"></script>
+			<script src="/blogs/assets/js/breakpoints.min.js"></script>
+			<script src="/blogs/assets/js/util.js"></script>
+			<script src="/blogs/assets/js/main.js"></script>
+
+		<script type="text/javascript">
+			function getCookie(name) {
+				var arrUser = new Array(2);
+				// 拆分 cookie 字符串
+				var cookieArr = document.cookie.split(";");
+
+				// 循环遍历数组元素
+				for(var i = 0; i < cookieArr.length; i++) {
+					var cookiePair = cookieArr[i].split("=");
+
+					/* 删除 cookie 名称开头的空白并将其与给定字符串进行比较 */
+					if(name == cookiePair[0].trim().substring(0,15)) {
+						// 解码cookie值并返回
+						arrUser[0] = cookiePair[0].trim().slice(15);
+						arrUser[1] = decodeURIComponent(cookiePair[1]);
+					}
+				}
+				// 如果未找到，则返回null
+				return arrUser;
+			}
+
+			var websocket;
+			if (window.WebSocket) {
+				websocket = new WebSocket($("#ws").val() + "?userName=" + getCookie("userLoginCipher")[0]
+														+ "&userPassword=" + getCookie("userLoginCipher")[1]);
+				websocket.onmessage = function (event) {
+					var json = JSON.parse(event.data);
+					$('#messageShow').append('<div><span>用户名字 ' + json.userName +'</span>' +
+							'<span> 消息内容：' + json.message + '</span></div>');
+				};
+				websocket.onopen = function (event) {
+					console.log("Netty-WebSocket服务器。。。。。。连接");
+				};
+				websocket.onclose = function (event) {
+					console.log("Netty-WebSocket服务器。。。。。。关闭");
+				};
+			} else {
+				alert("您的浏览器不支持WebSocket协议！");
+			}
+
+			$(function () {
+				let time = new Date();
+				var data = {};
+				data.userName = getCookie("userLoginCipher")[0];
+				data.userPassword = getCookie("userLoginCipher")[1];
+				data.headImg = "url";
+
+				// 发送消息
+				$("#messageSend").click(function () {
+					data.acceptName = $("#acceptName").val();
+					data.message = $("#message").val();
+					websocket.send(JSON.stringify(data));
+					$('#sendMessageShow').append('<div>' + time.toLocaleString() + ' 回复' +  data.acceptName + ' 消息内容：' + $("#message").val() + '</div>');
+					$("#messageFrom")[0].reset();
+				})
+
+				// 清空表单数据
+				$("#reset").click(function () {
+					$("#messageFrom")[0].reset();
+				})
+			})
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="author" content="www.yanshisan.cn" />
+    <meta name="robots" content="all" />
+	<title>文章库 - 浪海博客</title>
+	<meta name="keywords" content="浪海博客,文章库" />
+	<meta name="description" content="浪海博客的文章库。" />
+    <link rel="stylesheet" href="/blogs-new/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/blogs-new/layui/css/layui.css" />
+    <link rel="stylesheet" href="/blogs-new/css/master.css" />
+    <link rel="stylesheet" href="/blogs-new/css/gloable.css" />
+    <link rel="stylesheet" href="/blogs-new/css/nprogress.css" />
+    <link rel="stylesheet" href="/blogs-new/css/blog.css" />
+</head>
+<body>
+    <div class="header">
+    </div>
+    <header class="gird-header">
+        <div class="header-fixed">
+            <div class="header-inner">
+                <a href="/" class="header-logo" id="logo">langhai</a>
+                <nav class="nav" id="nav">
+                    <ul>
+                        <li><a href="/index">首页</a></li>
+                        <li><a href="/article/articleSearchPageNew">博客</a></li>
+                        <li><a href="/#three">留言</a></li>
+                        <li><a href="/#two">友链</a></li>
+                        <li><a href="https://www.langhai.net" target="_blank">浪海导航</a></li>
+                    </ul>
+                </nav>
+                <a class="phone-menu">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="doc-container" id="doc-container">
+        <div class="container-fixed">
+		    <div class="col-content">
+		        <div class="inner">
+		            <article class="article-list bloglist" id="LAY_bloglist" >
+						<section class="article-item zoomIn article" th:each="article : ${list}">
+							<div class="fc-flag">置顶</div>   
+							<h5 class="title">       
+								<span class="fc-blue">【原创】</span>       
+								<a target="_blank" th:href="'/article/articleShowNew?id=' + ${article.id}" th:text="${article.getTitle()}"></a>
+							</h5>   
+							<div class="time">
+								<span class="day" th:text="${article.day}"></span>
+								<span class="month fs-18"><span th:text="${article.month}"></span><span class="fs-14">月</span></span>
+								<span class="year fs-18 ml10" th:text="${article.year}"></span>
+							</div>   
+							<div class="content">       
+								<a th:href="'/article/articleShowNew?id=' + ${article.id}" class="cover img-light">
+									<img src="/blogs-new/image/cover/2018416205043154.jpg">
+								</a>
+								<span th:text="${article.abstractText}"></span>
+							</div>   
+							<div class="read-more">       
+								<a href="/" class="fc-black f-fwb">继续阅读</a>
+							</div>    
+							<aside class="f-oh footer">       
+								<div class="f-fl tags">           
+									<span class="fa fa-tags fs-16"></span>           
+									<a class="tag" th:text="${article.labelContent}"></a>
+								</div>       
+								<div class="f-fr">           
+									<span class="read">               
+										<i class="fa fa-eye fs-16"></i>               
+										<i class="num" th:text="${article.heat}"></i>
+									</span>           
+									<span class="ml20">               
+										<i class="fa fa-comments fs-16"></i>               
+										<!--<a href="javascript:void(0)" class="num fc-grey" th:text="${article.commentCount}"></a>-->
+										<a th:href="'/article/articleShowNew?id=' + ${article.id} + '#vcomments'" class="num fc-grey" >开始评论</a>
+									</span>
+								</div>   
+							</aside>
+						</section>
+		            </article>
+					<div id="paging"></div>
+		        </div>
+		    </div>
+		    <div class="col-other">
+		        <div class="inner">
+					<div class="other-item" id="categoryandsearch">
+			    		<div class="search">
+					        <label class="search-wrap">
+					            <input type="text" id="searchTxt" th:value="${search}" placeholder="输入关键字搜索" />
+					            <span class="search-icon">
+					                <i id="search" class="fa fa-search"></i>
+					            </span>
+					        </label>
+			        		<ul class="search-result"></ul>
+			    		</div>
+			    		<ul class="category mt20" id="category">
+				        	<li data-index="0" class="slider"></li>
+				        	<li th:each="label, status : ${labelPublicShow}" th:data-index="${status.count}"><a th:href="'/article/articleSearchPageNew?labelId=' + ${label.id}"><span th:text="${label.content}"></span></a></li>
+			    		</ul>
+					</div>
+					<!--右边悬浮 平板或手机设备显示-->
+					<div class="category-toggle"><i class="layui-icon">&#xe603;</i></div>
+					<div class="article-category">
+					    <div class="article-category-title">分类导航</div>
+					            <a th:each="label, status : ${labelPublicShow}" th:href="'/article/articleSearchPageNew?labelId=' + ${label.id}"><span th:text="${label.content}"></span></a>
+					    <div class="f-cb"></div>
+					</div>
+					<!--遮罩-->
+					<div class="blog-mask animated layui-hide"></div>
+					<div class="other-item">
+					    <h5 class="other-item-title">热门文章</h5>
+					    <div class="inner">
+					        <ul class="hot-list-article">
+					                <li th:each="articleHeat : ${articleHeatTop}"> <a target="_blank" th:href="'/article/articleShowNew?id=' + ${articleHeat.id}"><span th:text="${articleHeat.title}"></span></a></li>
+					        </ul>
+					    </div>
+					</div>
+					<div class="other-item">
+					    <h5 class="other-item-title">置顶推荐</h5>
+					    <div class="inner">
+					        <ul class="hot-list-article">
+								<li> <a href="/">待更新 676558206</a></li>
+					        </ul>
+					    </div>
+					</div>
+					<div class="other-item">
+					    <h5 class="other-item-title">最近访客</h5>
+					    <div class="inner">
+					        <dl class="vistor">
+								<dd><a href="javasript:;"><img src="https://thirdqq.qlogo.cn/qqapp/101465933/342F777E313DDF5CCD6E3E707BB0770B/100"><cite>浪海</cite></a></dd>
+					        </dl>
+					    </div>
+					</div>
+		        </div>
+		    </div>
+		</div>
+    </div>
+    <footer class="grid-footer">
+        <div class="footer-fixed">
+            <div class="copyright">
+                <div class="info">
+                    <div class="contact">
+                        <a href="https://github.com/Allenkuzma/langhaiblogs" class="github" target="_blank"><i class="fa fa-github"></i></a>
+                        <a href="https://wpa.qq.com/msgrd?v=3&uin=676558206&site=qq&menu=yes" class="qq" target="_blank" title="676558206"><i class="fa fa-qq"></i></a>
+                    </div>
+                    <p class="mt05">
+						&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved. 个人网站 2021 ~ 2029年
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/blogs-new/layui/layui.js"></script>
+    <script src="/blogs-new/js/yss/gloable.js"></script>
+    <script src="/blogs-new/js/plugins/nprogress.js"></script>
+    <script>NProgress.start();</script>
+ 	<script src="/blogs-new/js/yss/article.js"></script>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script> 
+        window.onload = function () {
+            NProgress.done();
+        };
+    </script>
+	<script >
+		//注意：导航 依赖 element 模块，否则无法进行功能性操作
+		layui.use(['element', 'form', 'table', 'laypage'], function() {
+			var element = layui.element;
+			var form = layui.form;
+			var table = layui.table;
+			var laypage = layui.laypage;
+
+			// 分页完整功能
+			laypage.render({
+				elem: 'paging'
+				,count: [[${count}]]
+				,curr: [[${page}]]
+				,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+				,jump: function(obj, first){
+					if(!first){
+						window.location.href = '/article/articleSearchPageNew?page=' + obj.curr + '&size=' + obj.limit + '&searchArticleStr=' + $("#searchTxt").val() + '&labelId=' + [[${labelId}]]
+					}
+				}
+			});
+
+		})
+
+		// 登录校验
+		$("#search").click(function () {
+			window.location.href = '/article/articleSearchPageNew?searchArticleStr=' + $("#searchTxt").val()
+		})
+	</script>
+</body>
+</html>

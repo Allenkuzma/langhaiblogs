@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>用户访问记录 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,用户访问记录" />
+    <meta name="description" content="浪海博客的用户访问记录页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.1/echarts.min.js"
+            integrity="sha512-OTbGFYPLe3jhy4bUwbB8nls0TFgz10kn0TLkmyA+l3FyivDs31zsXCjOis7YGDtE2Jsy0+fzW+3/OVoPVujPmQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <ul class="layui-nav layui-bg-green" lay-filter="">
+        <li class="layui-nav-item"><a href="/">首页</a></li>
+        <li class="layui-nav-item layui-this"><a href="/html/visit/visit.html">用户访问记录</a></li>
+        <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
+        <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
+    </ul>
+
+    <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+    <div id="day" style="width: auto;height: 400px;"></div>
+    <div id="device" style="width: auto;height: 400px;"></div>
+
+    <blockquote class="layui-elem-quote">
+        <ul class="menu">
+            <li>
+                &copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.
+                个人网站 2021 ~ 2029年
+            </li>
+            <li>
+                本博客系统代码地址：
+                <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a>
+                <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a>
+            </li>
+        </ul>
+    </blockquote>
+
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var dayChart = echarts.init(document.getElementById('day'));
+    var deviceChart = echarts.init(document.getElementById('device'));
+
+    let arrayDay = new Array();
+    let arrayDayCount = new Array();
+    let arrayDevice = new Array();
+    let arrayDeviceCount = new Array();
+
+    $.ajax({
+        url: "/visit/day",
+        async: true,
+        type: "get",
+        success: function (data) {
+            if(data.code == 200){
+                var map = new Map(Object.entries(data.result))
+                map.forEach((val, key) => {
+                    arrayDay.push(key)
+                    arrayDayCount.push(val)
+                })
+
+                window.addEventListener('resize', function() {
+                    dayChart.resize();
+                });
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '七天访问次数记录'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['访问次数']
+                    },
+                    xAxis: {
+                        data: arrayDay
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            name: '访问次数',
+                            type: 'bar',
+                            data: arrayDayCount
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                dayChart.setOption(option);
+            }
+        }
+    })
+
+    $.ajax({
+        url: "/visit/device",
+        async: true,
+        type: "get",
+        success: function (data) {
+            if(data.code == 200){
+                var map = new Map(Object.entries(data.result))
+                map.forEach((val, key) => {
+                    arrayDevice.push(key)
+                    arrayDeviceCount.push(val)
+                })
+
+                window.addEventListener('resize', function() {
+                    deviceChart.resize();
+                });
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '当天访问设备类型'
+                    },
+                    tooltip: {},
+                    xAxis: {
+                        type: 'category',
+                        data: arrayDevice
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '设备类型',
+                            data: arrayDeviceCount,
+                            type: 'line'
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                deviceChart.setOption(option);
+            }
+        }
+    })
+</script>
+</body>
+</html>

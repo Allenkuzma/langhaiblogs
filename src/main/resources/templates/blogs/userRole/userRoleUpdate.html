@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>更新用户角色授权 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,更新用户角色授权" />
+    <meta name="description" content="浪海博客的更新用户角色授权页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+</head>
+<body>
+
+    <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">单选框</label>
+                <div class="layui-input-block" id="userRole-langhai">
+
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="text" th:value="${id}" name="id" lay-verify="id" autocomplete="off"
+                           class="layui-hide">
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="button-container">
+                    <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                            lay-filter="userRole-update">
+                        <i class="layui-icon layui-icon-ok"></i>
+                        提交
+                    </button>
+                    <button type="reset" class="pear-btn pear-btn-sm">
+                        <i class="layui-icon layui-icon-refresh"></i>
+                        重置
+                    </button>
+                </div>
+            </div>
+    </form>
+
+</body>
+<script src="/pear/component/layui/layui.js"></script>
+<script src="/pear/component/pear/pear.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script>
+    $(function() {
+        $("#update").click(function () {
+            // 执行更新的操作ajax
+            $.ajax({
+                cache: true,
+                type: "post",
+
+                data: {
+                    "name": $("#userRole-langhai").find("input[name='role']:checked").val(),
+                    "id": $("#idUpdate").val()
+                },
+                async: false,
+                success: function () {
+                    window.parent.location.href = "/userRole/userRolePage";
+                }
+            })
+        })
+    })
+</script>
+<script th:inline="javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'form'], function(){
+        var element = layui.element;
+        var form = layui.form;
+
+        var role = [[${roleList}]];
+
+        var roleUser = [[${role}]];
+
+        for(var i = 0; i < role.length; i++){
+            $('#userRole-langhai').append('<input type="radio" name="role" value="' + role[i].name + '"title=' + role[i].name + '>');
+        }
+
+        $("#userRole-langhai").find("input[value=" + roleUser.name + "]").attr("checked", true);
+
+        form.render();
+    });
+</script>
+<script>
+    layui.use(['form', 'jquery'], function() {
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('submit(userRole-update)', function(data) {
+            $.ajax({
+                url: "/userRole/updateUserRole",
+                data: data.field,
+                type: 'post',
+                success: function(result) {
+                    if (result.code == 200) {
+                        layer.msg(result.message, {
+                            icon: 1,
+                            time: 1000
+                        }, function() {
+                            parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页
+                            parent.layui.table.reload("userRole");
+                        });
+                    } else {
+                        layer.msg(result.message, {
+                            icon: 2,
+                            time: 1000
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</html>

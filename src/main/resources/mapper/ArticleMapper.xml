@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.langhai.mapper.ArticleMapper">
+
+    <select id="getDayCount" resultType="integer">
+        select
+            count(1)
+        from
+            article
+        where
+            user_id = #{userId}
+        and
+            add_time &gt;= #{beginDate}
+        and
+            add_time &lt;= #{endDate}
+    </select>
+
+    <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into
+            article(user_id, label_id, title, html, public_show, delete_flag, add_time, abstract_text, password)
+        values
+            (#{userId}, #{labelId}, #{title}, #{html}, #{publicShow}, #{deleteFlag}, #{addTime}, #{abstractText}, #{password})
+    </insert>
+
+    <select id="getAllArticle" resultType="cc.langhai.domain.Article">
+        SELECT
+            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") as add_time_show,
+                                       DATE_FORMAT(a.update_time, "%Y-%m-%d %H:%i:%s") as update_time_show
+        FROM
+            article AS a
+        INNER JOIN
+            user AS u
+        ON
+            a.user_id = u.id
+        WHERE
+            a.delete_flag = 0
+          <if test="userId != null and userId != 0">
+              AND a.user_id = #{userId}
+          </if>
+          <if test="title != null and title != ''">
+              AND a.title like concat( '%' , #{title}, '%')
+          </if>
+          <if test="abstractText != null and abstractText != ''">
+              AND a.abstract_text like concat( '%' , #{abstractText}, '%')
+          </if>
+        ORDER BY a.add_time DESC
+    </select>
+
+    <select id="getById" resultType="cc.langhai.domain.Article">
+        SELECT
+            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") AS add_time_show, l.content AS label_content,
+            DATE_FORMAT(a.update_time, "%Y-%m-%d %H:%i:%s") AS update_time_show,
+            DATE_FORMAT(a.add_time, "%Y") AS year,
+            DATE_FORMAT(a.add_time, "%m") AS month,
+            DATE_FORMAT(a.add_time, "%d") AS day
+        FROM
+            article AS a
+        INNER JOIN
+            user AS u
+        INNER JOIN
+            label AS l
+        ON
+            a.id = #{id}
+            AND
+            a.delete_flag = 0
+            AND
+            a.label_id = l.id
+            AND
+            a.user_id = u.id
+    </select>
+
+    <update id="updateArticle" >
+        update
+            article
+        set
+            label_id = #{labelId},
+            title = #{title},
+            html = #{html},
+            public_show = #{publicShow},
+            update_time = #{updateTime},
+            abstract_text = #{abstractText},
+            password = #{password}
+        where
+            id = #{id}
+    </update>
+
+    <update id="deleteArticle" >
+        update
+            article
+        set
+            delete_flag = #{deleteFlag},
+            update_time = #{updateTime}
+        where
+            id = #{id}
+    </update>
+
+    <select id="getAllArticlePublicShow" resultType="cc.langhai.domain.Article">
+        SELECT
+            a.*, u.username AS author, DATE_FORMAT(a.add_time, "%Y-%m-%d %H:%i:%s") AS add_time_show, l.content AS label_content,
+            DATE_FORMAT(a.add_time, "%Y") AS year,
+            DATE_FORMAT(a.add_time, "%m") AS month,
+            DATE_FORMAT(a.add_time, "%d") AS day
+        FROM
+            article AS a
+        INNER JOIN
+            user AS u
+        INNER JOIN
+            label AS l
+        ON
+            a.delete_flag = 0
+        AND
+            a.public_show = 1
+        <if test="searchArticleStr != null and searchArticleStr != ''">
+            AND
+            a.title like concat( '%' , #{searchArticleStr}, '%')
+        </if>
+        <if test="labelId != null and labelId != 0">
+            AND
+            a.label_id = #{labelId}
+        </if>
+        AND
+            a.user_id = u.id
+        AND
+            a.label_id = l.id
+        ORDER BY a.add_time DESC
+    </select>
+
+    <delete id="systemDeleteArticle" >
+        delete from
+            article
+        where
+            id = #{id}
+    </delete>
+
+</mapper>

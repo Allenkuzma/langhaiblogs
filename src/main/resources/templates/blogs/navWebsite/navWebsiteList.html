@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>公共导航网站管理 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,公共导航网站管理" />
+    <meta name="description" content="浪海博客的公共导航网站管理页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+</head>
+<body class="pear-container">
+
+<blockquote class="layui-elem-quote">
+    在这里可以管理你网站首页公共导航网站。每一个分类下最多可以设置三十个公共导航网站。
+</blockquote>
+
+<table class="layui-hide" id="navWebsite" lay-filter="navWebsite"></table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+</script>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addNavWebsite">新增公共导航网站</button>
+    </div>
+</script>
+
+</body>
+<script src="/pear/component/layui/layui.js"></script>
+<script src="/pear/component/pear/pear.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script th:inline="javascript">
+    const navClassifyId = [[${navClassifyId}]];
+</script>
+<script th:inline="none">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'form', 'table', 'laypage', 'common'], function() {
+        var element = layui.element;
+        var form = layui.form;
+        var table = layui.table;
+        var laypage = layui.laypage;
+        let common = layui.common;
+
+        layer.msg('使用电脑展示更佳', {
+            closeBtn: 1,
+            icon: 6,
+            time: 3 * 1000,
+            offset: '21px'
+        });
+
+        table.render({
+            elem: '#navWebsite',
+            url: '/navWebsite/navWebsiteList?navClassifyId=' + navClassifyId,
+            toolbar: '#toolbarDemo',
+            cols: [[
+                {type: 'checkbox'}
+                ,{field:'id', title: 'ID', align: 'center'}
+                ,{field:'name', title: '网站名字', width:180, align: 'center'}
+                ,{field:'imageUrl', title: 'logo图片地址', width:280, align: 'center'}
+                ,{field:'indexImageUrl', title: '网站首页图片地址', width:280, align: 'center'}
+                ,{field:'url', title: '网站路径', width:180, align: 'center'}
+                ,{field:'description', title: '网站描述', width:280, align: 'center'}
+                ,{field:'score', title: '网站评分', width:280, align: 'center'}
+                ,{field:'details', title: '网站详情信息', width:280, align: 'center'}
+                ,{field:'addTime', title: '新增时间', width:180, align: 'center'}
+                ,{field:'updateTime', title: '修改时间', width:180, align: 'center'}
+                ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}
+            ]],
+            page: false,
+            skin: 'line',
+            defaultToolbar: [{
+                title: '刷新',
+                layEvent: 'refresh',
+                icon: 'layui-icon-refresh',
+            }, 'filter', 'print', 'exports']
+        })
+
+        // 工具栏事件
+        table.on('toolbar(navWebsite)', function(obj){
+            var id = obj.config.id;
+            var checkStatus = table.checkStatus(id);
+            var othis = lay(this);
+            switch(obj.event){
+                case 'addNavWebsite':
+                    layer.open({
+                        title: '新增公共导航网站',
+                        type: 2,
+                        shade: 0.1,
+                        area: [common.isModile()?'100%':'500px', common.isModile()?'100%':'400px'],
+                        content: '/navWebsite/navWebsiteAddPage?navClassifyId=' + navClassifyId
+                    });
+                    break;
+                case 'refresh':
+                    window.refresh();
+                    break;
+            };
+        });
+
+        // 触发单元格工具事件
+        table.on('tool(navWebsite)', function(obj){ // 双击 toolDouble
+            var data = obj.data;
+            // console.log(obj)
+            if(obj.event === 'del'){
+                window.remove(obj);
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    title: '编辑公共导航网站',
+                    type: 2,
+                    shade: 0.1,
+                    area: [common.isModile()?'100%':'500px', common.isModile()?'100%':'400px'],
+                    content: '/navWebsite/navWebsiteUpdatePage?id=' + data.id
+                });
+            } else if(obj.event === 'look'){
+                window.open(data.url)
+            }
+        });
+
+        window.refresh = function(param) {
+            table.reload('navWebsite');
+        }
+
+        window.remove = function(obj) {
+            layer.confirm('确定要删除这个公共导航网站', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "/navWebsite/deleteNavWebsite",
+                    data: {
+                        "id": obj.data.id
+                    },
+                    type: 'delete',
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.code == 200) {
+                            layer.msg(result.message, {
+                                icon: 1,
+                                time: 2000
+                            }, function() {
+                                obj.del();
+                            });
+                        } else {
+                            layer.msg(result.message, {
+                                icon: 2,
+                                time: 2000
+                            });
+                        }
+                    }
+                })
+            });
+        }
+
+    })
+</script>
+</html>

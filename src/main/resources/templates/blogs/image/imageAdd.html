@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>添加图片 - 浪海博客</title>
+  <meta name="keywords" content="浪海博客,添加图片" />
+  <meta name="description" content="浪海博客的添加图片。" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+
+</head>
+<body>
+  <ul class="layui-nav layui-bg-green" lay-filter="">
+    <li class="layui-nav-item"><a href="/">首页</a></li>
+    <li class="layui-nav-item layui-this"><a href="/image/imageAddPage">添加图片</a></li>
+    <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
+    <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
+    <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
+  </ul>
+
+  <blockquote class="layui-elem-quote">
+    在这里可以上传图片到服务器
+    <p id="issueResult" style="color: red"></p>
+  </blockquote>
+
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>拖拽上传</legend>
+  </fieldset>
+
+  <div class="layui-upload-drag" id="test10">
+    <i class="layui-icon"></i>
+    <p>点击上传，或将文件拖拽到此处</p>
+    <div class="layui-hide" id="uploadDemoView">
+      <hr>
+      <img src="" alt="上传成功后渲染" style="max-width: 196px">
+    </div>
+  </div>
+
+  <hr class="layui-border-green">
+
+  <div>
+    <div>使用空间：</div>
+    <div class="layui-progress layui-progress-big" lay-showPercent="true">
+      <div class="layui-progress-bar layui-bg-blue" th:lay-percent="${size}"></div>
+    </div>
+  </div>
+
+  <hr class="layui-border-green">
+
+  <div>
+    <button type="button" class="layui-btn layui-btn-fluid">
+      <a href="/image/imagePage">返回图库</a>
+    </button>
+  </div>
+
+  <blockquote class="layui-elem-quote">
+    <ul class="menu">
+      <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+      <li>
+        <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a>
+        <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a>
+      </li>
+    </ul>
+  </blockquote>
+
+</body>
+<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script >
+  //注意：导航 依赖 element 模块，否则无法进行功能性操作
+  layui.use(['element', 'form', 'table', 'laypage', 'upload'], function() {
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    var laypage = layui.laypage;
+    var upload = layui.upload;
+
+    layer.msg('使用电脑展示更佳', {
+      closeBtn: 1,
+      icon: 6,
+      time: 3 * 1000,
+      offset: '21px'
+    });
+
+    // 拖拽上传
+    upload.render({
+      elem: '#test10'
+      ,url: '/minio/upload/wangEditor'
+      ,done: function(res){
+        layer.msg(res.message);
+        layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.data.url);
+      }
+    });
+
+
+
+  })
+</script>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width" />
+    <title th:text="${article.title} + ' ~ 浪海博客'"></title>
+    <meta name="keywords" th:content="${article.title} + ',浪海博客,' + ${article.author}" />
+    <meta name="description" th:content="${article.author} + '编写的' + ${article.title}" />
+    <link rel="stylesheet" href="/blogs-new/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/blogs-new/layui/css/layui.css" />
+    <link rel="stylesheet" href="/blogs-new/css/master.css" />
+    <link rel="stylesheet" href="/blogs-new/css/gloable.css" />
+    <link rel="stylesheet" href="/blogs-new/css/nprogress.css" />
+    <link rel="stylesheet" href="/blogs-new/css/blog.css" />
+    <link rel="stylesheet" href="/blogs-new/css/monokai-sublime.css" />
+</head>
+<body>
+    <div class="header">
+    </div>
+    <header class="gird-header">
+        <div class="header-fixed">
+            <div class="header-inner">
+                <a href="/" class="header-logo" id="logo">langhai</a>
+                <nav class="nav" id="nav">
+                    <ul>
+                        <li><a href="/index">首页</a></li>
+                        <li><a href="/article/articleSearchPageNew">博客</a></li>
+                        <li><a href="/#three">留言</a></li>
+                        <li><a href="/#two">友链</a></li>
+                        <li><a href="https://www.langhai.net" target="_blank">浪海导航</a></li>
+                    </ul>
+                </nav>
+                <a class="phone-menu">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="doc-container" id="doc-container">
+        <div class="container-fixed">
+            <div class="col-content" style="width:100%">
+                <div class="inner">
+                    <article class="article-list">
+                        <input type="hidden" value="@Model.BlogTypeID" id="blogtypeid" />
+                        <section class="article-item">
+                            <aside class="title" style="line-height:1.5;">
+                                <h4 th:text="${article.title}"></h4>
+                                <p class="fc-grey fs-14">
+                                    <small>
+                                        作者：<a href="/" target="_blank" class="fc-link" th:text="${article.author}"></a>
+                                    </small>
+                                    <small class="ml10">围观群众：<i class="readcount" th:text="${article.heat}"></i></small>
+                                    <small class="ml10">更新于 <label th:text="${article.updateTimeShow}"></label> </small>
+                                    <small class="ml10">
+                                        使用以前的显示 <a th:href="'/article/articleShow?id=' + ${article.id} + '&password=' + ${password}">以前的显示器</a>
+                                        图片单击可放大/缩小。
+                                    </small>
+                                </p>
+                            </aside>
+                            <div class="time mt10" style="padding-bottom:0;">
+                                <span class="day" th:text="${article.day}"></span>
+                                <span class="month fs-18"><span th:text="${article.month}"></span><small class="fs-14">月</small></span>
+                                <span class="year fs-18" th:text="${article.year}"></span>
+                            </div>
+                            <div class="content artiledetail" style="border-bottom: 1px solid #e1e2e0; padding-bottom: 20px;">
+                                <div th:utext="${article.html}">
+
+                                </div>
+                                <div class="copyright mt20">
+                                    <p class="f-toe fc-black">
+                                        非特殊说明，本文版权归 <span th:text="${article.author}"></span> 所有，转载请注明出处。
+                                    </p>
+                                    <p class="f-toe">
+                                        本文标题：
+                                        <a href="javascript:void(0)" class="r-title" th:text="${article.title}"></a>
+                                    </p>
+                                    <p class="f-toe">
+                                        本文网址：
+                                        <a th:href="'/article/articleShowNew?id=' + ${article.id}" th:text="'http://www.langhai.cc/article/articleShowNew?id=' + ${article.id}"></a>
+                                    </p>
+                                </div>
+                                <div id="aplayer" style="margin:5px 0"></div>
+                                <h6>延伸阅读</h6>
+                                <ol class="b-relation">
+                                    <li th:each="articleHeat : ${articleHeatTop}"> <a target="_blank" th:href="'/article/articleShowNew?id=' + ${articleHeat.id}"><span th:text="${articleHeat.title}"></span></a></li>
+                                </ol>
+                                <h6>如果出现代码等内容显示不正常，使用以前的显示器：<a th:href="'/article/articleShow?id=' + ${article.id} + '&password=' + ${password}">以前的显示器</a></h6>
+                            </div>
+                            <div id="vcomments"></div>
+                            <div class="bdsharebuttonbox share" data-tag="share_1">
+                                <ul>
+                                    <li >浪</li>
+                                    <li >海</li>
+                                    <li >博</li>
+                                    <li >客</li>
+                                </ul>
+                            </div>
+                            <div class="f-cb"></div>
+                            <div class="mt20 f-fwn fs-24 fc-grey comment" style="border-top: 1px solid #e1e2e0; padding-top: 20px;">
+
+                            </div>
+                            <fieldset class="layui-elem-field layui-field-title">
+                                <legend>发表评论</legend>
+                                <div class="layui-field-box">
+                                    <div class="leavemessage" style="text-align:initial">
+                                        <form class="layui-form blog-editor" action="">
+                                            <input type="hidden" name="articleId" id="articleId" th:value="${article.id}">
+                                            <div class="layui-form-item">
+                                                <textarea name="content" lay-verify="content" id="content" placeholder="请输入内容 这里需要进行登录 上面的评论框无需登录" class="layui-textarea"></textarea>
+                                            </div>
+                                        </form>
+                                        <div>
+                                            <button class="layui-btn" id="submitComment">提交评论</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                                <ul class="blog-comment" id="blog-comment">
+                                    <span th:each="comment : ${commentList}">
+                                        <li th:text="'评论时间：'+ ${comment.addTimeShow} + ' 用户昵称：' + ${comment.nickname}"></li>
+                                        <li th:text="'评论内容：'+ ${comment.content}"></li>
+                                    </span>
+                                </ul>
+                        </section>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="grid-footer">
+        <div class="footer-fixed">
+            <div class="copyright">
+                <div class="info">
+                    <div class="contact">
+                        <a href="https://github.com/Allenkuzma/langhaiblogs" class="github" target="_blank"><i class="fa fa-github"></i></a>
+                        <a href="https://wpa.qq.com/msgrd?v=3&uin=676558206&site=qq&menu=yes" class="qq" target="_blank" title="676558206"><i class="fa fa-qq"></i></a>
+                    </div>
+                    <p class="mt05">
+                        &copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved. 个人网站 2021 ~ 2029年
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/blogs-new/layui/layui.js"></script>
+    <script src="/blogs-new/js/yss/gloable.js"></script>
+    <script src="/blogs-new/js/plugins/nprogress.js"></script>
+    <script src="/blogs-new/js/pagecomment.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/blogs/assets/js/Valine.min.js"></script>
+    <script>NProgress.start();</script>
+    <script> 
+        window.onload = function () {
+            NProgress.done();
+        };
+
+        // 图片自适应处理
+        /*$(function (){
+            $("img").attr("style", "max-width: 100%;");
+        })*/
+
+        // 代码自适应处理
+        $(function (){
+            $("code").addClass("hljs");
+        })
+
+        // 提交文章评论
+        $(function () {
+            $("#submitComment").on("click", function () {
+                $.ajax({
+                    url: "/article/submitComment",
+                    async: true,
+                    type: "POST",
+                    data: {
+                        "articleId": $("#articleId").val(),
+                        "content": $("#content").val()
+                    },
+                    success: function (data) {
+                        if(data.code == 200){
+                            layer.msg(data.message, {
+                                icon: 1,
+                                time: 2000
+                            }, function () {
+                                window.location.reload();
+                            })
+                        }else {
+                            layer.msg(data.message, {
+                                icon: 2,
+                                time: 2000
+                            });
+                        }
+                    }
+                })
+            });
+        })
+
+        var originalStyle;
+        // 图片放大处理
+        $("body").on("click", "img", function(){
+            if ($(this).hasClass("zoomed")) {
+                $(this).removeClass("zoomed"); // 移除放大样式类
+                $(this).attr("style", originalStyle);
+            } else {
+                originalStyle = $(this).attr("style");
+                $(this).addClass("zoomed"); // 添加放大样式类
+                $(this).attr("style", "width: 100%;");
+            }
+        })
+    </script>
+    <script>
+        $(function() {
+            var url = window.location.href;
+            var queryString = url.split('?')[1];
+            var params = {};
+            var queries = queryString.split("&");
+            for (var i = 0; i < queries.length; i++) {
+                var temp = queries[i].split('=');
+                params[temp[0]] = temp[1];
+            }
+
+            var valineId = params['id'];
+            new Valine({
+                el: '#vcomments',
+                appId: 'Axey6XbAW71MYHWx340EexnY-gzGzoHsz',
+                appKey: 'XviuojwN4nJ4VL3agPeSynjB',
+                avatar: 'monsterid',
+                placeholder: "浪海博客欢迎你 无需登录更加方便 ~ ",
+                path: valineId
+            })
+        })
+    </script>
+</body>
+</html>

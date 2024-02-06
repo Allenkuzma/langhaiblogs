@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>友情链接新增 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,友情链接新增" />
+    <meta name="description" content="浪海博客的友情链接新增页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+</head>
+<body>
+
+    <form class="layui-form" action="">
+        <div class="mainBox">
+            <div class="main-container">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">h3标签内容</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入h3标签内容"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">超链接地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="href" lay-verify="url" autocomplete="off" placeholder="请输入超链接地址"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站名字</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入网站名字"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站描述</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="description" lay-verify="description" autocomplete="off" placeholder="请输入网站描述"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sort" lay-verify="number" autocomplete="off" placeholder="请输入网站排序"
+                               class="layui-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="button-container">
+                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                        lay-filter="links-save">
+                    <i class="layui-icon layui-icon-ok"></i>
+                    提交
+                </button>
+                <button type="reset" class="pear-btn pear-btn-sm">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </form>
+
+</body>
+<script src="/pear/component/layui/layui.js"></script>
+<script src="/pear/component/pear/pear.js"></script>
+<script>
+    layui.use(['form', 'jquery'], function() {
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('submit(links-save)', function(data) {
+            $.ajax({
+                url: "/links/addLinks",
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function(result) {
+                    if (result.code == 200) {
+                        layer.msg(result.message, {
+                            icon: 1,
+                            time: 2000
+                        }, function() {
+                            parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页
+                            parent.layui.table.reload("links");
+                        });
+                    } else {
+                        layer.msg(result.message, {
+                            icon: 2,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</html>

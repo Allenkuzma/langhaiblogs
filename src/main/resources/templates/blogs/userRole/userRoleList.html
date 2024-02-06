@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>用户授权页面 - 浪海博客</title>
+  <meta name="keywords" content="浪海博客,用户授权" />
+  <meta name="description" content="浪海博客的用户授权页面。" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+</head>
+<body class="pear-container">
+
+  <blockquote class="layui-elem-quote">
+    在这里管理员可以给用户授权
+  </blockquote>
+
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <form class="layui-form" action="">
+        <div class="layui-form-item">
+          <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">用户账号</label>
+            <div class="layui-input-inline">
+              <input type="text" name="username" placeholder="" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">用户昵称</label>
+            <div class="layui-input-inline">
+              <input type="text" name="nickname" placeholder="" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item layui-inline">
+            <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="userRole-query">
+              <i class="layui-icon layui-icon-search"></i>
+              查询
+            </button>
+            <button type="reset" class="pear-btn pear-btn-md">
+              <i class="layui-icon layui-icon-refresh"></i>
+              重置
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <table id="userRole" lay-filter="userRole"></table>
+    </div>
+  </div>
+
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="role">授权</a>
+  </script>
+
+  <script type="text/html" id="toolbarDemo">
+
+  </script>
+
+  <div id="paging"></div>
+
+</body>
+<script src="/pear/component/layui/layui.js"></script>
+<script src="/pear/component/pear/pear.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script th:inline="none">
+  //注意：导航 依赖 element 模块，否则无法进行功能性操作
+  layui.use(['element', 'form', 'table', 'laypage', 'common'], function() {
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    var laypage = layui.laypage;
+    let common = layui.common;
+
+    layer.msg('使用电脑展示更佳', {
+      closeBtn: 1,
+      icon: 6,
+      time: 3 * 1000,
+      offset: '21px'
+    });
+
+    table.render({
+      elem: '#userRole',
+      url: '/userRole/userRoleList',
+      toolbar: '#toolbarDemo',
+      cols: [[
+        {type: 'checkbox'}
+        ,{field:'id', title: 'ID', align: 'center'}
+        ,{field:'username', title: '用户账号', width:180, align: 'center'}
+        ,{field:'nickname', title: '用户昵称', width:180, align: 'center'}
+        ,{field:'addTimeShow', title: '新增时间', width:180, align: 'center'}
+        ,{field:'role', title: '角色', width:180, align: 'center'}
+        ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}
+      ]],
+      page: true,
+      skin: 'line',
+      defaultToolbar: [{
+        title: '刷新',
+        layEvent: 'refresh',
+        icon: 'layui-icon-refresh',
+      }, 'filter', 'print', 'exports']
+    })
+
+    // 工具栏事件
+    table.on('toolbar(userRole)', function(obj){
+      var id = obj.config.id;
+      var checkStatus = table.checkStatus(id);
+      var othis = lay(this);
+      switch(obj.event){
+        case 'refresh':
+          window.refresh();
+          break;
+      };
+    });
+
+    // 触发单元格工具事件
+    table.on('tool(userRole)', function(obj){ // 双击 toolDouble
+      var data = obj.data;
+      // console.log(obj)
+      if(obj.event === 'role'){
+        layer.open({
+          title: '用户角色重新授权',
+          type: 2,
+          shade: 0.1,
+          area: [common.isModile()?'100%':'500px', common.isModile()?'100%':'400px'],
+          content: '/userRole/userRoleUpdatePage?id=' + data.id
+        });
+      }
+    });
+
+    form.on('submit(userRole-query)', function(data) {
+      table.reload('userRole', {
+        where: data.field
+      })
+      return false;
+    });
+
+    window.refresh = function(param) {
+      table.reload('userRole');
+    }
+  })
+</script>
+</html>

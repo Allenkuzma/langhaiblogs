@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.langhai.mapper.ImageMapper">
+
+    <select id="getAllImageByUser" resultType="cc.langhai.domain.Image">
+        select
+            *, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show
+        from
+            image
+        where
+            user_id = #{userId}
+            <if test="searchImageStr != null and searchImageStr != ''">
+                AND image.minio_name like concat( '%' , #{searchImageStr}, '%')
+            </if>
+    </select>
+
+    <insert id="insertImage" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into
+            image(file_name, minio_name, file_size, user_id, add_time)
+        values
+            (#{fileName}, #{minioName}, #{fileSize}, #{userId}, #{addTime})
+    </insert>
+
+    <select id="getImageByMinioName" resultType="cc.langhai.domain.Image">
+        select
+            *, DATE_FORMAT(`add_time`, "%Y-%m-%d %H:%i:%s") as add_time_show
+        from
+            image
+        where
+            minio_name = #{minioName}
+    </select>
+
+    <delete id="deleteImage">
+        DELETE FROM image WHERE minio_name = #{minioName}
+    </delete>
+
+</mapper>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<!--
+	Multiverse by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>图库 - 浪海博客</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" content="浪海博客,图库" />
+		<meta name="description" content="浪海博客的图库。" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/image/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/image/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1>
+							<a href="/image/imagePage"><strong>浪海博客系统</strong> 图库</a>
+							<a href="/">回到首页</a>
+						</h1>
+						<nav>
+							<ul>
+								<!--<li><a href="#footer" class="icon solid fa-info-circle">添加图片</a></li>-->
+								<li><a href="/image/imageAddPage" class="icon solid fa-info-circle">添加图片</a></li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+						<div th:if="${#lists.isEmpty(list)}" >
+							<span>找不到更多图片！！！</span>
+						</div>
+
+						<article  th:each="image : ${list}" class="thumb">
+							<a th:href="${image.url}" class="image"><img th:src="${image.url}" th:alt="${image.fileName}" /></a>
+							<h2 th:text="${image.fileName}"></h2>
+							<p th:text="${image.fileName}"></p>
+						</article>
+
+					</div>
+					<div>
+						<input type="text" placeholder="输入minio文件存储名字" id="searchImageInp" th:value="${search}" />
+						<button id="searchImageBut">搜索</button>
+					</div>
+					<div>
+						<table>
+							<tr>
+								<th>日期</th>
+								<th>文件名字</th>
+								<th>地址</th>
+								<th>查看</th>
+								<th>删除</th>
+							</tr>
+							<tr th:each="image : ${list}">
+								<td th:text="${image.addTimeShow}"></td>
+								<td th:text="${image.fileName}"></td>
+								<td th:text="${image.url}"></td>
+								<td><a th:href="${image.url}" target="_blank">查看</a></td>
+								<td><a class="deleteImage" href="javascript:void(0)" th:id="${image.minioName}">删除</a></td>
+							</tr>
+						</table>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer" class="panel">
+						<div class="inner split">
+							<div>
+								<section>
+									<h2>Magna feugiat sed adipiscing</h2>
+									<p>Nulla consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque turpis ipsum eget quis orci mattis aliquet. Maecenas fringilla et ante at lorem et ipsum. Dolor nulla eu bibendum sapien. Donec non pharetra dui. Nulla consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque turpis ipsum.</p>
+								</section>
+								<section>
+									<h2>Follow me on ...</h2>
+									<ul class="icons">
+										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+										<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+										<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+									</ul>
+								</section>
+								<p class="copyright">
+									&copy; Unttled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+								</p>
+							</div>
+							<div>
+								<section>
+									<h2>Get in touch</h2>
+									<form method="post" action="#">
+										<div class="fields">
+											<div class="field half">
+												<input type="text" name="name" id="name" placeholder="Name" />
+											</div>
+											<div class="field half">
+												<input type="text" name="email" id="email" placeholder="Email" />
+											</div>
+											<div class="field">
+												<textarea name="message" id="message" rows="4" placeholder="Message"></textarea>
+											</div>
+										</div>
+										<ul class="actions">
+											<li><input type="submit" value="Send" class="primary" /></li>
+											<li><input type="reset" value="Reset" /></li>
+										</ul>
+									</form>
+								</section>
+							</div>
+						</div>
+					</footer>
+
+					<div >
+						<span>
+							<span th:text="'当前页数' + ${page}"></span>
+							<span th:text="'总页数' + ${pages}"></span>
+							<a id="goHome" href="javascript:void(0)">首页</a>
+							<a id="previous" href="javascript:void(0)">上一页</a>
+							<a id="next" href="javascript:void(0)">下一页</a>
+							<a id="end" href="javascript:void(0)">最后一页</a>
+							<input id="pageInput" type="text" placeholder="例子：第3页 输入3" />
+							<button id="pageButton">跳转到此页</button>
+						</span>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="/image/assets/js/jquery.min.js"></script>
+			<script src="/image/assets/js/jquery.poptrox.min.js"></script>
+			<script src="/image/assets/js/browser.min.js"></script>
+			<script src="/image/assets/js/breakpoints.min.js"></script>
+			<script src="/image/assets/js/util.js"></script>
+			<script src="/image/assets/js/main.js"></script>
+
+	</body>
+<script>
+	$(function () {
+
+		var page = [[${page}]];
+		var pages = [[${pages}]];
+
+		$("body").on("click", ".deleteImage", function(){
+			if (confirm("文件数据将被永久删除！！！")) {
+				$.ajax({
+					url: "/minio/delete",
+					async: true,
+					type: "DELETE",
+					data: {"name": this.id},
+					success: function (data) {
+						if(data.code == 200){
+							setTimeout(function(){
+								window.location.href = "/image/imagePage";
+							}, 100);
+						}else {
+							alert("非法请求");
+						}
+					}
+				})
+			}
+		})
+
+		// 搜索按钮
+		$("#searchImageBut").click(function () {
+			window.location.href = "/image/imagePage?searchImageStr=" + $("#searchImageInp").val();
+		})
+
+		// 首页
+		$("#goHome").click(function () {
+			window.location.href = "/image/imagePage?page=1" + "&searchImageStr=" + $("#searchImageInp").val();
+		})
+
+		// 上一页
+		$("#previous").click(function () {
+			window.location.href = "/image/imagePage?page=" + (page - 1) + "&searchImageStr=" + $("#searchImageInp").val();
+		})
+
+		// 下一页
+		$("#next").click(function () {
+			window.location.href = "/image/imagePage?page=" + (page + 1) + "&searchImageStr=" + $("#searchImageInp").val();
+		})
+
+		// 最后一页
+		$("#end").click(function () {
+			window.location.href = "/image/imagePage?page=" + (pages) + "&searchImageStr=" + $("#searchImageInp").val();
+		})
+
+		// 指定页数
+		$("#pageButton").click(function () {
+			if($.isNumeric($("#pageInput").val())){
+				window.location.href = "/image/imagePage?page=" + $("#pageInput").val() + "&searchImageStr=" + $("#searchImageInp").val();
+			}else {
+				alert("输入页数有误！！！")
+			}
+		})
+
+	})
+</script>
+</html>

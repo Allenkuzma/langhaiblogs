@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>标签更新 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,标签更新" />
+    <meta name="description" content="浪海博客的标签更新页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+</head>
+<body>
+
+    <form class="layui-form" action="">
+        <div class="mainBox">
+            <div class="main-container">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标签内容</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:value="${content}" name="content" lay-verify="content" autocomplete="off" placeholder="请输入标签内容"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="text" th:value="${id}" name="id" lay-verify="id" autocomplete="off"
+                               class="layui-hide">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="button-container">
+                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                        lay-filter="label-update">
+                    <i class="layui-icon layui-icon-ok"></i>
+                    提交
+                </button>
+                <button type="reset" class="pear-btn pear-btn-sm">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </form>
+
+</body>
+<script src="/pear/component/layui/layui.js"></script>
+<script src="/pear/component/pear/pear.js"></script>
+<script>
+    layui.use(['form', 'jquery'], function() {
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('submit(label-update)', function(data) {
+            $.ajax({
+                url: "/label/updateLabel",
+                data: data.field,
+                type: 'post',
+                success: function(result) {
+                    if (result.code == 200) {
+                        layer.msg(result.message, {
+                            icon: 1,
+                            time: 2000
+                        }, function() {
+                            parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页
+                            parent.layui.table.reload("label");
+                        });
+                    } else {
+                        layer.msg(result.message, {
+                            icon: 2,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</html>

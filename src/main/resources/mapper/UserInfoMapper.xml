@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.langhai.mapper.UserInfoMapper">
+
+    <select id="getUserInfoById" resultType="cc.langhai.domain.UserInfo">
+        select * from user_info where id = #{id}
+    </select>
+
+    <select id="getUserInfoByEmail" resultType="cc.langhai.domain.UserInfo">
+        select * from user_info where email = #{email}
+    </select>
+
+    <insert id="insertUserInfo" >
+        insert into user_info(id, email) values(#{id}, #{email})
+    </insert>
+
+    <update id="updateUserInfo" >
+        update
+            user_info
+        set
+            motto = #{motto}, update_time = #{updateTime}
+        where
+            id = #{id}
+    </update>
+</mapper>

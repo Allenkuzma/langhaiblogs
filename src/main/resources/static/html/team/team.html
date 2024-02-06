@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>开发团队 - 浪海博客</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" content="浪海博客,开发团队" />
+		<meta name="description" content="浪海博客的开发团队。" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="/" class="title">浪海博客</a>
+				<nav>
+					<ul>
+						<li><a href="/">主页</a></li>
+						<li><a href="/user/personalPage">个人空间</a></li>
+						<li><a href="javascript:void(0)" id="loginOut">安全退出</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">开发团队</h1>
+							<span class="image fit"><img src="/blogs/images/java.jpg" alt="JAVA技术" /></span>
+							<p>
+								2023/01/17<br />
+								昵称：浪海
+								职位：后端工程师<br />
+								加入我们 QQ ~ 676558206
+							</p>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
+						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="/blogs/assets/js/jquery.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/blogs/assets/js/browser.min.js"></script>
+			<script src="/blogs/assets/js/breakpoints.min.js"></script>
+			<script src="/blogs/assets/js/util.js"></script>
+			<script src="/blogs/assets/js/main.js"></script>
+
+		<script>
+			// 退出登录
+			$("#loginOut").click(function () {
+				$.ajax({
+					url: "/user/loginOut",
+					async: true,
+					type: "POST",
+					success: function (data) {
+						if(data.code == 200){
+							$("#vCodeStatus").html("用户安全退出，3秒后为你跳转到首页。");
+							setTimeout(function(){
+								window.location.href = "/";
+							}, 3000);
+						}else {
+							 $("#vCodeStatus").html(data.message);
+						}
+					}
+				})
+			})
+		</script>
+	</body>
+</html>

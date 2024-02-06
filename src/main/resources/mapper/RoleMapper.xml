@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.langhai.mapper.RoleMapper">
+
+    <select id="getRole" resultType="cc.langhai.domain.Role">
+        SELECT
+            r.*
+        FROM
+            role AS r
+        INNER JOIN
+            user AS u
+        INNER JOIN
+            user_role AS ul
+        ON
+            u.id = #{id}
+            AND
+            u.id = ul.user_id
+            AND
+            r.id = ul.role_id
+    </select>
+
+    <select id="getUserByRoleName" resultType="cc.langhai.domain.User">
+        SELECT
+            u.*
+        FROM
+            role AS r
+                INNER JOIN
+            user AS u
+                INNER JOIN
+            user_role AS ul
+            ON
+                    u.id = ul.user_id
+                AND
+                    r.id = ul.role_id
+            WHERE
+                    r.name = #{roleName}
+    </select>
+
+</mapper>

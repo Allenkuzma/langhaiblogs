@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>标签文章库 - 浪海博客</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" content="浪海博客,标签文章库" />
+		<meta name="description" content="浪海博客的标签文章库。" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<a href="/" class="title">浪海博客</a>
+			<nav>
+				<ul>
+					<li><a href="/">主页</a></li>
+					<li><a href="/user/personalPage" >个人空间</a></li>
+					<li><a href="javascript:void(0)" id="loginOut">安全退出</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major" th:text="${label.content} + '~标签文章库'"></h1>
+							<span class="image fit"><img src="/blogs/images/dream.jpg" alt="梦想" /></span>
+							<p>
+								<h3>在这里能看到该标签下所有的文章。</h3>
+								<div id="labelId" th:value="${search}" hidden="hidden" ></div>
+							</p>
+							<table>
+								<tr>
+									<th>日期</th>
+									<th>标题</th>
+									<th>查看内容</th>
+									<th>浪海值</th>
+									<th>作者</th>
+									<th>编辑</th>
+									<th>删除</th>
+								</tr>
+								<tr th:each="article : ${list}">
+									<td th:text="${article.addTimeShow}"></td>
+									<td th:text="${article.getTitle()}"></td>
+									<td><a th:href="'/article/articleShow?id=' + ${article.id}" target="_blank">查看详细内容</a></td>
+									<td th:text="${article.heat} + '度'"></td>
+									<td th:text="${article.author}"></td>
+									<td><a th:href="'/article/updateArticlePage?id=' + ${article.id}" target="_blank">编辑内容</a></td>
+									<td><a class="delBtn" href="javascript:void(0)" th:id="${article.getId()}">删除内容</a></td>
+								</tr>
+							</table>
+							<div>
+								<span>
+									<span th:text="'当前页数' + ${page}"></span>
+									<span th:text="'总页数' + ${pages}"></span>
+									<a id="goHome" href="javascript:void(0)">首页</a>
+									<a id="previous" href="javascript:void(0)">上一页</a>
+									<a id="next" href="javascript:void(0)">下一页</a>
+									<a id="end" href="javascript:void(0)">最后一页</a>
+									<input id="pageInput" type="text" placeholder="例子：第3页 输入3" />
+									<button id="pageButton">跳转到此页</button>
+								</span>
+							</div>
+							<br />
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
+						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+					</ul>
+				</div>
+			</footer>
+		
+		<!-- Scripts -->
+		<script src="/blogs/assets/js/jquery.min.js"></script>
+		<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+		<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+		<script src="/blogs/assets/js/browser.min.js"></script>
+		<script src="/blogs/assets/js/breakpoints.min.js"></script>
+		<script src="/blogs/assets/js/util.js"></script>
+		<script src="/blogs/assets/js/main.js"></script>
+	</body>
+	<script>
+		$(function(){
+
+			var page = [[${page}]];
+			var pages = [[${pages}]];
+
+			// 首页
+			$("#goHome").click(function () {
+				window.location.href = "/label/articleLabelPage?page=1" + "&id=" + $("#labelId").attr("value");
+			})
+
+			// 上一页
+			$("#previous").click(function () {
+				window.location.href = "/label/articleLabelPage?page=" + (page - 1) + "&id=" + $("#labelId").attr("value");
+			})
+
+			// 下一页
+			$("#next").click(function () {
+				window.location.href = "/label/articleLabelPage?page=" + (page + 1) + "&id=" + $("#labelId").attr("value");
+			})
+
+			// 最后一页
+			$("#end").click(function () {
+				window.location.href = "/label/articleLabelPage?page=" + (pages) + "&id=" + $("#labelId").attr("value");
+			})
+
+			// 指定页数
+			$("#pageButton").click(function () {
+				if($.isNumeric($("#pageInput").val())){
+					window.location.href = "/label/articleLabelPage?page=" + $("#pageInput").val() + "&id=" + $("#labelId").attr("value");
+				}else {
+					alert("输入页数有误！！！")
+				}
+			})
+
+			// 删除文章
+			$("body").on("click", ".delBtn", function(){
+				if (confirm("文章数据将被永久删除！！！")) {
+					$.ajax({
+						url: "/article/deleteArticle",
+						async: true,
+						type: "POST",
+						data: {"id": this.id},
+						success: function (data) {
+							if(data.code == 200){
+								alert("数据已经被永久删除");
+								setTimeout(function(){
+									window.location.href = "/label/articleLabelPage" + "?id=" + $("#labelId").attr("value");;
+								}, 10);
+							}else {
+								alert(data.message);
+							}
+						}
+					})
+				}
+			})
+		})
+	</script>
+</html>

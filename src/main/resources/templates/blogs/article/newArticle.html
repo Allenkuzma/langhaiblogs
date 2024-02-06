@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布新文章 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,发布文章" />
+    <meta name="description" content="浪海博客的文章发布页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
+    <link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
+    <style>
+        #editor—wrapper {
+            border: 1px solid #ccc;
+            z-index: 100; /* 按需定义 */
+        }
+        #toolbar-container { border-bottom: 1px solid #ccc; }
+        #editor-container { height: 800px; }
+    </style>
+</head>
+<body>
+    <ul class="layui-nav layui-bg-green" lay-filter="">
+        <li class="layui-nav-item"><a href="/">首页</a></li>
+        <li class="layui-nav-item layui-this"><a href="/article/newArticlePage">发表新文章</a></li>
+        <li class="layui-nav-item"><a href="/pear/index.html">后台管理</a></li>
+        <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
+    </ul>
+
+    <blockquote class="layui-elem-quote">
+        本页面推荐使用 平板/电脑 进行操作。访问密码可以无需设置，设置之后需要输入访问密码才能查看文章详情内容。<br />
+        文章访问密码请设置为6个字符，例如：lh8888。
+    </blockquote>
+
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">文章标题</label>
+                <div class="layui-input-block">
+                    <input type="text" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入文章标题" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">标签名字</label>
+                <div class="layui-input-block">
+                    <input type="text" id="content" name="content" lay-verify="title" autocomplete="off" placeholder="请输入标签名字（新增）" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">标签名字</label>
+                <div class="layui-input-inline">
+                    <select name="label-langhai" id="label-langhai" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">访问密码</label>
+                <div class="layui-input-block">
+                    <input type="text" id="password" name="password" lay-verify="password" autocomplete="off" placeholder="请输入文章访问密码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否公开</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">摘要</label>
+            <div class="layui-input-block">
+                <textarea id="abstractText" placeholder="请输入摘要 小于等于30个字 必填" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </form>
+
+    <div id="editor—wrapper">
+        <div id="toolbar-container"><!-- 工具栏 --></div>
+        <div id="editor-container"><!-- 编辑器 --></div>
+    </div>
+
+    <div class="layui-btn-container">
+        <button type="button" class="layui-btn layui-btn-radius" id="publish">发布文章</button>
+    </div>
+
+    <blockquote class="layui-elem-quote">
+        <ul class="menu">
+            <li>
+                &copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.
+                个人网站 2021 ~ 2029年
+            </li>
+            <li>
+                <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a>
+                <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a>
+            </li>
+        </ul>
+    </blockquote>
+
+</body>
+<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script th:inline="javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'form'], function(){
+        var element = layui.element;
+        var form = layui.form;
+
+        var label = [[${labelList}]];
+
+        for(var i = 0; i < label.length; i++){
+            $('#label-langhai').append('<option value=' + label[i] + '>'+ label[i] +'</option>');
+        }
+
+        form.render();
+    });
+
+    $(function () {
+        $("#publish").on("click", function () {
+            $.ajax({
+                url: "/article/issue",
+                async: true,
+                type: "POST",
+                contentType : "application/json",
+                dataType : "json",
+                data: JSON.stringify({"html": editor.getHtml(),
+                    "title": $("#title").val(),
+                    "content": $("#content").val(),
+                    "label": $("#label-langhai option:selected").text(),
+                    "publicShow": $("input[name='public']:checked").val(),
+                    "abstractText": $("#abstractText").val(),
+                    "password": $("#password").val()
+                }),
+                success: function (data) {
+                    if(data.code == 200){
+                        layer.msg(data.message, {
+                            icon: 1,
+                            time: 2000
+                        }, function () {
+                            window.location.href = "/user/personalPage";
+                        })
+                    }else {
+                        layer.msg(data.message, {
+                            icon: 2,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+        });
+    })
+</script>
+<script>
+    const { createEditor, createToolbar } = window.wangEditor
+
+    const editorConfig = {
+        placeholder: '欢迎使用浪海博客系统！！！',
+        onChange(editor) {
+            const html = editor.getHtml()
+            // console.log('editor content', html)
+            // 也可以同步到 <textarea>
+        },
+        MENU_CONF: {
+            uploadImage: {
+                server: '/minio/upload/wangEditor',
+
+                fieldName: 'file',
+
+                onSuccess(file, res) {
+                    if(res.errno == 0 ){
+                        layer.msg(res.message, {
+                            closeBtn: 1,
+                            icon: 6,
+                            time: 3 * 1000,
+                            offset: '21px'
+                        });
+                        return
+                    }
+                }
+            }
+        }
+    }
+
+    const editor = createEditor({
+        selector: '#editor-container',
+        html: '<p><br></p>',
+        config: editorConfig,
+        mode: 'default', // or 'simple'
+    })
+
+    const toolbarConfig = {}
+
+    const toolbar = createToolbar({
+        editor,
+        selector: '#toolbar-container',
+        config: toolbarConfig,
+        mode: 'default', // or 'simple'
+    })
+
+
+</script>
+</html>

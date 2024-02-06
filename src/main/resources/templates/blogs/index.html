@@ -1,0 +1,365 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>浪海博客 ~ www.langhai.cc</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" content="浪海,博客,java,浪海博客,博客系统,浪海博客系统" />
+		<meta name="description" content="浪海博客一个由java构建的个人博客网站，用来分享个人技术文章、生活文章。" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="baidu-site-verification" content="codeva-uSiR6sLv6S" />
+		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="/QPlayer/css/player.css">
+	</head>
+	<body class="is-preload">
+
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="#intro">主页</a></li>
+							<li><a href="#one">博客</a></li>
+							<li><a href="#two">链接</a></li>
+							<li><a href="#three">联系</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<span align="right">
+							<iframe allowtransparency="true" frameborder="0" width="317" height="28" scrolling="no"
+									src="//tianqi.2345.com/plugin/widget/index.htm?s=3&z=1&t=1&v=0&d=1&bd=0&k=&f=&ltf=009944&htf=cc0000&q=1&e=0&a=1&c=54511&w=317&h=28&align=center">
+							</iframe>
+						</span>
+						<div class="inner">
+							<h1>浪海博客</h1>
+							<p>
+								<span th:if="${not #strings.isEmpty(session.user?.username)}" >当前用户：</span>
+								<a href="" th:text="${session.user?.nickname}" id="userInfo"></a><br />
+								<span th:text="${userInfo?.motto}" ></span><br />
+								<span th:if="${not #strings.isEmpty(session.user?.username)}">
+									<a href="javascript:void(0)" id="logout">安全退出</a><br />
+									<span th:if="not ${session.user?.enable}">
+										该账户已经被禁用，所有功能都被禁用，请联系网站管理员处理。
+									</span>
+								</span>
+							</p>
+							<ul class="actions">
+								<li><a href="#one" class="button">了解更多</a></li>
+								<li><a href="/image/imagePage" class="button">图库</a></li>
+								<li th:switch="${session.user?.isAdmin()}">
+									<a th:case="true" href="/netty/customer" class="button">客服聊天</a>
+									<a th:case="*" href="/netty/tourist" class="button">客户聊天</a>
+								</li>
+							</ul>
+							<ul class="actions">
+								<li><a href="/article/articleSearchPageNew" class="button">文章库</a></li>
+								<li><a href="/html/visit/visit.html" class="button">用户访问记录</a></li>
+								<li><a href="/juso/index.html" class="button">聚合搜索</a></li>
+							</ul>
+						</div>
+					</section>
+
+				<!-- One -->
+					<section id="one" class="wrapper style2 spotlights">
+						<section>
+							<a href="#" class="image"><img src="/blogs/images/cartoon001.jpg" alt="火影忍者" data-position="center center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>个人空间</h2>
+									<p>发表文章/更新信息</p>
+									<ul class="actions">
+										<li><a href="/user/personalPage" class="button">看看</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="/blogs/images/china001.jpg" alt="" data-position="top center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>文章大全</h2>
+									<p>技术分享/搜索文章</p>
+									<ul class="actions">
+										<li><a href="/article/articleSearchPage" class="button">看看</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="/blogs/images/cat001.jpg" alt="" data-position="25% 25%" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>导航帮手</h2>
+									<p>网站导航/方便快捷</p>
+									<ul class="actions">
+										<li><a href="/navClassify/navPage" class="button">看看</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+					</section>
+
+				<!-- Two -->
+					<section id="two" class="wrapper style3 fade-up">
+						<div class="inner">
+							<h2>浪海博客友情链接</h2>
+							<div class="features">
+								<section>
+									<span class="icon solid major fa-code"></span>
+									<h3 th:text="${linksList.get(0)?.title}"></h3>
+									<p>
+										<a th:href="${linksList.get(0)?.href}" target="_blank" th:text="${linksList.get(0)?.name}"></a>
+										<span th:text="'：' + ${linksList.get(0)?.description}"></span>
+									</p>
+								</section>
+								<section>
+									<span class="icon solid major fa-lock"></span>
+									<h3 th:text="${linksList.get(1)?.title}"></h3>
+									<p>
+										<a th:href="${linksList.get(1)?.href}" target="_blank" th:text="${linksList.get(1)?.name}"></a>
+										<span th:text="'：' + ${linksList.get(1)?.description}"></span>
+									</p>
+								</section>
+								<section>
+									<span class="icon solid major fa-cog"></span>
+									<h3 th:text="${linksList.get(2)?.title}"></h3>
+									<p>
+										<a th:href="${linksList.get(2)?.href}" target="_blank" th:text="${linksList.get(2)?.name}"></a>
+										<span th:text="'：' + ${linksList.get(2)?.description}"></span>
+									</p>
+								</section>
+								<section>
+									<span class="icon solid major fa-desktop"></span>
+									<h3 th:text="${linksList.get(3)?.title}"></h3>
+									<p>
+										<a th:href="${linksList.get(3)?.href}" target="_blank" th:text="${linksList.get(3)?.name}"></a>
+										<span th:text="'：' + ${linksList.get(3)?.description}"></span>
+									</p>
+								</section>
+								<section>
+									<span class="icon solid major fa-link"></span>
+									<h3 th:text="${linksList.get(4)?.title}"></h3>
+									<p>
+										<a th:href="${linksList.get(4)?.href}" target="_blank" th:text="${linksList.get(4)?.name}"></a>
+										<span th:text="'：' + ${linksList.get(4)?.description}"></span>
+									</p>
+								</section>
+								<section>
+									<span class="icon major fa-gem"></span>
+									<h3 th:text="${linksList.get(5)?.title}"></h3>
+									<p>
+										<a th:href="${linksList.get(5)?.href}" target="_blank" th:text="${linksList.get(5)?.name}"></a>
+										<span th:text="'：' + ${linksList.get(5)?.description}"></span>
+									</p>
+								</section>
+							</div>
+							<ul class="actions">
+								<li>
+									<p>
+										<span th:text="${slogan}"></span>
+									</p>
+								</li>
+							</ul>
+						</div>
+					</section>
+
+				<!-- Three -->
+					<section id="three" class="wrapper style1 fade-up">
+						<div class="inner">
+							<h2>联系</h2>
+							<p>技术交流 QQ 676558206 QQ群 585975304</p>
+							<div class="split style1">
+								<section>
+									<p id="sendMessageResult"></p>
+									<form method="post" action="" id="sendMessageForm">
+										<div class="fields">
+											<div class="field half">
+												<label for="name">昵称</label>
+												<input type="text" name="name" id="name" />
+											</div>
+											<div class="field half">
+												<label for="email">邮箱地址</label>
+												<input type="text" name="email" id="email" />
+											</div>
+											<div class="field">
+												<label for="message">反馈信息</label>
+												<textarea name="message" id="message" rows="5"></textarea>
+											</div>
+										</div>
+										<ul class="actions">
+											<li><input type="button" id="sendMessage" value="发送消息" /></li>
+										</ul>
+									</form>
+								</section>
+								<section>
+									<ul class="contact">
+										<li>
+											<h3>地址</h3>
+											<span>中国<br />
+											城市：南京<br />
+											</span>
+										</li>
+										<li>
+											<h3>邮箱</h3>
+											<a href="#">676558206@qq.com</a>
+										</li>
+										<li>
+											<h3>开发团队</h3>
+											<a href="/html/team/team.html">开发团队</a>
+										</li>
+										<li>
+											<h3>开发日志</h3>
+											<a href="/devLog/devLogPage">日志记录</a>
+										</li>
+									</ul>
+								</section>
+							</div>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li>
+						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li>
+					</ul>
+
+					<ul class="menu">
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. 友情链接.</li>
+						<li>
+							<div>
+								<span th:each="bottom : ${bottomLinks}">
+									<a th:href="${bottom.href}" target="_blank" th:text="${bottom.name}"></a>
+									&nbsp;
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- QPlayer -->
+			<div id="QPlayer">
+				<div id="pContent">
+				<div id="player">
+					<span class="cover"></span>
+					<div class="ctrl">
+						<div class="musicTag marquee">
+							<strong>Title</strong>
+							<span> - </span>
+							<span class="artist">Artist</span>
+						</div>
+						<div class="progress">
+							<div class="timer left">0:00</div>
+							<div class="contr">
+								<div class="rewind icon"></div>
+								<div class="playback icon"></div>
+								<div class="fastforward icon"></div>
+							</div>
+							<div class="right">
+								<div class="liebiao icon"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ssBtn">
+					<div class="adf"></div>
+				</div>
+			</div>
+				<ol id="playlist"></ol>
+			</div>
+
+		<!-- Scripts -->
+			<script src="/blogs/assets/js/jquery.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/blogs/assets/js/browser.min.js"></script>
+			<script src="/blogs/assets/js/breakpoints.min.js"></script>
+			<script src="/blogs/assets/js/util.js"></script>
+			<script src="/blogs/assets/js/main.js"></script>
+
+			<script src="/QPlayer/js/jquery.marquee.min.js"></script>
+			<script>
+				var	playlist = [
+					{title:"姐姐",artist:"贾盛强",mp3:"http://music.163.com/song/media/outer/url?id=1320993516.mp3",cover:"https://p2.music.126.net/Oms4Lwk5-xSVMhi_2RIEPw==/109951163659951182.jpg?param=90y90",},
+					{title:"Baby Sister",artist:"曾轶可",mp3:"http://music.163.com/song/media/outer/url?id=340367.mp3",cover:"https://p1.music.126.net/s7Cn8bl21KY7kGiBWMdaFg==/109951163105666561.jpg?param=90y90",},
+					{title:"两个普普通通小青年",artist:"李荣浩/刘柏辛Lexie",mp3:"http://music.163.com/song/media/outer/url?id=1415566662.mp3",cover:"https://p1.music.126.net/JzsER44sOReoM6mR8XKnsw==/109951165182029540.jpg?param=90y90",},
+				];
+				var isRotate = true;
+				var autoplay = false;
+			</script>
+			<script src="/QPlayer/js/player.js"></script>
+			<script>
+				function bgChange(){
+					var lis= $('.lib');
+					for(var i=0; i<lis.length; i+=2)
+						lis[i].style.background = 'rgba(246, 246, 246, 0.5)';
+				}
+				window.onload = bgChange;
+			</script>
+	</body>
+	<script>
+		$(function(){
+			// 判断用户是否登录
+			if($("#userInfo").is(":empty")){
+				$("#userInfo").html("<span class=\"icon fa-smile-beam\"></span> 点击登录 ~ ");
+				$("#userInfo").prop("href", "/user/loginPage");
+			}
+
+			// 安全退出
+			$("#logout").click(function () {
+				$.ajax({
+					url: "/user/loginOut",
+					async: true,
+					type: "POST",
+					success: function (data) {
+						if(data.code == 200){
+							window.location.href = "/";
+						}else {
+
+						}
+					}
+				})
+			})
+
+			// 用户反馈信息
+			$("#sendMessage").click(function () {
+				$.ajax({
+					url: "/message/message",
+					async: true,
+					type: "POST",
+					contentType : "application/json",
+					dataType : "json",
+					data: JSON.stringify({
+						"name":  $("#name").val(),
+						"email": $("#email").val(),
+						"message": $("#message").val()
+					}),
+					success: function (data) {
+						if(data.code == 200){
+							$("#sendMessageResult").html(data.message);
+							$("#sendMessageForm")[0].reset();
+						}else {
+							$("#sendMessageResult").html(data.message);
+						}
+					}
+				})
+			})
+		})
+	</script>
+</html>

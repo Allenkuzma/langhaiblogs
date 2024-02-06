@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.langhai.mapper.NavClassifyMapper">
+
+    <resultMap id="BaseResultMap" type="cc.langhai.domain.NavClassify" >
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="icon" property="icon" />
+        <result column="tag_name" property="tagName" />
+        <collection property="websiteList" ofType="cc.langhai.domain.NavWebsite">
+            <result column="nw_name" property="name" />
+            <result column="image_url" property="imageUrl" />
+            <result column="url" property="url" />
+            <result column="description" property="description" />
+            <result column="nw_id" property="websiteId" />
+            <result column="nw_add_time_show" property="addTimeShow" />
+        </collection>
+    </resultMap>
+
+    <select id="getPublicNav" resultMap="BaseResultMap">
+        SELECT
+            nc.*, nw.id AS nw_id, nw.name AS nw_name, nw.image_url, nw.url, nw.description,
+            DATE_FORMAT(nw.add_time, "%Y-%m-%d %H:%i:%s") as nw_add_time_show
+        FROM
+            nav_classify AS nc
+        LEFT JOIN
+            nav_website AS nw
+        ON
+            nc.id = nw.nav_classify_id
+        WHERE
+            nc.user_id = 0
+    </select>
+
+
+</mapper>

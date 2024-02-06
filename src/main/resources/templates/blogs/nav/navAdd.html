@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>公共导航分类新增 - 浪海博客</title>
+    <meta name="keywords" content="浪海博客,公共导航分类新增" />
+    <meta name="description" content="浪海博客的公共导航分类新增页面。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+</head>
+<body>
+
+    <form class="layui-form" action="">
+        <div class="mainBox">
+            <div class="main-container">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">导航分类名字</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入导航分类名字"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">导航分类图标</label>
+                    <div class="layui-input-inline">
+                        <select name="icon" id="icon" lay-verify="required" lay-search="">
+                            <option value="">直接选择或搜索选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">导航分类标签名字</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="tagName" lay-verify="tagName" autocomplete="off" placeholder="请输入导航分类标签名字"
+                               class="layui-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="button-container">
+                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                        lay-filter="nav-save">
+                    <i class="layui-icon layui-icon-ok"></i>
+                    提交
+                </button>
+                <button type="reset" class="pear-btn pear-btn-sm">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </form>
+
+</body>
+<script src="/pear/component/layui/layui.js"></script>
+<script src="/pear/component/pear/pear.js"></script>
+<script src="/blogs/assets/js/jquery.min.js"></script>
+<script>
+    layui.use(['form', 'jquery'], function() {
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('submit(nav-save)', function(data) {
+            $.ajax({
+                url: "/navClassify/addNav",
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function(result) {
+                    if (result.code == 200) {
+                        layer.msg(result.message, {
+                            icon: 1,
+                            time: 2000
+                        }, function() {
+                            parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页
+                            parent.layui.table.reload("nav");
+                        });
+                    } else {
+                        layer.msg(result.message, {
+                            icon: 2,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+<script th:inline="javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'form'], function(){
+        var element = layui.element;
+        var form = layui.form;
+
+        var oneIcon = [[${iconfont}]];
+
+        for(var i = 0; i < oneIcon.length; i++){
+            $('#icon').append('<option value=' + oneIcon[i] + '>'+ oneIcon[i] +'</option>');
+        }
+
+        form.render();
+    });
+</script>
+</html>

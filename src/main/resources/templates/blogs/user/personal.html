@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>个人空间 - 浪海博客</title>
+		<meta charset="utf-8" />
+		<meta name="keywords" content="浪海博客,个人空间" />
+		<meta name="description" content="浪海博客的个人空间。" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/blogs/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="/" class="title">浪海博客</a>
+				<nav>
+					<ul>
+						<li><a href="/">主页</a></li>
+						<li><a href="/user/personalPage" class="active">个人空间</a></li>
+						<li><a href="javascript:void(0)" id="loginOut">安全退出</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">个人空间</h1>
+							<span class="image fit"><img src="/blogs/images/personal.jpg" alt="林书豪" /></span>
+							<div class="split style1">
+								<section>
+									<p id="vCodeStatus"></p>
+									<div>
+										<div >
+											昵称：<span th:text="${session.user?.nickname}"></span>
+										</div>
+										<div >
+											邮箱地址：<span th:text="${userInfo?.email}"></span>
+										</div>
+										<div >
+											注册时间：<span th:text="${session.user?.addTimeShow}"></span>
+										</div>
+										<div >
+											已经过去：<span th:text="${userInfo?.day} + '天啦'"></span>
+										</div>
+										<div >
+											座右铭：<span th:text="${userInfo?.motto}"></span>
+										</div>
+									</div>
+								</section>
+								<section>
+									<ul class="contact">
+										<li>
+											<h3>用户信息</h3>
+											<span>
+												<a href="/user/updateUserInfoPage">更新个人信息</a><br />
+											</span>
+										</li>
+										<li>
+											<h3>文章</h3>
+											<a href="/article/newArticlePage">文章发表</a><br />
+										</li>
+										<li>
+											<h3>系统管理</h3>
+											<a href="/pear/index.html">进入管理系统</a><br />
+										</li>
+									</ul>
+								</section>
+							</div>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
+						<li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
+						<li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="/blogs/assets/js/jquery.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/blogs/assets/js/browser.min.js"></script>
+			<script src="/blogs/assets/js/breakpoints.min.js"></script>
+			<script src="/blogs/assets/js/util.js"></script>
+			<script src="/blogs/assets/js/main.js"></script>
+
+		<script>
+			// 退出登录
+			$("#loginOut").click(function () {
+				$.ajax({
+					url: "/user/loginOut",
+					async: true,
+					type: "POST",
+					success: function (data) {
+						if(data.code == 200){
+							$("#vCodeStatus").html("用户安全退出，3秒后为你跳转到首页。");
+							setTimeout(function(){
+								window.location.href = "/";
+							}, 3000);
+						}else {
+							 $("#vCodeStatus").html(data.message);
+						}
+					}
+				})
+			})
+		</script>
+	</body>
+</html>

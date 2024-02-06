@@ -1,0 +1,110 @@
+# 浪海博客系统配置参数
+langhai:
+  blogs:
+    registerDayEmailCount: 20
+    registerIPEmailCount: 5
+    registerDayUserCount: 5
+    secret: 88-888-langhai-8
+
+# 程序端口号
+server:
+  port: 2086
+
+spring:
+  # 数据模板引擎配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html
+    mode: HTML5
+
+  # 邮件发送配置
+  mail:
+    # 配置SMTP的服务器地址
+    host: smtp.qq.com
+    # 发送者的QQ邮箱
+    username:
+    # 配置秘钥，授权码（不是QQ密码）
+    password:
+    # 端口号配置
+    port: 587
+    # 邮件的编码格式
+    default-encoding: utf-8
+    # 配置SSL加密
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+        debug: false
+
+  # redis配置
+  redis:
+    database: 9
+    host:
+    password:
+    timeout: 20000
+    port: 6379
+
+  # mysql数据库配置
+  datasource:
+    url: jdbc:mysql://x.x.x.x:3306/langhaiblogs?userUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    username:
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  rabbitmq:
+    host: 127.0.0.1 # 主机名
+    port: 5672 # 端口
+    virtual-host: / # 虚拟主机
+    username: xxx # 用户名
+    password: xxx # 密码
+
+#  profiles:
+#    active: test
+
+# 配置pagehelper的内容
+pagehelper:
+  helper-dialect: mysql
+
+# minio文件存储配置信息
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+
+# 配置es相关信息
+es:
+  ip: 127.0.0.1
+  port: 9200
+  userName: xxx
+  password: xxx
+
+logging:
+  level:
+    root: info
+
+netty:
+  # 监听websocket连接的端口
+  port: 20202
+  # websocket连接地址
+  ws: ws://127.0.0.1:${netty.port}/ws
+
+#flowable:
+#  standalone:
+#    server:
+#      enabled: false # standalone 模式
+#  async-executor-activate: false # 关闭定时任务JOB
+#  idm:
+#    enabled: false # 检测身份信息
+#  database-schema-update: true # 没有数据库表的时候生成数据库表
+#  process-definition-location-prefix: classpath*:/flowable/
+#  process-definition-location-suffixes: "**.bpmn20.xml, **.bpmn"
