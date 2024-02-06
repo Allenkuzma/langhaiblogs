@@ -229,10 +229,8 @@ public class ArticleServiceImpl implements ArticleService {
     public PageInfo<Article> search(Integer page, Integer size, String searchArticleStr, Long labelId) {
         // 开启分页助手
         PageHelper.startPage(page, size);
-
         List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow(searchArticleStr, labelId);
         PageInfo<Article> pageInfo = new PageInfo<>(allArticlePublicShow);
-
         return pageInfo;
     }
 
@@ -365,6 +363,17 @@ public class ArticleServiceImpl implements ArticleService {
         articleComment.setContent(content);
         articleComment.setUserId(user.getId());
         articleCommentService.save(articleComment);
+    }
+
+    @Override
+    public List<Article> topArticle(Integer page, String searchArticleStr, Long labelId) {
+        if (Integer.valueOf(1).equals(page) && StrUtil.isBlank(searchArticleStr)) {
+            if (Long.valueOf(0L).equals(labelId) || ObjectUtil.isNull(labelId)) {
+                List<Article> topArticleList = articleMapper.topArticle();
+                return topArticleList;
+            }
+        }
+        return null;
     }
 
     /**

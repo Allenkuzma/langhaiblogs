@@ -7,6 +7,7 @@ import cc.langhai.dto.ArticleDTO;
 import cc.langhai.response.ArticleReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.*;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -62,7 +64,6 @@ public class ArticleController {
         // 获取用户的所有标签内容
         List<String> labelContent = labelService.getAllLabelContentByUser();
         model.addAttribute("labelList", labelContent);
-
         return "blogs/article/newArticle";
     }
 
@@ -296,6 +297,15 @@ public class ArticleController {
                                        @RequestParam(defaultValue = "10") Integer size, String searchArticleStr, Long labelId){
         PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, labelId);
         model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(pageInfo.getList())));
+        List<Article> topArticle = articleService.topArticle(page, searchArticleStr, labelId);
+        List<Article> pageInfoList = pageInfo.getList();
+        if (CollUtil.isEmpty(topArticle)) {
+            model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(pageInfoList)));
+        } else {
+            List<Article> sumArticleList = new ArrayList<>(topArticle);
+            sumArticleList.addAll(pageInfoList);
+            model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(sumArticleList)));
+        }
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("pages", pageInfo.getPages());

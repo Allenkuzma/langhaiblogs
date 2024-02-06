@@ -78,4 +78,11 @@ public interface ArticleMapper {
      * @param id 文章id
      */
     void systemDeleteArticle(Long id);
+
+    /**
+     * 获取置顶文章
+     *
+     * @return 置顶文章
+     */
+    List<Article> topArticle();
 }
