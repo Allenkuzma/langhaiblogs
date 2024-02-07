@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 文章控制器
@@ -60,7 +61,7 @@ public class ArticleController {
      * @return 文章新发布页面
      */
     @GetMapping("/newArticlePage")
-    public String newArticlePage(Model model){
+    public String newArticlePage(Model model) {
         // 获取用户的所有标签内容
         List<String> labelContent = labelService.getAllLabelContentByUser();
         model.addAttribute("labelList", labelContent);
@@ -74,10 +75,9 @@ public class ArticleController {
      */
     @ResponseBody
     @PostMapping("/issue")
-    public ResultResponse issue(@RequestBody @Validated ArticleDTO articleDTO){
-        articleService.issue(articleDTO);
-
-        return ResultResponse.success(ArticleReturnCode.ARTICLE_ISSUE_OK_00000);
+    public ResultResponse<Long> issue(@RequestBody @Validated ArticleDTO articleDTO) {
+        Long id = articleService.issue(articleDTO);
+        return ResultResponse.success(ArticleReturnCode.ARTICLE_ISSUE_OK_00000, id);
     }
 
     /**
@@ -204,11 +204,11 @@ public class ArticleController {
      *         用户登录页面 更新文章无权限操作
      */
     @GetMapping("/updateArticlePage")
-    public String updateArticlePage(Model model, Long id){
+    public String updateArticlePage(Model model, Long id) {
         if (ObjectUtil.isNull(id)) {
             return "blogs/user/login";
         }
-        // 查询要更新的文章 判断是否有操作权限
+        // 查询要更新的文章，判断是否有操作权限。
         Article article = articleService.articlePermission(id);
         model.addAttribute("article", article);
         // 获取用户的所有标签内容
@@ -225,9 +225,8 @@ public class ArticleController {
      */
     @ResponseBody
     @PostMapping("/updateArticle")
-    public ResultResponse updateArticle(@RequestBody @Validated ArticleDTO articleDTO){
+    public ResultResponse<Void> updateArticle(@RequestBody @Validated ArticleDTO articleDTO) {
         articleService.updateArticle(articleDTO);
-
         return ResultResponse.success(ArticleReturnCode.ARTICLE_UPDATE_OK_00003);
     }
 
@@ -239,9 +238,8 @@ public class ArticleController {
      */
     @ResponseBody
     @DeleteMapping("/deleteArticle")
-    public ResultResponse deleteArticle(Long id){
+    public ResultResponse<Void> deleteArticle(Long id){
         articleService.deleteArticle(id);
-
         return ResultResponse.success(ArticleReturnCode.ARTICLE_DELETE_OK_00005);
     }
 
@@ -296,7 +294,6 @@ public class ArticleController {
     public String articleSearchPageNew(Model model, @RequestParam(defaultValue = "1") Integer page,
                                        @RequestParam(defaultValue = "10") Integer size, String searchArticleStr, Long labelId){
         PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, labelId);
-        model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(pageInfo.getList())));
         List<Article> topArticle = articleService.topArticle(page, searchArticleStr, labelId);
         List<Article> pageInfoList = pageInfo.getList();
         if (CollUtil.isEmpty(topArticle)) {
@@ -304,7 +301,8 @@ public class ArticleController {
         } else {
             List<Article> sumArticleList = new ArrayList<>(topArticle);
             sumArticleList.addAll(pageInfoList);
-            model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(sumArticleList)));
+            List<Article> articleList = sumArticleList.stream().distinct().collect(Collectors.toList());
+            model.addAttribute("list", articleCommentService.getArticleHeat(articleService.getArticleHeat(articleList)));
         }
         model.addAttribute("page", page);
         model.addAttribute("size", size);

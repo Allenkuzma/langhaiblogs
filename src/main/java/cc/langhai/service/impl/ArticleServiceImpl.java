@@ -72,9 +72,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void issue(ArticleDTO articleDTO) {
+    public Long issue(ArticleDTO articleDTO) {
         Long userId = UserContext.getUserId();
-
         // 当天发布文章次数限制
         String nowDay = DateUtil.getNowDay();
         Integer dayCount = articleMapper.getDayCount(userId, nowDay + " 00:00:00",
@@ -82,28 +81,26 @@ public class ArticleServiceImpl implements ArticleService {
         if(dayCount >= ArticleConstant.ARTICLE_COUNT_TODAY){
             throw new BusinessException(ArticleReturnCode.ARTICLE_ISSUE_COUNT_DAY_FAIL_00002);
         }
-
         // 文章访问密码处理
         this.handleArticlePassword(articleDTO);
-
         // 标签处理
         Label labelMysql = this.labelHandle(articleDTO.getLabel(), articleDTO.getContent());
-
         // 将文章保存到数据库
         Article article = new Article();
         BeanUtils.copyProperties(articleDTO, article);
         article.setUserId(userId);
         article.setLabelId(labelMysql.getId());
         article.setPublicShow("on".equals(articleDTO.getPublicShow()) ? 1 : 0);
+        article.setTopFlag("on".equals(articleDTO.getTopFlag()) ? 1 : 0);
         article.setDeleteFlag(0);
         article.setAddTime(new Date());
         articleMapper.insertArticle(article);
-
         // 公开的文章
         if(article.getPublicShow().equals(1)){
             // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
             rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
         }
+        return article.getId();
     }
 
     @Override
@@ -185,26 +182,22 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional(rollbackFor = Exception.class)
     public void updateArticle(ArticleDTO articleDTO) {
         // 更新的文章id不能为空
-        if(ObjectUtil.isNull(articleDTO.getId())){
+        if (ObjectUtil.isNull(articleDTO.getId())) {
             throw new BusinessException(ArticleReturnCode.ARTICLE_UPDATE_PARAM_FAIL_00004);
         }
-
         // 文章访问密码处理
         this.handleArticlePassword(articleDTO);
-
         // 文章是否有权限操作
         Article article = this.articlePermission(articleDTO.getId());
-
         // 标签处理
         Label labelMysql = this.labelHandle(articleDTO.getLabel(), articleDTO.getContent());
-
         // 将文章更新到数据库
         BeanUtils.copyProperties(articleDTO, article);
         article.setLabelId(labelMysql.getId());
         article.setPublicShow("on".equals(articleDTO.getPublicShow()) ? 1 : 0);
+        article.setTopFlag("on".equals(articleDTO.getTopFlag()) ? 1 : 0);
         article.setUpdateTime(new Date());
         articleMapper.updateArticle(article);
-
         // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
         rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
     }
@@ -213,13 +206,11 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteArticle(Long id) {
         // 文章是否有权限操作
         Article article = this.articlePermission(id);
-
         // 对文章进行逻辑删除
         article.setDeleteFlag(1);
         article.setUpdateTime(new Date());
         articleMapper.deleteArticle(article);
-
-        if(article.getPublicShow().equals(1)){
+        if (article.getPublicShow().equals(1)) {
             // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
             rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_DELETE_KEY, article.getId());
         }
@@ -285,23 +276,19 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article articlePermission(Long id){
+    public Article articlePermission(Long id) {
         // 文章id不能为空
-        if(ObjectUtil.isNull(id)){
+        if (ObjectUtil.isNull(id)) {
             throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
         }
-
         Article article = articleMapper.getById(id);
-        if(ObjectUtil.isNull(article)){
+        if (ObjectUtil.isNull(article)) {
             throw new BusinessException(ArticleReturnCode.ARTICLE_PARAM_FAIL_00006);
         }
-
         // 文章是否有权限操作
-        Long userIdArticle = article.getUserId();
-        if(!UserContext.getUserId().equals(userIdArticle)){
+        if (!article.getUserId().equals(UserContext.getUserId())) {
             throw new BusinessException(ArticleReturnCode.ARTICLE_PERMISSION_FAIL_00007);
         }
-
         return article;
     }
 
@@ -370,6 +357,9 @@ public class ArticleServiceImpl implements ArticleService {
         if (Integer.valueOf(1).equals(page) && StrUtil.isBlank(searchArticleStr)) {
             if (Long.valueOf(0L).equals(labelId) || ObjectUtil.isNull(labelId)) {
                 List<Article> topArticleList = articleMapper.topArticle();
+                if (topArticleList.size() >= 3) {
+                    return topArticleList.subList(0, 3);
+                }
                 return topArticleList;
             }
         }

@@ -80,6 +80,7 @@
             title = #{title},
             html = #{html},
             public_show = #{publicShow},
+            top_flag = #{topFlag},
             update_time = #{updateTime},
             abstract_text = #{abstractText},
             password = #{password}

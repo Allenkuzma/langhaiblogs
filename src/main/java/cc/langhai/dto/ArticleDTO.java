@@ -40,7 +40,12 @@ public class ArticleDTO implements Serializable {
     private String label;
 
     /**
-     * 文章是否公开： 公开/不公开
+     * 文章是否公开：公开/不公开
      */
     private String publicShow;
+
+    /**
+     * 文章是否置顶：置顶/不置顶
+     */
+    private String topFlag;
 }

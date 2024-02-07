@@ -22,8 +22,9 @@ public interface ArticleService {
      * 用户发布文章，保存到数据库。
      *
      * @param articleDTO 文章实体类 传输对象DTO
+     * @return 文章id
      */
-    void issue(ArticleDTO articleDTO);
+    Long issue(ArticleDTO articleDTO);
 
     /**
      * 获取用户发布的所有文章
@@ -80,7 +81,7 @@ public interface ArticleService {
     /**
      * 用户逻辑删除文章，保存到数据库。
      *
-     * @param id
+     * @param id 文章id
      */
     void deleteArticle(Long id);
 

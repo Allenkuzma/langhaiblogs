@@ -55,8 +55,8 @@ public class ResultResponse<T> {
     /**
      * 响应成功 带响应数据
      *
-     * @return
-     * @param <T>
+     * @return 统一封装结果集
+     * @param <T> 响应参数类型
      */
     public static <T> ResultResponse<T> success(ReturnCode returnCode, T object){
         return new ResultResponse<>(returnCode.getCode(), returnCode.getMessage(), object);
