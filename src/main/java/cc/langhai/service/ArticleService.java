@@ -97,16 +97,6 @@ public interface ArticleService {
     PageInfo<Article> search(Integer page, Integer size, String searchArticleStr, Long labelId);
 
     /**
-     * 文章搜索功能 用于ES搜索引擎
-     *
-     * @param size
-     * @param page
-     * @param searchArticleStr
-     * @return
-     */
-    HashMap<String, Object> searchES(Integer page, Integer size, String searchArticleStr) throws IOException;
-
-    /**
      * 判断文章是否有权限操作
      *
      * @param id 文章实体类id

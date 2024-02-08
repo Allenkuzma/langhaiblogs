@@ -133,16 +133,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- elasticsearch -->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-        </dependency>
-        <!-- amqp -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
         <!-- 代码生成器 -->
         <dependency>
             <groupId>com.baomidou</groupId>
