@@ -6,7 +6,7 @@
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>浪海博客 ~ www.langhai.cc</title>
+		<title>浪海博客 ~ IT技术分享和生活分享平台</title>
 		<meta charset="utf-8" />
 		<meta name="keywords" content="浪海,博客,java,浪海博客,博客系统,浪海博客系统" />
 		<meta name="description" content="浪海博客一个由java构建的个人博客网站，用来分享个人技术文章、生活文章。" />
@@ -53,19 +53,20 @@
 										该账户已经被禁用，所有功能都被禁用，请联系网站管理员处理。
 									</span>
 								</span>
+								<span>
+									阅读本站发表的博文请访问 <a href="/article/articleSearchPageNew" ><span class="icon brands fa-leanpub"></span>文章库</a>，
+									在这里能看到近期的站点数据 <a href="/html/visit/visit.html" ><span class="icon solid fa-signal"></span>用户访问记录</a>，
+									一个简洁的搜索页面 <a href="/juso/index.html"><span class="icon solid fa-search"></span>聚合搜索</a>，
+									保存用户文章图片 <a href="/image/imagePage" ><span class="icon solid fa-camera"></span>图库</a>，
+									一个简易的在线沟通频道
+									<span th:switch="${session.user?.isAdmin()}">
+										<a th:case="true" href="/netty/customer" ><span class="icon solid fa-camera"></span>客服聊天</a>
+										<a th:case="*" href="/netty/tourist" ><span class="icon solid fa-paper-plane"></span>客户聊天</a>
+									</span>。
+								</span>
 							</p>
 							<ul class="actions">
 								<li><a href="#one" class="button">了解更多</a></li>
-								<li><a href="/image/imagePage" class="button">图库</a></li>
-								<li th:switch="${session.user?.isAdmin()}">
-									<a th:case="true" href="/netty/customer" class="button">客服聊天</a>
-									<a th:case="*" href="/netty/tourist" class="button">客户聊天</a>
-								</li>
-							</ul>
-							<ul class="actions">
-								<li><a href="/article/articleSearchPageNew" class="button">文章库</a></li>
-								<li><a href="/html/visit/visit.html" class="button">用户访问记录</a></li>
-								<li><a href="/juso/index.html" class="button">聚合搜索</a></li>
 							</ul>
 						</div>
 					</section>

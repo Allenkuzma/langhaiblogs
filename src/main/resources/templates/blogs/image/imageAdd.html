@@ -1,99 +1,148 @@
-<!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>添加图片 - 浪海博客</title>
-  <meta name="keywords" content="浪海博客,添加图片" />
-  <meta name="description" content="浪海博客的添加图片。" />
+  <title>上传图片 - 浪海博客</title>
+  <meta charset="utf-8" />
+  <meta name="keywords" content="浪海博客,图库,上传图片" />
+  <meta name="description" content="浪海博客图库进行图片上传。" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <link href="https://cdn.staticfile.org/layui/2.7.6/css/layui.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="/blogs/assets/css/main.css" />
+  <noscript><link rel="stylesheet" href="/blogs/assets/css/noscript.css" /></noscript>
 </head>
-<body>
-  <ul class="layui-nav layui-bg-green" lay-filter="">
-    <li class="layui-nav-item"><a href="/">首页</a></li>
-    <li class="layui-nav-item layui-this"><a href="/image/imageAddPage">添加图片</a></li>
-    <li class="layui-nav-item"><a href="/article/articleListPage">文章列表</a></li>
-    <li class="layui-nav-item"><a href="/article/newArticlePage">发布新文章</a></li>
-    <li class="layui-nav-item"><a href="/user/personalPage">个人空间</a></li>
-  </ul>
+<body class="is-preload">
 
-  <blockquote class="layui-elem-quote">
-    在这里可以上传图片到服务器
-    <p id="issueResult" style="color: red"></p>
-  </blockquote>
+<!-- Header -->
+<header id="header">
+  <a href="/" class="title">浪海博客</a>
+  <nav>
+    <ul>
+      <li><a href="/">主页</a></li>
+      <li><a href="/image/imageAddPage" class="active">上传图片</a></li>
+      <li><a href="javascript:void(0)" id="loginOut">安全退出</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-    <legend>拖拽上传</legend>
-  </fieldset>
+<!-- Wrapper -->
+<div id="wrapper">
 
-  <div class="layui-upload-drag" id="test10">
-    <i class="layui-icon"></i>
-    <p>点击上传，或将文件拖拽到此处</p>
-    <div class="layui-hide" id="uploadDemoView">
-      <hr>
-      <img src="" alt="上传成功后渲染" style="max-width: 196px">
+  <!-- Main -->
+  <section id="main" class="wrapper">
+    <div class="inner">
+      <h1 class="major">上传图片</h1>
+      <span class="image fit"><img src="/blogs/images/personal.jpg" alt="林书豪" /></span>
+      <div class="split style1">
+        <section>
+          <p id="vCodeStatus"></p>
+          <p id="url"></p>
+          <div>
+            <div>
+              <form action="" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" id="file">
+              </form>
+            </div>
+            <div>
+              <a id="uploadFile" class="button icon solid fa-upload" href="javascript:void(0)">上传图片</a>
+            </div>
+            <div >
+              <br />
+              使用空间量：<span th:text="${size}"></span>
+            </div>
+          </div>
+        </section>
+        <section>
+          <ul class="contact">
+            <li>
+              <h3>图库</h3>
+              <span>
+                <a href="/image/imagePage">返回图库</a><br />
+              </span>
+            </li>
+            <li>
+              <h3>文章</h3>
+              <a href="/article/newArticlePage">文章发表</a><br />
+            </li>
+            <li>
+              <h3>系统管理</h3>
+              <a href="/pear/index.html">进入管理系统</a><br />
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <hr class="layui-border-green">
+</div>
 
-  <div>
-    <div>使用空间：</div>
-    <div class="layui-progress layui-progress-big" lay-showPercent="true">
-      <div class="layui-progress-bar layui-bg-blue" th:lay-percent="${size}"></div>
-    </div>
-  </div>
-
-  <hr class="layui-border-green">
-
-  <div>
-    <button type="button" class="layui-btn layui-btn-fluid">
-      <a href="/image/imagePage">返回图库</a>
-    </button>
-  </div>
-
-  <blockquote class="layui-elem-quote">
+<!-- Footer -->
+<footer id="footer" class="wrapper alt">
+  <div class="inner">
     <ul class="menu">
       <li>&copy; <a href="http://www.langhai.cc">浪海博客</a>. All rights reserved.</li><li>个人网站 2021 ~ 2029年</li>
-      <li>
-        <a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a>
-        <a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a>
-      </li>
+      <li><a href="https://gitee.com/langhai666/langhai-blog" target="_blank" >gitee</a></li></li>
+      <li><a href="https://github.com/Allenkuzma/langhaiblogs" target="_blank" >github</a></li></li>
     </ul>
-  </blockquote>
+  </div>
+</footer>
 
-</body>
-<script src="https://cdn.staticfile.org/layui/2.7.6/layui.js"></script>
+<!-- Scripts -->
 <script src="/blogs/assets/js/jquery.min.js"></script>
-<script >
-  //注意：导航 依赖 element 模块，否则无法进行功能性操作
-  layui.use(['element', 'form', 'table', 'laypage', 'upload'], function() {
-    var element = layui.element;
-    var form = layui.form;
-    var table = layui.table;
-    var laypage = layui.laypage;
-    var upload = layui.upload;
+<script src="/blogs/assets/js/jquery.scrollex.min.js"></script>
+<script src="/blogs/assets/js/jquery.scrolly.min.js"></script>
+<script src="/blogs/assets/js/browser.min.js"></script>
+<script src="/blogs/assets/js/breakpoints.min.js"></script>
+<script src="/blogs/assets/js/util.js"></script>
+<script src="/blogs/assets/js/main.js"></script>
 
-    layer.msg('使用电脑展示更佳', {
-      closeBtn: 1,
-      icon: 6,
-      time: 3 * 1000,
-      offset: '21px'
-    });
+<script>
+  $(function() {
+    // 退出登录
+    $("#loginOut").click(function() {
+      $.ajax({
+        url: "/user/loginOut",
+        async: true,
+        type: "POST",
+        success: function(data) {
+          if (data.code == 200) {
+            $("#vCodeStatus").html("用户安全退出，3秒后为你跳转到首页。");
+            setTimeout(function() {
+              window.location.href = "/";
+            }, 3000);
+          } else {
+            $("#vCodeStatus").html(data.message);
+          }
+        }
+      })
+    })
 
-    // 拖拽上传
-    upload.render({
-      elem: '#test10'
-      ,url: '/minio/upload/wangEditor'
-      ,done: function(res){
-        layer.msg(res.message);
-        layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.data.url);
+    // 上传图片
+    $("#uploadFile").click(function() {
+      // 使用jQuery发起上传文件请求
+      var files = $('#file')[0].files;
+      if (files.length <= 0) {
+        return $("#vCodeStatus").html('请选择文件后再上传！');
       }
-    });
-
-
-
+      var fd = new FormData();
+      fd.append('file', files[0]);
+      $.ajax({
+        type: 'post',
+        url: '/minio/upload/wangEditor',
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          $("#vCodeStatus").html(data.message);
+          var currentProtocolAndDomain = window.location.origin;
+          $("#url").html("图片地址：" + currentProtocolAndDomain + data.data.url);
+        }
+      })
+    })
   })
 </script>
+</body>
 </html>
