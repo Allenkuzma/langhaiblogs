@@ -3,11 +3,11 @@ logo:
   ## 网站名称
   title: "浪海博客管理后台"
   ## 网站图标
-  image: "admin/images/logo.png"
+  image: "/pear/admin/images/logo.png"
 ## 菜单配置
 menu: 
   ## 菜单数据来源
-  data: "admin/data/menu.json"
+  data: "/pear/admin/data/menu.json"
   ## 菜单接口的请求方式 GET / POST
   method: "GET" 
   ## 是否同时只打开一个菜单目录
@@ -37,7 +37,7 @@ tab:
   ## 首页
   index: 
     id: "10" ## 标识 ID , 建议与菜单项中的 ID 一致
-    href: "view/console/console1.html" ## 页面地址
+    href: "/pear/view/console/console1.html" ## 页面地址
     title: "浪海博客管理后台" ## 标题
 ## 主题配置
 theme: 
@@ -79,4 +79,4 @@ other:
 ## 头部配置
 header:
   ## 站内消息，通过 false 设置关闭
-  message: "admin/data/message.json"
+  message: "/pear/admin/data/message.json"

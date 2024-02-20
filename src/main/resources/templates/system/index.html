@@ -102,7 +102,7 @@
 				var popup = layui.popup;
 				
 				admin.setConfigType("yml");
-				admin.setConfigPath("config/pear.config.yml");
+				admin.setConfigPath("/pear/config/pear.config.yml");
 				
 				admin.render();
 				
@@ -129,21 +129,6 @@
 				// 消息点击回调
 				admin.message(function(id, title, context, form) {});
 
-				$.ajax({
-					url: "/user/enter",
-					type: 'get',
-					success: function(result) {
-						if (result.code == 200) {
-							if(result.data == "ok"){
-
-							}else if(result.data == "fail"){
-								window.location.href = "/user/loginPage";
-							}
-						} else {
-							window.location.href = "/user/loginPage";
-						}
-					}
-				})
 			})
 		</script>		
 	</body>

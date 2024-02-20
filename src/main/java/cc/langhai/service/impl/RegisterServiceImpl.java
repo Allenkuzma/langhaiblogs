@@ -350,7 +350,7 @@ public class RegisterServiceImpl implements RegisterService {
         if (ObjectUtil.isNotNull(user)) {
             UserContext.set(user);
             jsonObject.put("data", "ok");
-        }else {
+        } else {
             this.remember(request, request.getSession());
             user = (User) request.getSession().getAttribute("user");
             if (ObjectUtil.isNotNull(user)) {

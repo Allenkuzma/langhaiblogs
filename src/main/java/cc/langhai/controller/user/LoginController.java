@@ -106,7 +106,7 @@ public class LoginController {
      */
     @ResponseBody
     @GetMapping("/enter")
-    public JSONObject enter(HttpServletRequest request){
+    public JSONObject enter(HttpServletRequest request) {
         return registerService.enter(request);
     }
 

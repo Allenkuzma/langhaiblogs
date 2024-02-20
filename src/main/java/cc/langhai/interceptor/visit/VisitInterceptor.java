@@ -38,7 +38,7 @@ public class VisitInterceptor implements HandlerInterceptor {
         String referer = request.getHeader("referer");
         // redis获取用户访问信息
         String redisIpAddr = redisTemplate.opsForValue().get("visit:ip:" + ip + " ~ " + DateUtil.getNowDay());
-        if(StrUtil.isBlank(redisIpAddr)){
+        if (StrUtil.isBlank(redisIpAddr)) {
             redisTemplate.opsForValue().set("visit:ip:" + ip + " ~ " + DateUtil.getNowDay(), userAgent, 10, TimeUnit.MINUTES);
             // 记录到mysql
             Visit visit = new Visit();

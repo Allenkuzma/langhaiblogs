@@ -17,13 +17,13 @@ public class IPUtil {
      *
      * @return 用户真实ip地址
      */
-    public static String getIP(HttpServletRequest request){
+    public static String getIP(HttpServletRequest request) {
         String remoteAddr = request.getRemoteAddr();
         String header = request.getHeader("x-forwarded-for");
         String ip = "";
-        if(StrUtil.isBlank(header)){
+        if (StrUtil.isBlank(header)) {
             ip = remoteAddr;
-        }else {
+        } else {
             ip = header;
         }
         return ip;

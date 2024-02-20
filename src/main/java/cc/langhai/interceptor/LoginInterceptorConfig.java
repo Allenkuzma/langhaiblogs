@@ -84,6 +84,7 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/navWebsite/deleteNavWebsite");
         registration.addPathPatterns("/netty/customer");
         registration.addPathPatterns("/netty/tourist");
+        registration.addPathPatterns("/system/index");
         registration.addPathPatterns("/system/article/systemArticleListPage");
         registration.addPathPatterns("/system/article/systemArticleList");
         registration.addPathPatterns("/system/article/systemArticleShow");

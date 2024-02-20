@@ -161,7 +161,7 @@ public class ArticleController {
      *                          不匹配页面 blogs/user/login
      */
     @GetMapping("/articleShow")
-    public String articleShow(Long id, String password, Model model, HttpSession session){
+    public String articleShow(Long id, String password, Model model, HttpSession session) {
         Article article = articleService.getById(id);
         if (ObjectUtil.isNull(article)) {
             return "blogs/user/login";
