@@ -49,4 +49,9 @@ public class MessageServiceImpl implements MessageService {
         message.setAddTime(new Date());
         messageMapper.insertMessage(message);
     }
+
+    @Override
+    public List<Message> getAllMessage() {
+        return messageMapper.getAllMessage();
+    }
 }

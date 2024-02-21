@@ -22,6 +22,16 @@ public class DateUtil {
     }
 
     /**
+     * 获取当天日期 yyyy-MM-dd HH:mm:ss
+     *
+     * @return 例如 2023-04-05 10:00:00
+     */
+    public static String getNowDayDetail() {
+        String format = cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+        return format;
+    }
+
+    /**
      * 获取当天日期 yyyy-MM-dd 开始结束时间
      *
      * @return nowDay + " 00:00:00" nowDay + " 23:59:59"

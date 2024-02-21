@@ -37,7 +37,7 @@ public class LinksController {
      */
     @GetMapping("/linksListPage")
     @RequestAuthority(value = {"admin"})
-    public String linksListPage(){
+    public String linksListPage() {
         return "blogs/links/linksList";
     }
 
@@ -48,8 +48,7 @@ public class LinksController {
      */
     @GetMapping("/linksAddPage")
     @RequestAuthority(value = {"admin"})
-    public String linksAddPage(){
-
+    public String linksAddPage() {
         return "blogs/links/linksAdd";
     }
 
@@ -79,14 +78,13 @@ public class LinksController {
     @ResponseBody
     @GetMapping("/linksList")
     @RequestAuthority(value = {"admin"})
-    public JSONObject linksList(){
+    public JSONObject linksList() {
         List<Links> linksList = linksService.list();
         Collections.sort(linksList);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);
         jsonObject.put("data", linksList);
         jsonObject.put("count", linksList.size());
-
         return jsonObject;
     }
 
@@ -98,13 +96,11 @@ public class LinksController {
     @ResponseBody
     @PostMapping("/addLinks")
     @RequestAuthority(value = {"admin"})
-    public ResultResponse addLinks(@RequestBody @Validated Links links){
-        if(ObjectUtil.isNull(links)){
+    public ResultResponse addLinks(@RequestBody @Validated Links links) {
+        if (ObjectUtil.isNull(links)) {
             return ResultResponse.fail(LinksReturnCode.LINKS_ADD_FAIL_00002);
         }
-
         linksService.addLinks(links);
-
         return ResultResponse.success(LinksReturnCode.LINKS_ADD_SUCCESS_00001);
     }
 

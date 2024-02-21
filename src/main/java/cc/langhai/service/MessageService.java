@@ -3,6 +3,7 @@ package cc.langhai.service;
 import cc.langhai.domain.Message;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 反馈消息 service接口
@@ -19,4 +20,11 @@ public interface MessageService {
      * @param request http请求
      */
     void save(Message message, HttpServletRequest request);
+
+    /**
+     * 获取所有留言
+     *
+     * @return 留言集合
+     */
+    List<Message> getAllMessage();
 }

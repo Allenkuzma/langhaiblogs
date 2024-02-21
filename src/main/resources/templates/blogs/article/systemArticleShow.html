@@ -97,6 +97,19 @@
 			$(function (){
 				$("img").addClass("image fit");
 			})
+
+			var originalStyle;
+			// 图片放大处理
+			$("body").on("click", "img", function(){
+				if ($(this).hasClass("zoomed")) {
+					$(this).removeClass("zoomed"); // 移除放大样式类
+					$(this).attr("style", originalStyle);
+				} else {
+					originalStyle = $(this).attr("style");
+					$(this).addClass("zoomed"); // 添加放大样式类
+					$(this).attr("style", "width: 100%;");
+				}
+			})
 		</script>
 	</body>
 </html>

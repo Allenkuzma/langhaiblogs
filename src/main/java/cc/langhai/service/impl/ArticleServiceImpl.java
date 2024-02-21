@@ -106,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> getAllArticle(String title, String abstractText, String param) {
         Long userId = UserContext.getUserId();
-        if("system".equals(param)){
+        if ("system".equals(param)) {
             userId = null;
         }
         List<Article> allArticle = articleMapper.getAllArticle(userId, title, abstractText);

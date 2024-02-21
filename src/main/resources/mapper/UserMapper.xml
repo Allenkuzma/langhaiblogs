@@ -73,6 +73,7 @@
             AND
             u.nickname like concat( '%' , #{nickname}, '%')
         </if>
+        ORDER BY u.add_time DESC
     </select>
 
 </mapper>

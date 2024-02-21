@@ -85,6 +85,7 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/netty/customer");
         registration.addPathPatterns("/netty/tourist");
         registration.addPathPatterns("/system/index");
+        registration.addPathPatterns("/system/console1");
         registration.addPathPatterns("/system/article/systemArticleListPage");
         registration.addPathPatterns("/system/article/systemArticleList");
         registration.addPathPatterns("/system/article/systemArticleShow");
@@ -95,6 +96,9 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/articleComment/articleCommentListPage");
         registration.addPathPatterns("/articleComment/articleComment");
         registration.addPathPatterns("/articleComment/deleteArticleComment");
+        registration.addPathPatterns("/notification/notificationListPage");
+        registration.addPathPatterns("/notification/notificationAddPage");
+        registration.addPathPatterns("/notification/addNotification");
         // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",

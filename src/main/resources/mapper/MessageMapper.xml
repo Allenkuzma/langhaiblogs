@@ -36,4 +36,11 @@
             (#{name}, #{email}, #{message}, #{ip}, #{addTime})
     </insert>
 
+    <select id="getAllMessage" resultType="cc.langhai.domain.Message">
+        select
+            *
+        from
+            message
+        order by add_time DESC
+    </select>
 </mapper>

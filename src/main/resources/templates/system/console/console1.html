@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
 		<title>控制后台</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="stylesheet" href="../../component/pear/css/pear.css" />
-		<link rel="stylesheet" href="../../admin/css/other/console1.css" />
+		<link rel="stylesheet" href="/pear/component/pear/css/pear.css" />
+		<link rel="stylesheet" href="/pear/admin/css/other/console1.css" />
 	</head>
 	<body class="pear-container">
 		<div>
@@ -83,7 +83,7 @@
 				</div>
 				<div class="layui-col-xs6 layui-col-md3">
 					<div class="layui-card top-panel">
-						<div class="layui-card-header">今日访问</div>
+						<div class="layui-card-header">留言数量</div>
 						<div class="layui-card-body">
 							<div class="layui-row layui-col-space5">
 								<div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value3">
@@ -113,7 +113,7 @@
 				</div>
 				<div class="layui-col-xs6 layui-col-md3">
 					<div class="layui-card top-panel">
-						<div class="layui-card-header">今日访问</div>
+						<div class="layui-card-header">文章数量</div>
 						<div class="layui-card-body">
 							<div class="layui-row layui-col-space5">
 								<div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value4">
@@ -158,12 +158,12 @@
 						<div class="layui-card-header">动态</div>
 						<div class="layui-card-body">
 							<dl class="layuiadmin-card-status">
-								<dd>
+								<dd th:each="user : ${userList}">
 									<div class="layui-status-img"><a href="javascript:;"><img style="width: 32px;height: 32px;border-radius: 50px;"
-											 src="../../admin/images/avatar.jpg"></a></div>
+											 src="/pear/admin/images/avatar.jpg"></a></div>
 									<div>
-										<p>浪海博客 在 <a class="pear-text" target="_blank" href="https://www.langhai.cc">浪海博客 专区</a> 回答问题</p>
-										<span>几秒前</span>
+										<p>浪海博客新注册的朋友 <span th:text="${user?.getNickname()}"></span> <a class="pear-text" target="_blank" href="/">返回首页</a> </p>
+										<span th:text="${user?.getAddTimeShow()}"></span>
 									</div>
 								</dd>
 							</dl>
@@ -172,10 +172,13 @@
 				</div>
 				<div class="layui-col-md3">
 					<div class="layui-card">
-						<div class="layui-card-header">更 新</div>
+						<div class="layui-card-header">最近文章</div>
 						<div class="layui-card-body">
 							<ul class="list">
-								<li class="list-item"><span class="title">后台管理系统初始化</span><span class="footer">2023-02-03 14:32</span></li>
+								<li class="list-item" th:each="article : ${articleList}">
+									<a th:href="'/article/articleShow?id=' + ${article.id}" target="_blank"><span class="title" th:text="${article.title}"></span></a>
+									<span class="footer" th:text="${article.addTimeShow}"></span>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -199,15 +202,15 @@
 							寄语
 						</div>
 						<div class="layui-card-body" style="line-height:40px;">
-							浪海博客系统，基于java构建。
+							<span th:text="${slogan}"></span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--</div>-->
-		<script src="../../component/layui/layui.js"></script>
-		<script src="../../component/pear/pear.js"></script>
+		<script src="/pear/component/layui/layui.js"></script>
+		<script src="/pear/component/pear/pear.js"></script>
 		<script>
 			layui.use(['layer', 'echarts', 'element', 'count'], function() {
 				var $ = layui.jquery,
@@ -226,7 +229,7 @@
 						if (data.code == 200) {
 							dataArray = data.result;
 						} else {
-							dataArray = [0, 0];
+							dataArray = [0, 0, 0, 0];
 						}
 
 						count.up("value1", {
@@ -245,7 +248,7 @@
 
 						count.up("value3", {
 							time: 4000,
-							num: dataArray[0],
+							num: dataArray[2],
 							bit: 2,
 							regulator: 50
 						})
@@ -253,7 +256,7 @@
 						count.up("value4", {
 							time: 4000,
 							bit: 2,
-							num: dataArray[0],
+							num: dataArray[3],
 							regulator: 50
 						})
 					}

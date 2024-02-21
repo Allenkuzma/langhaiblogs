@@ -36,4 +36,11 @@ public interface MessageMapper {
      * @param message 反馈消息实体类
      */
     void insertMessage(Message message);
+
+    /**
+     * 获取所有留言
+     *
+     * @return 留言集合
+     */
+    List<Message> getAllMessage();
 }

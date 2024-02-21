@@ -69,6 +69,9 @@ public class AuthorityConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/articleComment/articleCommentListPage");
         registration.addPathPatterns("/articleComment/articleComment");
         registration.addPathPatterns("/articleComment/deleteArticleComment");
+        registration.addPathPatterns("/notification/notificationListPage");
+        registration.addPathPatterns("/notification/notificationAddPage");
+        registration.addPathPatterns("/notification/addNotification");
         // 添加不拦截路径
         registration.excludePathPatterns(
                                          "/loginPage",

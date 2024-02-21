@@ -1,9 +1,13 @@
 package cc.langhai.controller.visit;
 
+import cc.langhai.domain.Article;
+import cc.langhai.domain.Message;
 import cc.langhai.domain.User;
 import cc.langhai.domain.Visit;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.response.VisitReturnCode;
+import cc.langhai.service.ArticleService;
+import cc.langhai.service.MessageService;
 import cc.langhai.service.UserService;
 import cc.langhai.service.VisitService;
 import cn.hutool.core.collection.CollUtil;
@@ -35,6 +39,12 @@ public class VisitController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private ArticleService articleService;
 
     /**
      * 获取最近七天的用户访问记录
@@ -87,23 +97,29 @@ public class VisitController {
     }
 
     /**
-     * 后台管理数据，今日访问，总注册人数。
+     * 后台管理数据，今日访问，总注册人数，留言数量。
      *
      * @return 后台管理数据
      */
     @ResponseBody
     @GetMapping("/data")
-    public ResultResponse data() {
+    public ResultResponse<ArrayList<Integer>> data() {
         String[] nowDayScope = cc.langhai.utils.DateUtil.getNowDayScope();
         Integer count = visitService.count(Wrappers.<Visit>lambdaQuery()
                 .ge(Visit::getTime, nowDayScope[0])
                 .le(Visit::getTime, nowDayScope[1]));
         // 总注册人数
         List<User> userList = userService.getUserList("", "");
+        // 留言总数
+        List<Message> allMessage = messageService.getAllMessage();
+        // 文章总数
+        List<Article> allArticle = articleService.getAllArticle("", "", "system");
         // 返回结果
         ArrayList<Integer> result = new ArrayList<>(4);
         result.add(count);
         result.add(userList.size());
+        result.add(allMessage.size());
+        result.add(allArticle.size());
         return ResultResponse.success(VisitReturnCode.ADMIN_DATA_SUCCESS_00002, result);
     }
 }

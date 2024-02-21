@@ -37,7 +37,7 @@ tab:
   ## 首页
   index: 
     id: "10" ## 标识 ID , 建议与菜单项中的 ID 一致
-    href: "/pear/view/console/console1.html" ## 页面地址
+    href: "/system/console1" ## 页面地址
     title: "浪海博客管理后台" ## 标题
 ## 主题配置
 theme: 
@@ -75,8 +75,8 @@ other:
   ## 布局顶部主题
   autoHead: false
   ## 页脚
-  footer: false
+  footer: true
 ## 头部配置
 header:
   ## 站内消息，通过 false 设置关闭
-  message: "/pear/admin/data/message.json"
+  message: "/system/message"
