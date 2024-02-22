@@ -70,7 +70,7 @@ public class RegisterController {
                                    @RequestParam("nickname") String nickname,
                                    @RequestParam("email") String email,
                                    @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session, HttpServletResponse response) {
-        registerService.register(username, password, nickname, email, verifyCodeText, session, response);
+        // registerService.register(username, password, nickname, email, verifyCodeText, session, response);
         return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);
     }
 
