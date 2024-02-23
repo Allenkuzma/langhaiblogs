@@ -13,6 +13,8 @@
             ac.user_id = u.id
         WHERE
             ac.article_id = #{articleId}
+        AND
+            ac.show_flag = 1
     </select>
 
     <select id="getAllArticleComment" resultType="cc.langhai.domain.ArticleComment">

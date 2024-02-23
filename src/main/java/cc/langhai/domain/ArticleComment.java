@@ -38,6 +38,11 @@ public class ArticleComment implements Serializable {
     private String content;
 
     /**
+     * 审核状态（1审核通过）
+     */
+    private Boolean showFlag;
+
+    /**
      * 添加时间
      */
     @TableField(value = "add_time", fill = FieldFill.INSERT)

@@ -6,7 +6,7 @@ package cc.langhai.response;
  * @author langhai
  * @date 2022-11-22 21:04
  */
-public enum SystemReturnCode implements ReturnCode{
+public enum SystemReturnCode implements ReturnCode {
 
     SYSTEM_UNKNOWN_00000(500, "系统未知错误，请联系管理员。"),
 

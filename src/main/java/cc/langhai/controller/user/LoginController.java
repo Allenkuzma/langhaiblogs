@@ -75,11 +75,11 @@ public class LoginController {
      */
     @ResponseBody
     @PostMapping("/loginEnter")
-    public ResultResponse loginEnter(@RequestParam("username") String username,
-                                     @RequestParam("password") String password,
-                                     @RequestParam("verifyCodeText") String verifyCodeText,
-                                     @RequestParam(value = "remember", required = false) String remember,
-                                     HttpSession session, HttpServletResponse response) {
+    public ResultResponse<Void> loginEnter(@RequestParam("username") String username,
+                                           @RequestParam("password") String password,
+                                           @RequestParam("verifyCodeText") String verifyCodeText,
+                                           @RequestParam(value = "remember", required = false) String remember,
+                                           HttpSession session, HttpServletResponse response) {
         // 用户登录服务处理
         registerService.loginEnter(username, password, verifyCodeText, session, remember, response);
         // 用户登录成功

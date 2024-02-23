@@ -65,12 +65,12 @@ public class RegisterController {
      */
     @ResponseBody
     @PostMapping("/register")
-    public ResultResponse register(@RequestParam("username") String username,
+    public ResultResponse<Void> register(@RequestParam("username") String username,
                                    @RequestParam("password") String password,
                                    @RequestParam("nickname") String nickname,
                                    @RequestParam("email") String email,
                                    @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session, HttpServletResponse response) {
-        // registerService.register(username, password, nickname, email, verifyCodeText, session, response);
+        registerService.register(username, password, nickname, email, verifyCodeText, session, response);
         return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);
     }
 

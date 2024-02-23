@@ -53,9 +53,19 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
 
     @Override
     public void deleteArticleComment(Long id) {
-        if(ObjectUtil.isNull(id)){
+        if (ObjectUtil.isNull(id)) {
             throw new BusinessException(ArticleCommentReturnCode.ARTICLE_COMMENT_DELETE_FAIL_00002);
         }
         this.removeById(id);
+    }
+
+    @Override
+    public void show(Long id, Boolean showFlag) {
+        ArticleComment articleComment = this.getById(id);
+        if (ObjectUtil.isNull(articleComment)) {
+            throw new BusinessException(500, "修改评论审核状态失败。");
+        }
+        articleComment.setShowFlag(showFlag);
+        this.updateById(articleComment);
     }
 }

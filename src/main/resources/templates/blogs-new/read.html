@@ -180,14 +180,15 @@
                         "content": $("#content").val()
                     },
                     success: function (data) {
-                        if(data.code == 200){
+                        $("#content").val('');
+                        if (data.code == 200) {
                             layer.msg(data.message, {
                                 icon: 1,
                                 time: 2000
                             }, function () {
                                 window.location.reload();
                             })
-                        }else {
+                        } else {
                             layer.msg(data.message, {
                                 icon: 2,
                                 time: 2000

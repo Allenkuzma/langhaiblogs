@@ -136,6 +136,7 @@
 							"content": $("#content").val()
 						},
 						success: function (data) {
+							$("#content").val('');
 							if(data.code == 200){
 								$("#vCodeStatus").html(data.message);
 								setTimeout(function(){

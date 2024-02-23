@@ -45,4 +45,12 @@ public interface IArticleCommentService extends IService<ArticleComment> {
      * @param id 文章评论id
      */
     void deleteArticleComment(Long id);
+
+    /**
+     * 修改评论审核状态
+     *
+     * @param id 评论id
+     * @param showFlag 启用状态
+     */
+    void show(Long id, Boolean showFlag);
 }

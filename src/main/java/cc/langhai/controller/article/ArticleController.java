@@ -334,12 +334,11 @@ public class ArticleController {
      *                          不匹配页面 blogs/user/login
      */
     @GetMapping("/articleShowNew")
-    public String articleShowNew(Long id, String password, Model model, HttpSession session){
+    public String articleShowNew(Long id, String password, Model model, HttpSession session) {
         Article article = articleService.getById(id);
-        if(ObjectUtil.isNull(article)){
+        if (ObjectUtil.isNull(article)) {
             return "blogs/user/login";
         }
-
         // 查询文章用户的启用状态
         User user = userService.getUserById(article.getUserId());
         if(ObjectUtil.isNotNull(user)){
@@ -347,7 +346,6 @@ public class ArticleController {
                 return "error/articleEnable";
             }
         }
-
         // 访问密码处理
         if(StrUtil.isNotBlank(article.getPassword())){
             model.addAttribute("id", id);
@@ -362,19 +360,16 @@ public class ArticleController {
                 }
             }
         }
-
         // 判断文章是否具有访问权限
-        if(articleService.judgeShow(session, article)){
+        if (articleService.judgeShow(session, article)) {
             model.addAttribute("article", articleService.getArticleHeat(article));
             model.addAttribute("password", password);
             model.addAttribute("commentList", articleCommentService.getCommentByArticleId(id));
-
             // 获取热点前十文章
             Set<Article> articleHeatTop = articleService.getArticleHeatTop();
             model.addAttribute("articleHeatTop", articleHeatTop);
             return "blogs-new/read";
         }
-
         return "blogs/user/login";
     }
 
@@ -387,11 +382,8 @@ public class ArticleController {
      */
     @ResponseBody
     @PostMapping("/submitComment")
-    public ResultResponse submitComment(Long articleId, String content,
-                                        HttpServletRequest httpRequest, HttpSession session){
-        registerService.remember(httpRequest, session);
+    public ResultResponse<Void> submitComment(Long articleId, String content, HttpServletRequest httpRequest, HttpSession session) {
         articleService.submitComment(articleId, content, session);
-
         return ResultResponse.success(ArticleReturnCode.ARTICLE_SUBMIT_COMMENT_OK_00012);
     }
 }

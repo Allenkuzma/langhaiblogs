@@ -23,7 +23,7 @@ public class UserTest {
      * 用于生成用户密码密文
      */
     @Test
-    public void passwordGenerate(){
+    public void passwordGenerate() {
         // 构建AES加密工具
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, systemConfig.getSecret().getBytes());
         // 加密为16进制表示

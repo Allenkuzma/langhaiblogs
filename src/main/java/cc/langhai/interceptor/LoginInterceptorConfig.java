@@ -37,6 +37,7 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/article/updateArticlePage");
         registration.addPathPatterns("/article/updateArticle");
         registration.addPathPatterns("/article/deleteArticle");
+        registration.addPathPatterns("/article/submitComment");
         registration.addPathPatterns("/minio/upload");
         registration.addPathPatterns("/minio/upload/wangEditor");
         registration.addPathPatterns("/minio/delete");
@@ -96,6 +97,7 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/articleComment/articleCommentListPage");
         registration.addPathPatterns("/articleComment/articleComment");
         registration.addPathPatterns("/articleComment/deleteArticleComment");
+        registration.addPathPatterns("/articleComment/show");
         registration.addPathPatterns("/notification/notificationListPage");
         registration.addPathPatterns("/notification/notificationAddPage");
         registration.addPathPatterns("/notification/addNotification");

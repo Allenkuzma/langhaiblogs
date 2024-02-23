@@ -45,7 +45,7 @@ public class SystemUserController {
     @ResponseBody
     @PutMapping("/enable")
     @RequestAuthority(value = {"admin"})
-    public ResultResponse enable(Long id, Boolean enable) {
+    public ResultResponse<Void> enable(Long id, Boolean enable) {
         userService.enable(id, enable);
         return ResultResponse.success(UserReturnCode.USER_UPDATE_ENABLE_SUCCEED_00024);
     }

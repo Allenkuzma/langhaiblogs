@@ -4,6 +4,7 @@ import cc.langhai.config.annotation.RequestAuthority;
 import cc.langhai.domain.ArticleComment;
 import cc.langhai.response.ArticleCommentReturnCode;
 import cc.langhai.response.ResultResponse;
+import cc.langhai.response.UserReturnCode;
 import cc.langhai.service.IArticleCommentService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -34,7 +35,7 @@ public class ArticleCommentController {
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/articleCommentListPage")
-    public String articleCommentListPage(){
+    public String articleCommentListPage() {
         return "blogs/articleComment/articleCommentList";
     }
 
@@ -70,9 +71,24 @@ public class ArticleCommentController {
     @ResponseBody
     @RequestAuthority(value = {"admin"})
     @DeleteMapping("/deleteArticleComment")
-    public ResultResponse deleteArticleComment(Long id){
+    public ResultResponse<Void> deleteArticleComment(Long id) {
         articleCommentService.deleteArticleComment(id);
         return ResultResponse.success(ArticleCommentReturnCode.ARTICLE_COMMENT_DELETE_OK_00001);
+    }
+
+    /**
+     * 修改评论审核状态
+     *
+     * @param id 评论id
+     * @param showFlag 启用状态
+     * @return 修改评论审核状态结果
+     */
+    @ResponseBody
+    @PutMapping("/show")
+    @RequestAuthority(value = {"admin"})
+    public ResultResponse<Void> show(Long id, Boolean showFlag) {
+        articleCommentService.show(id, showFlag);
+        return new ResultResponse<>(200, "修改评论审核状态成功。", null);
     }
 
 }

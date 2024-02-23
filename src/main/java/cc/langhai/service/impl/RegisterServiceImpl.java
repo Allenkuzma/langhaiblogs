@@ -233,11 +233,6 @@ public class RegisterServiceImpl implements RegisterService {
             }
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_VERIFY_00016);
         }
-        // 禁止非管理员登录
-        Role role = roleService.getRole(user.getId());
-        if (!RoleConstant.ADMIN.equals(role.getName())) {
-            throw new BusinessException(SystemReturnCode.SYSTEM_AUTH_FAIL_00002);
-        }
         // 验证码判断
         String verifyCode = (String) session.getAttribute("verifyCode");
         if (StrUtil.isBlank(verifyCode) || !verifyCodeText.equalsIgnoreCase(verifyCode)) {
