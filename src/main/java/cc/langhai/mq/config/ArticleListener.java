@@ -33,21 +33,20 @@ public class ArticleListener {
     @RabbitListener(queues = MqConstants.BLOGS_INSERT_QUEUE)
     public void listenHotelInsertOrUpdate(Long id) throws IOException {
         Article article = articleService.getById(id);
-
         // 文章更新 公开 ==>> 不公开
         Article esServiceById = esService.getById(id);
-        if(ObjectUtil.isNotNull(esServiceById)){
+        if (ObjectUtil.isNotNull(esServiceById)) {
             esService.deleteById(id);
         }
 
-        if(article.getPublicShow().equals(1)){
+        if (article.getPublicShow().equals(1) && article.getCheckFlag().equals(1)) {
             esService.insertById(id);
         }
     }
 
     /**
      * 监听文章删除的业务
-     * @param id 酒店id
+     * @param id 文章id
      */
     @RabbitListener(queues = MqConstants.BLOGS_DELETE_QUEUE)
     public void listenHotelDelete(Long id){

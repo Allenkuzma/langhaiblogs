@@ -68,12 +68,6 @@
                     <input type="checkbox" name="public" lay-skin="switch" lay-text="公开|不公开">
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">是否置顶</label>
-                <div class="layui-input-block">
-                    <input type="checkbox" name="topFlag" id="topFlag" lay-skin="switch" lay-text="置顶|不置顶">
-                </div>
-            </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
@@ -118,7 +112,6 @@
         var label = [[${labelList}]];
         var labelContent = [[${article.labelContent}]];
         var publicShow = [[${article.publicShow}]];
-        var topFlag = [[${article.topFlag}]];
 
         for(var i = 0; i < label.length; i++){
             $('#label-langhai').append('<option value=' + label[i] + '>'+ label[i] +'</option>');
@@ -128,10 +121,6 @@
 
         if(1 == publicShow){
             $('input:checkbox:first').attr("checked",'checked');
-        }
-
-        if (1 == topFlag) {
-            $('#topFlag').attr("checked",'checked');
         }
 
         form.render();
@@ -150,7 +139,6 @@
                     "content": $("#content").val(),
                     "label": $("#label-langhai option:selected").text(),
                     "publicShow": $("input[name='public']:checked").val(),
-                    "topFlag": $("input[name='topFlag']:checked").val(),
                     "id": [[${article.id}]],
                     "abstractText": $("#abstractText").val(),
                     "password": $("#password").val()

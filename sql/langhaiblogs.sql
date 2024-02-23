@@ -11,7 +11,7 @@
  Target Server Version : 50744
  File Encoding         : 65001
 
- Date: 22/02/2024 17:04:22
+ Date: 23/02/2024 15:33:19
 */
 
 SET NAMES utf8mb4;
@@ -32,10 +32,11 @@ CREATE TABLE `article`  (
   `public_show` tinyint(1) NOT NULL COMMENT '是否公开（1表示公开）',
   `delete_flag` tinyint(1) NOT NULL COMMENT '是否逻辑删除（1表示删除）',
   `top_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否置顶 （1表示置顶）',
+  `check_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '审核状态（1代表审核通过）',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 109 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 114 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for article_comment
@@ -46,10 +47,11 @@ CREATE TABLE `article_comment`  (
   `user_id` bigint(20) NOT NULL COMMENT '用户信息内部id',
   `article_id` bigint(20) NOT NULL COMMENT '文章id',
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评论内容',
+  `show_flag` tinyint(1) NULL DEFAULT 0 COMMENT '审核状态（1审核通过）',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章评论表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章评论表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for dev_log
@@ -220,6 +222,6 @@ CREATE TABLE `visit`  (
   `referer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '访问来源地址',
   `user_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '访问设备信息',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 175273 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 175721 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;

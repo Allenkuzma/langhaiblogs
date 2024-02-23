@@ -63,6 +63,8 @@ public class AuthorityConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/system/article/systemArticleList");
         registration.addPathPatterns("/system/article/systemArticleShow");
         registration.addPathPatterns("/system/article/systemDeleteArticle");
+        registration.addPathPatterns("/system/article/top");
+        registration.addPathPatterns("/system/article/check");
         registration.addPathPatterns("/system/user/userPage");
         registration.addPathPatterns("/system/user/enable");
         registration.addPathPatterns("/system/user/image");

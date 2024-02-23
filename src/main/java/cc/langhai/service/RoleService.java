@@ -52,4 +52,11 @@ public interface RoleService extends IService<Role> {
      * @return 用户实体类
      */
     User determineAdmin(User user);
+
+    /**
+     * 是否为管理员
+     *
+     * @return 是否为管理员
+     */
+    Boolean determineAdmin();
 }

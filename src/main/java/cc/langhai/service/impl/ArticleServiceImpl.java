@@ -1,7 +1,6 @@
 package cc.langhai.service.impl;
 
 import cc.langhai.config.constant.ArticleConstant;
-import cc.langhai.config.constant.RoleConstant;
 import cc.langhai.domain.*;
 import cc.langhai.dto.ArticleDTO;
 import cc.langhai.exception.BusinessException;
@@ -9,9 +8,7 @@ import cc.langhai.mapper.ArticleMapper;
 import cc.langhai.mapper.LabelMapper;
 import cc.langhai.mq.config.MqConstants;
 import cc.langhai.response.ArticleReturnCode;
-import cc.langhai.service.ArticleService;
-import cc.langhai.service.IArticleCommentService;
-import cc.langhai.service.LabelService;
+import cc.langhai.service.*;
 import cc.langhai.utils.DateUtil;
 import cc.langhai.utils.UserContext;
 import cn.hutool.core.collection.CollectionUtil;
@@ -59,6 +56,9 @@ public class ArticleServiceImpl implements ArticleService {
     private LabelService labelService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private IArticleCommentService articleCommentService;
 
     @Autowired
@@ -91,12 +91,22 @@ public class ArticleServiceImpl implements ArticleService {
         article.setUserId(userId);
         article.setLabelId(labelMysql.getId());
         article.setPublicShow("on".equals(articleDTO.getPublicShow()) ? 1 : 0);
-        article.setTopFlag("on".equals(articleDTO.getTopFlag()) ? 1 : 0);
         article.setDeleteFlag(0);
         article.setAddTime(new Date());
+        // 置顶设置
+        Boolean determineAdmin = roleService.determineAdmin();
+        if (!determineAdmin) {
+            article.setTopFlag(0);
+        }
+        // 审核状态
+        if (!determineAdmin) {
+            article.setCheckFlag(0);
+        } else {
+            article.setCheckFlag(1);
+        }
         articleMapper.insertArticle(article);
         // 公开的文章
-        if(article.getPublicShow().equals(1)){
+        if (article.getPublicShow().equals(1) && article.getCheckFlag().equals(1)) {
             // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
             rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
         }
@@ -116,7 +126,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article getById(Long id) {
         Article article = articleMapper.getById(id);
-
         return article;
     }
 
@@ -166,6 +175,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public boolean judgeShow(HttpSession session, Article article) {
+        // 文章是否审核通过
+        if (!Integer.valueOf(1).equals(article.getCheckFlag())) {
+            return false;
+        }
         // 文章如果是公开的，则直接放行。
         if (Integer.valueOf(1).equals(article.getPublicShow())) {
             return true;
@@ -189,14 +202,23 @@ public class ArticleServiceImpl implements ArticleService {
         this.handleArticlePassword(articleDTO);
         // 文章是否有权限操作
         Article article = this.articlePermission(articleDTO.getId());
+        // 置顶 审核状态处理
+        Integer topFlag = article.getTopFlag();
         // 标签处理
         Label labelMysql = this.labelHandle(articleDTO.getLabel(), articleDTO.getContent());
         // 将文章更新到数据库
         BeanUtils.copyProperties(articleDTO, article);
         article.setLabelId(labelMysql.getId());
         article.setPublicShow("on".equals(articleDTO.getPublicShow()) ? 1 : 0);
-        article.setTopFlag("on".equals(articleDTO.getTopFlag()) ? 1 : 0);
         article.setUpdateTime(new Date());
+        article.setTopFlag(topFlag);
+        Boolean determineAdmin = roleService.determineAdmin();
+        // 审核状态
+        if (!determineAdmin) {
+            article.setCheckFlag(0);
+        } else {
+            article.setCheckFlag(1);
+        }
         articleMapper.updateArticle(article);
         // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
         rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
@@ -361,6 +383,28 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void top(Long id, Boolean topFlag) {
+        Article article = this.getById(id);
+        if (ObjectUtil.isNotNull(article)) {
+            article.setTopFlag(topFlag ? 1 : 0);
+            article.setUpdateTime(new Date());
+            articleMapper.updateArticle(article);
+        }
+    }
+
+    @Override
+    public void check(Long id, Boolean checkFlag) {
+        Article article = this.getById(id);
+        if (ObjectUtil.isNotNull(article)) {
+            article.setCheckFlag(checkFlag ? 1 : 0);
+            article.setUpdateTime(new Date());
+            articleMapper.updateArticle(article);
+            // 利用消息队列发送消息 同步到es搜索引擎 这一步是可选操作
+            rabbitTemplate.convertAndSend(MqConstants.BLOGS_EXCHANGE, MqConstants.BLOGS_INSERT_KEY, article.getId());
+        }
     }
 
     /**

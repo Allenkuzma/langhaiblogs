@@ -86,8 +86,7 @@ public class ArticleController {
      * @return 返回文章列表管理页面
      */
     @GetMapping("/articleListPage")
-    public String articleListPage(){
-
+    public String articleListPage() {
         return "blogs/article/articleList";
     }
 
@@ -101,7 +100,7 @@ public class ArticleController {
     @GetMapping("/articleList")
     public JSONObject articleList(@RequestParam(defaultValue = "1") Integer page,
                                   @RequestParam(defaultValue = "10") Integer limit,
-                                  String title, String abstractText){
+                                  String title, String abstractText) {
         // 开启分页助手
         PageHelper.startPage(page, limit);
         List<Article> allArticle = articleService.getAllArticle(title, abstractText, "user");
@@ -110,7 +109,6 @@ public class ArticleController {
         jsonObject.put("data", allArticle);
         PageInfo<Article> pageInfo = new PageInfo<>(allArticle);
         jsonObject.put("count", pageInfo.getTotal());
-
         return jsonObject;
     }
 
@@ -164,7 +162,7 @@ public class ArticleController {
     public String articleShow(Long id, String password, Model model, HttpSession session) {
         Article article = articleService.getById(id);
         if (ObjectUtil.isNull(article)) {
-            return "blogs/user/login";
+            return "error/articleShow";
         }
         // 查询文章用户的启用状态
         User user = userService.getUserById(article.getUserId());
@@ -194,7 +192,7 @@ public class ArticleController {
             model.addAttribute("commentList", articleCommentService.getCommentByArticleId(id));
             return "blogs/article/articleShow";
         }
-        return "blogs/user/login";
+        return "error/articleShow";
     }
 
     /**
@@ -337,7 +335,7 @@ public class ArticleController {
     public String articleShowNew(Long id, String password, Model model, HttpSession session) {
         Article article = articleService.getById(id);
         if (ObjectUtil.isNull(article)) {
-            return "blogs/user/login";
+            return "error/articleShow";
         }
         // 查询文章用户的启用状态
         User user = userService.getUserById(article.getUserId());
@@ -370,7 +368,7 @@ public class ArticleController {
             model.addAttribute("articleHeatTop", articleHeatTop);
             return "blogs-new/read";
         }
-        return "blogs/user/login";
+        return "error/articleShow";
     }
 
     /**

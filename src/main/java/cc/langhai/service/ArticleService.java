@@ -146,4 +146,21 @@ public interface ArticleService {
      * @return 置顶文章
      */
     List<Article> topArticle(Integer page, String searchArticleStr, Long labelId);
+
+    /**
+     * 修改文章置顶状态
+     *
+     * @param id 文章id
+     * @param topFlag 置顶状态
+     */
+    void top(Long id, Boolean topFlag);
+
+    /**
+     * 修改文章审核状态
+     *
+     * @param id 文章id
+     * @param checkFlag 审核状态
+     */
+    void check(Long id, Boolean checkFlag);
+
 }

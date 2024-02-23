@@ -74,6 +74,20 @@
   <span>不公开</span>
   {{# } }}
 </script>
+<script type="text/html" id="check-show">
+  {{#if (d.checkFlag == 1) { }}
+  <span>审核成功</span>
+  {{# }else if(d.checkFlag == 0){ }}
+  <span>待审核</span>
+  {{# } }}
+</script>
+<script type="text/html" id="top-show">
+  {{#if (d.topFlag == 1) { }}
+  <span>置顶</span>
+  {{# }else if(d.topFlag == 0){ }}
+  <span>未置顶</span>
+  {{# } }}
+</script>
 <script th:inline="none">
   //注意：导航 依赖 element 模块，否则无法进行功能性操作
   layui.use(['element', 'form', 'table', 'laypage', 'common'], function() {
@@ -101,6 +115,8 @@
         ,{field:'title', title: '文章标题', width: 280, align: 'center'}
         ,{field:'abstractText', title: '文章摘要', width: 380, align: 'center'}
         ,{templet:'#public-show', field:'publicShow', title: '公开', width: 200, align: 'center'}
+        ,{templet:'#top-show', field:'topFlag', title: '置顶', width: 200, align: 'center'}
+        ,{templet:'#check-show', field:'checkFlag', title: '审核', width: 200, align: 'center'}
         ,{field:'addTimeShow', title: '新增时间', width: 180, align: 'center'}
         ,{field:'updateTimeShow', title: '修改时间', width: 180, align: 'center'}
         ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}

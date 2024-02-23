@@ -38,6 +38,8 @@ public class Article implements Comparable {
 
     private Integer topFlag;
 
+    private Integer checkFlag;
+
     private Date addTime;
 
     private Date updateTime;

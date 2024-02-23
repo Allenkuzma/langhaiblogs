@@ -73,6 +73,12 @@
   <span>不公开</span>
   {{# } }}
 </script>
+<script type="text/html" id="top-show">
+  <input type="checkbox" name="topFlag" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="top-show" {{ d.topFlag== true ? 'checked' : '' }} />
+</script>
+<script type="text/html" id="check-show">
+  <input type="checkbox" name="checkFlag" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="check-show" {{ d.checkFlag== true ? 'checked' : '' }} />
+</script>
 <script th:inline="none">
   //注意：导航 依赖 element 模块，否则无法进行功能性操作
   layui.use(['element', 'form', 'table', 'laypage', 'common'], function() {
@@ -100,6 +106,8 @@
         ,{field:'title', title: '文章标题', width: 280, align: 'center'}
         ,{field:'abstractText', title: '文章摘要', width: 380, align: 'center'}
         ,{templet:'#public-show', field:'publicShow', title: '公开', width: 200, align: 'center'}
+        ,{templet:'#top-show', field:'topFlag', title: '置顶', width: 100, align: 'center'}
+        ,{templet:'#check-show', field:'checkFlag', title: '审核', width: 100, align: 'center'}
         ,{field:'addTimeShow', title: '新增时间', width: 180, align: 'center'}
         ,{field:'updateTimeShow', title: '修改时间', width: 180, align: 'center'}
         ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}
@@ -182,6 +190,57 @@
       return false;
     });
 
+    form.on('switch(top-show)', function(obj) {
+      // 修改启用状态
+      $.ajax({
+        url: "/system/article/top",
+        async: true,
+        type: "PUT",
+        data: {
+          "id": this.value,
+          "topFlag": obj.elem.checked
+        },
+        success: function (data) {
+          if (data.code == 200) {
+            layer.msg(data.message, {
+              icon: 1,
+              time: 2000
+            });
+          } else {
+            layer.msg(data.message, {
+              icon: 2,
+              time: 2000
+            });
+          }
+        }
+      })
+    });
+
+    form.on('switch(check-show)', function(obj) {
+      // 修改启用状态
+      $.ajax({
+        url: "/system/article/check",
+        async: true,
+        type: "PUT",
+        data: {
+          "id": this.value,
+          "checkFlag": obj.elem.checked
+        },
+        success: function (data) {
+          if (data.code == 200) {
+            layer.msg(data.message, {
+              icon: 1,
+              time: 2000
+            });
+          } else {
+            layer.msg(data.message, {
+              icon: 2,
+              time: 2000
+            });
+          }
+        }
+      })
+    });
   })
 </script>
 </html>

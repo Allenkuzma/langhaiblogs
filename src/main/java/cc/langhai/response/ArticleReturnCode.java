@@ -31,7 +31,7 @@ public enum ArticleReturnCode implements ReturnCode{
 
     ARTICLE_SYSTEM_DELETE_OK_00011(200, "文章真实删除成功。"),
 
-    ARTICLE_SUBMIT_COMMENT_OK_00012(200, "文章进行评论成功。"),
+    ARTICLE_SUBMIT_COMMENT_OK_00012(200, "文章进行评论成功，审核成功之后会进行展示。"),
 
     ARTICLE_SUBMIT_COMMENT_PARAM_FAIL_00013(500, "文章进行评论参数校验失败。"),
 

@@ -81,6 +81,7 @@
             html = #{html},
             public_show = #{publicShow},
             top_flag = #{topFlag},
+            check_flag = #{checkFlag},
             update_time = #{updateTime},
             abstract_text = #{abstractText},
             password = #{password}
@@ -114,6 +115,8 @@
             a.delete_flag = 0
         AND
             a.public_show = 1
+        AND
+            a.check_flag = 1
         <if test="searchArticleStr != null and searchArticleStr != ''">
             AND
             a.title like concat( '%' , #{searchArticleStr}, '%')
@@ -161,6 +164,8 @@
             a.public_show = 1
         AND
             a.top_flag = 1
+        AND
+            a.check_flag = 1
         ORDER BY a.add_time DESC
     </select>
 </mapper>

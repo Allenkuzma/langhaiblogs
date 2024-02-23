@@ -86,4 +86,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         }
         return user;
     }
+
+    @Override
+    public Boolean determineAdmin() {
+        Role role = this.getRole(UserContext.getUserId());
+        if (RoleConstant.ADMIN.equals(role.getName())) {
+            return true;
+        }
+        return false;
+    }
 }

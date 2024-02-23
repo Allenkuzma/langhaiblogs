@@ -36,8 +36,7 @@ public class SystemArticleController {
      */
     @RequestAuthority(value = {"admin"})
     @GetMapping("/systemArticleListPage")
-    public String systemArticleListPage(){
-
+    public String systemArticleListPage() {
         return "blogs/article/systemArticleList";
     }
 
@@ -80,7 +79,6 @@ public class SystemArticleController {
         }
 
         model.addAttribute("article", articleService.getArticleHeat(article));
-
         return "blogs/article/systemArticleShow";
     }
 
@@ -93,9 +91,38 @@ public class SystemArticleController {
     @ResponseBody
     @RequestAuthority(value = {"admin"})
     @DeleteMapping("/systemDeleteArticle")
-    public ResultResponse deleteArticle(Long id){
+    public ResultResponse<Void> deleteArticle(Long id) {
         articleService.systemDeleteArticle(id);
-
         return ResultResponse.success(ArticleReturnCode.ARTICLE_SYSTEM_DELETE_OK_00011);
+    }
+
+    /**
+     * 修改文章置顶状态
+     *
+     * @param id 文章id
+     * @param topFlag 置顶状态
+     * @return 修改文章置顶状态结果
+     */
+    @ResponseBody
+    @PutMapping("/top")
+    @RequestAuthority(value = {"admin"})
+    public ResultResponse<Void> top(Long id, Boolean topFlag) {
+        articleService.top(id, topFlag);
+        return new ResultResponse<>(200, "修改文章置顶状态成功。", null);
+    }
+
+    /**
+     * 修改文章审核状态
+     *
+     * @param id 文章id
+     * @param checkFlag 审核状态
+     * @return 修改文章审核状态结果
+     */
+    @ResponseBody
+    @PutMapping("/check")
+    @RequestAuthority(value = {"admin"})
+    public ResultResponse<Void> check(Long id, Boolean checkFlag) {
+        articleService.check(id, checkFlag);
+        return new ResultResponse<>(200, "修改文章审核状态成功。", null);
     }
 }
