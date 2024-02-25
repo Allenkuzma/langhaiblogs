@@ -15,8 +15,9 @@ public interface NotificationService {
      *
      * @param notification 通知内容
      * @param seconds 显示时间单位秒钟
+     * @param href 通知跳转地址
      */
-    void addNotification(String notification, String seconds);
+    void addNotification(String notification, String seconds, String href);
 
     /**
      * 获取所有后台通知

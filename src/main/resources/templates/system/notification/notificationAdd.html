@@ -20,6 +20,13 @@
                                class="layui-input">
                     </div>
                 </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">通知跳转地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="href" lay-verify="url" required autocomplete="off" placeholder="请输入通知跳转地址"
+                               class="layui-input">
+                    </div>
+                </div>
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label">后台通知信息</label>
                     <div class="layui-input-block">
@@ -56,7 +63,8 @@
                 url: "/notification/addNotification",
                 data: {
                     "seconds": data.field.seconds,
-                    "notification": $("#notification").val()
+                    "notification": $("#notification").val(),
+                    "href": data.field.href
                 },
                 type: 'post',
                 success: function(result) {
@@ -65,9 +73,10 @@
                             icon: 1,
                             time: 2000
                         }, function() {
-                            parent.layer.close(parent.layer.getFrameIndex(window
-                                .name)); //关闭当前页
-                            parent.layui.table.reload("notification");
+                            parent.parent.location.reload();
+                            /*parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页*/
+                            // parent.layui.table.reload("notification");
                         });
                     } else {
                         layer.msg(result.message, {

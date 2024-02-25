@@ -1,14 +1,10 @@
 package cc.langhai.controller.system;
 
 import cc.langhai.config.annotation.RequestAuthority;
-import cc.langhai.domain.Links;
-import cc.langhai.response.LinksReturnCode;
 import cc.langhai.response.ResultResponse;
 import cc.langhai.service.system.NotificationService;
-import cn.hutool.core.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -57,8 +53,9 @@ public class NotificationController {
     @PostMapping("/addNotification")
     @RequestAuthority(value = {"admin"})
     public ResultResponse<Void> addNotification(@RequestParam(value = "notification") String notification,
-                                                @RequestParam(value = "seconds") String seconds) {
-        notificationService.addNotification(notification, seconds);
+                                                @RequestParam(value = "seconds") String seconds,
+                                                @RequestParam(value = "href") String href) {
+        notificationService.addNotification(notification, seconds, href);
         return new ResultResponse(200, "新增后台通知成功。", null);
     }
 }
