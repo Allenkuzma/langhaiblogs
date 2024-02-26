@@ -50,19 +50,15 @@
 
     table.render({
       elem: '#notification',
-      url: '/links/linksList',
+      url: '/notification/notificationList',
       toolbar: '#toolbarDemo',
       skin: 'line',
       cols: [[
         {type: 'checkbox'}
-        ,{field:'id', title: 'ID', align: 'center'}
-        ,{field:'title', title: 'h3标签内容', width: 180, align: 'center'}
-        ,{field:'href', title: '超链接地址', width: 280, align: 'center'}
-        ,{field:'name', title: '网站名字', width: 180, align: 'center'}
-        ,{field:'description', title: '描述', width: 280, align: 'center'}
-        ,{field:'sort', title: '排序', width: 280, align: 'center'}
-        ,{field:'addTime', title: '新增时间', width: 180, align: 'center'}
-        ,{field:'updateTime', title: '修改时间', width: 180, align: 'center'}
+        ,{field:'key', title: 'key', align: 'center'}
+        ,{field:'title', title: '通知标题', width: 180, align: 'center'}
+        ,{field:'href', title: '通知跳转地址', width: 280, align: 'center'}
+        ,{field:'expire', title: '通知过期时间单位秒', width: 280, align: 'center'}
         ,{title:'操作', toolbar: '#barDemo', width: 180, align: 'center'}
       ]],
       page: false,
@@ -95,7 +91,7 @@
     });
 
     // 触发单元格工具事件
-    table.on('tool(links)', function(obj){ // 双击 toolDouble
+    table.on('tool(notification)', function(obj){ // 双击 toolDouble
       var data = obj.data;
       // console.log(obj)
       if(obj.event === 'del'){
@@ -114,20 +110,20 @@
     });
 
     window.refresh = function(param) {
-      table.reload('links');
+      table.reload('notification');
     }
 
     window.remove = function(obj) {
-      layer.confirm('确定要删除这个友情链接', {
+      layer.confirm('确定要删除这个通知', {
         icon: 3,
         title: '提示'
       }, function(index) {
         layer.close(index);
         let loading = layer.load();
         $.ajax({
-          url: "/links/deleteLinks",
+          url: "/notification/deleteNotification",
           data: {
-            "id": obj.data.id
+            "key": obj.data.key
           },
           type: 'delete',
           success: function(result) {
@@ -138,6 +134,7 @@
                 time: 2000
               }, function() {
                 obj.del();
+                parent.location.reload();
               });
             } else {
               layer.msg(result.message, {

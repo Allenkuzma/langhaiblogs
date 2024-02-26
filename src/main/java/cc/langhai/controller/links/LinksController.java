@@ -107,18 +107,16 @@ public class LinksController {
     /**
      * 删除友情链接
      *
-     * @return
+     * @return 删除友情链接结果
      */
     @ResponseBody
     @DeleteMapping("/deleteLinks")
     @RequestAuthority(value = {"admin"})
-    public ResultResponse deleteLinks(Long id){
-        if(ObjectUtil.isNull(id)){
+    public ResultResponse<Void> deleteLinks(Long id) {
+        if (ObjectUtil.isNull(id)) {
             return ResultResponse.fail(LinksReturnCode.LINKS_DELETE_FAIL_00004);
         }
-
         linksService.deleteLinks(id);
-
         return ResultResponse.success(LinksReturnCode.LINKS_DELETE_SUCCESS_00003);
     }
 

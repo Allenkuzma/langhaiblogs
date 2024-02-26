@@ -51,11 +51,11 @@ public class Links implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        if(o instanceof Links){
+        if (o instanceof Links) {
             Links links = (Links) o;
-            if(Long.compare(Long.valueOf(this.getSort()), Long.valueOf(links.getSort())) == 0){
+            if (Long.compare(Long.valueOf(this.getSort()), Long.valueOf(links.getSort())) == 0) {
                 return Long.compare(this.getId(), links.getId());
-            }else {
+            } else {
                 return Long.compare(Long.valueOf(this.getSort()), Long.valueOf(links.getSort()));
             }
         }

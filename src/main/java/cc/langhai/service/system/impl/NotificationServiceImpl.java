@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +41,17 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public JSONObject getAllNotification() {
+        ArrayList<JSONObject> result = getJsonObjects();
+        JSONObject jsonObject = new JSONObject();
+        if (!result.isEmpty()) {
+            jsonObject.put("id", 1);
+            jsonObject.put("title", "通知");
+            jsonObject.put("children", result);
+        }
+        return jsonObject;
+    }
+
+    private ArrayList<JSONObject> getJsonObjects() {
         ArrayList<JSONObject> result = new ArrayList<>();
         Set<String> keys = redisTemplate.keys("notification:*");
         int i = 10;
@@ -53,6 +64,8 @@ public class NotificationServiceImpl implements NotificationService {
             jsonObject.put("title", notification.get("notification"));
             jsonObject.put("context", notification.get("notification"));
             jsonObject.put("href", notification.get("href"));
+            jsonObject.put("key", key);
+            jsonObject.put("expire", redisTemplate.getExpire(key));
             // 获取第一个:索引
             int index = key.indexOf(":");
             // 获取第二个:索引
@@ -61,12 +74,16 @@ public class NotificationServiceImpl implements NotificationService {
             jsonObject.put("time", key.substring(index + 1));
             result.add(jsonObject);
         }
-        JSONObject jsonObject = new JSONObject();
-        if (!result.isEmpty()) {
-            jsonObject.put("id", 1);
-            jsonObject.put("title", "通知");
-            jsonObject.put("children", result);
-        }
-        return jsonObject;
+        return result;
+    }
+
+    @Override
+    public ArrayList<JSONObject> list() {
+        return getJsonObjects();
+    }
+
+    @Override
+    public void deleteNotification(String key) {
+        redisTemplate.delete(key);
     }
 }
