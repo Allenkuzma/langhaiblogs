@@ -207,6 +207,10 @@ public class RegisterServiceImpl implements RegisterService {
         if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(verifyCodeText)){
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_NULL_00015);
         }
+        // 仅限管理员登录
+        if (!"langhai".equals(username)) {
+            throw new BusinessException(500, "仅限管理员登录。");
+        }
         // 判断用户是否处于锁定状态
         String userLockFlag = redisTemplate.opsForValue().get("user:lock:" + username);
         if("lock".equals(userLockFlag)){

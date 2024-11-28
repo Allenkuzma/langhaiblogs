@@ -42,7 +42,7 @@ public class RegisterController {
     @ResponseBody
     @PostMapping("/sendEmailCode")
     public ResultResponse sendEmailCode(@RequestParam("email") String email, HttpServletRequest request) {
-        registerService.sendEmailCode(email, request);
+        // registerService.sendEmailCode(email, request);
         return ResultResponse.success(UserReturnCode.EMAIL_CODE_00000);
     }
 

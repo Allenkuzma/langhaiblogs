@@ -38,7 +38,7 @@ public class LoginController {
      * @return 未登录情况下跳转到 blogs/user/login 页面
      */
     @GetMapping("/loginPage")
-    public String loginPage(HttpSession session){
+    public String loginPage(HttpSession session) {
         Object user = session.getAttribute("user");
         if (ObjectUtil.isNotNull(user)) {
             return "blogs/index";
