@@ -18,6 +18,7 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -54,6 +55,9 @@ public class ESTest {
     @Autowired
     private ArticleMapper articleMapper;
 
+    /**
+     * 初始化RestHighLevelClient
+     */
     @BeforeEach
     void setUp() {
         // 使用账户密码
@@ -69,6 +73,11 @@ public class ESTest {
         this.client = new RestHighLevelClient(builder);
     }
 
+    /**
+     * 关闭RestHighLevelClient
+     *
+     * @throws IOException IO异常
+     */
     @AfterEach
     void tearDown() throws IOException {
         this.client.close();
@@ -77,7 +86,7 @@ public class ESTest {
     /**
      * 创建浪海博客系统的文章索引
      *
-     * @throws IOException
+     * @throws IOException IO异常
      */
     @Test
     void createHotelIndex() throws IOException {
@@ -92,7 +101,7 @@ public class ESTest {
     /**
      * 删除浪海博客系统的文章索引
      *
-     * @throws IOException
+     * @throws IOException IO异常
      */
     @Test
     void testDeleteHotelIndex() throws IOException {
@@ -105,7 +114,7 @@ public class ESTest {
     /**
      * 判断海博客系统的文章索引是否存在
      *
-     * @throws IOException
+     * @throws IOException IO异常
      */
     @Test
     void testExistsHotelIndex() throws IOException {
@@ -120,13 +129,12 @@ public class ESTest {
     /**
      * 批量增加文档内容
      *
-     * @throws IOException
+     * @throws IOException IO异常
      */
     @Test
     void testBulkRequest() throws IOException {
         // 批量查询酒店数据
         List<Article> allArticlePublicShow = articleMapper.getAllArticlePublicShow("", null);
-
         // 1.创建Request
         BulkRequest request = new BulkRequest();
         // 2.准备参数，添加多个新增的Request
@@ -143,7 +151,7 @@ public class ESTest {
     /**
      * 按条件查询
      *
-     * @throws IOException
+     * @throws IOException IO异常
      */
     @Test
     void testMatch() throws IOException {
@@ -156,13 +164,12 @@ public class ESTest {
         SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         // 4.解析响应
         handleResponse(response);
-
     }
 
     /**
      * 处理搜索结果
      *
-     * @param response
+     * @param response 搜索结果*
      */
     private void handleResponse(SearchResponse response) {
         // 4.解析响应
@@ -184,7 +191,8 @@ public class ESTest {
 
     /**
      * id 查询文档
-     * @throws IOException
+     *
+     * @throws IOException IO异常
      */
     @Test
     void testGetDocumentById() throws IOException {
@@ -194,7 +202,6 @@ public class ESTest {
         GetResponse response = client.get(request, RequestOptions.DEFAULT);
         // 3.解析响应结果
         String json = response.getSourceAsString();
-
         Article article = JSON.parseObject(json, Article.class);
         System.out.println(article);
     }
@@ -202,7 +209,7 @@ public class ESTest {
     /**
      * 删除文档 id
      *
-     * @throws IOException
+     * @throws IOException IO异常
      */
     @Test
     void testDeleteDocument() throws IOException {
@@ -210,5 +217,20 @@ public class ESTest {
         DeleteRequest request = new DeleteRequest("langhaiblogs", "30");
         // 2.发送请求
         client.delete(request, RequestOptions.DEFAULT);
+    }
+
+    /**
+     * 编辑文档 id
+     */
+    @Test
+    void testUpdateDocument() throws IOException {
+        // 1.准备Request
+        UpdateRequest request = new UpdateRequest("langhaiblogs", "106");
+        // 2.准备更新的请求参数
+        request.doc(
+                "title", "2024年 浪海博客开发计划和完成情况"
+        );
+        // 3.发送请求
+        client.update(request, RequestOptions.DEFAULT);
     }
 }

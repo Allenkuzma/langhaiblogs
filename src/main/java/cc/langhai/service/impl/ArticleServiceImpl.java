@@ -253,10 +253,10 @@ public class ArticleServiceImpl implements ArticleService {
         SearchRequest request = new SearchRequest("langhaiblogs");
         // 2.准备DSL
         // 2.1.query
-        if(StrUtil.isNotBlank(searchArticleStr)){
+        if(StrUtil.isNotBlank(searchArticleStr)) {
             request.source()
                     .query(QueryBuilders.multiMatchQuery(searchArticleStr, "title", "author", "labelContent"));
-        }else {
+        } else {
             request.source()
                     .query(QueryBuilders.matchAllQuery());
         }
@@ -271,12 +271,11 @@ public class ArticleServiceImpl implements ArticleService {
     /**
      * 处理搜索结果
      *
-     * @param response
+     * @param response 响应结果
      */
     private HashMap<String, Object> handleResponse(SearchResponse response, Integer size) {
         HashMap<String, Object> hashMap = new HashMap<>();
         ArrayList<Article> articles = new ArrayList<>();
-
         // 4.解析响应
         SearchHits searchHits = response.getHits();
         // 4.1.获取总条数
@@ -291,7 +290,6 @@ public class ArticleServiceImpl implements ArticleService {
             Article article = JSON.parseObject(json, Article.class);
             articles.add(article);
         }
-
         hashMap.put("list", articles);
         hashMap.put("pages", (total + size - 1) / size);
         return hashMap;

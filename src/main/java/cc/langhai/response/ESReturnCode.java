@@ -6,7 +6,7 @@ package cc.langhai.response;
  * @author langhai
  * @date 2023-01-09 10:42
  */
-public enum ESReturnCode implements ReturnCode{
+public enum ESReturnCode implements ReturnCode {
 
     ES_DOC_DELETE_FAIL_00000(500, "数据文档删除失败！！！"),
 
@@ -18,7 +18,7 @@ public enum ESReturnCode implements ReturnCode{
 
     private String message;
 
-    ESReturnCode(Integer code, String message){
+    ESReturnCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

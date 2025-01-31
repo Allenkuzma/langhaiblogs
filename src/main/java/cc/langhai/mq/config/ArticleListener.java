@@ -46,10 +46,11 @@ public class ArticleListener {
 
     /**
      * 监听文章删除的业务
+     *
      * @param id 文章id
      */
     @RabbitListener(queues = MqConstants.BLOGS_DELETE_QUEUE)
-    public void listenHotelDelete(Long id){
+    public void listenHotelDelete(Long id) {
         esService.deleteById(id);
     }
 }

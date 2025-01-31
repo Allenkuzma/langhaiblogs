@@ -70,7 +70,6 @@ public class ESServiceImpl implements ESService {
         // 3.解析响应结果
         String json = response.getSourceAsString();
         Article article = JSON.parseObject(json, Article.class);
-
         return article;
     }
 }

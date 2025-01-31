@@ -99,10 +99,10 @@ public interface ArticleService {
     /**
      * 文章搜索功能 用于ES搜索引擎
      *
-     * @param size
-     * @param page
-     * @param searchArticleStr
-     * @return
+     * @param size 显示的条数
+     * @param page 页数
+     * @param searchArticleStr 搜索词条
+     * @return 搜索结果
      */
     HashMap<String, Object> searchES(Integer page, Integer size, String searchArticleStr) throws IOException;
 

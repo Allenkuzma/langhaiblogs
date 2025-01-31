@@ -70,7 +70,7 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-         //System.out.println("执行了TestInterceptor的postHandle方法");
+         // System.out.println("执行了TestInterceptor的postHandle方法");
     }
  
     /**
@@ -78,7 +78,8 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        //System.out.println("执行了TestInterceptor的afterCompletion方法");
+        // System.out.println("执行了TestInterceptor的afterCompletion方法");
+        UserContext.remove();
     }
     
 }

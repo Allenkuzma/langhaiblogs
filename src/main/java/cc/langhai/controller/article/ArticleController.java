@@ -263,15 +263,12 @@ public class ArticleController {
      * 如果没有es搜索引擎组件 直接注释掉即可
      * 还需要用到mq组件 所以需要安装 elasticSearch 和 rabbitMQ
      *
-     * @return
+     * @return ES搜索引擎页面
      */
     @GetMapping("/articleSearchESPage")
-    public String articleSearchESPage(Model model,
-                                    @RequestParam(defaultValue = "1") Integer page,
-                                    @RequestParam(defaultValue = "10") Integer size,
-                                    String searchArticleStr) throws IOException {
+    public String articleSearchESPage(Model model, @RequestParam(defaultValue = "1") Integer page,
+                                      @RequestParam(defaultValue = "10") Integer size, String searchArticleStr) throws IOException {
         HashMap<String, Object> hashMap = articleService.searchES(page, size, searchArticleStr);
-
         List<Article> list = (List<Article>) hashMap.get("list");
         Long pages = (Long) hashMap.get("pages");
         model.addAttribute("list", articleService.getArticleHeat(list));

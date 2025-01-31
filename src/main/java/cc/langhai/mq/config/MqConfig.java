@@ -15,28 +15,54 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class MqConfig {
+
+    /**
+     * 文章交换机
+     *
+     * @return TopicExchange
+     */
     @Bean
-    public TopicExchange topicExchange(){
+    public TopicExchange topicExchange() {
         return new TopicExchange(MqConstants.BLOGS_EXCHANGE, true, false);
     }
 
+    /**
+     * 更新文章队列
+     *
+     * @return Queue
+     */
     @Bean
-    public Queue insertQueue(){
+    public Queue insertQueue() {
         return new Queue(MqConstants.BLOGS_INSERT_QUEUE, true);
     }
 
+    /**
+     * 删除文章队列
+     *
+     * @return Queue
+     */
     @Bean
-    public Queue deleteQueue(){
+    public Queue deleteQueue() {
         return new Queue(MqConstants.BLOGS_DELETE_QUEUE, true);
     }
 
+    /**
+     * 绑定关系
+     *
+     * @return Binding
+     */
     @Bean
-    public Binding insertQueueBinding(){
+    public Binding insertQueueBinding() {
         return BindingBuilder.bind(insertQueue()).to(topicExchange()).with(MqConstants.BLOGS_INSERT_KEY);
     }
 
+    /**
+     * 绑定关系
+     *
+     * @return Binding
+     */
     @Bean
-    public Binding deleteQueueBinding(){
+    public Binding deleteQueueBinding() {
         return BindingBuilder.bind(deleteQueue()).to(topicExchange()).with(MqConstants.BLOGS_DELETE_KEY);
     }
 }
