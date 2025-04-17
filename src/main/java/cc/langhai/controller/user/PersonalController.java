@@ -51,7 +51,7 @@ public class PersonalController {
      * @return 个人空间页面 blogs/user/personal
      */
     @GetMapping("/personalPage")
-    public String personalPage(Model model){
+    public String personalPage(Model model) {
         // 将用户详情信息存储到model中
         User user = UserContext.get();
         UserInfo userInfo = userInfoService.getUserInfoById(user.getId());
@@ -83,7 +83,7 @@ public class PersonalController {
     @ResponseBody
     @PostMapping("/updateUserInfo")
     public ResultResponse updateUserInfo(@RequestParam("nickname") String nickname,
-                                         @RequestParam("motto") String motto, HttpSession session){
+                                         @RequestParam("motto") String motto, HttpSession session) {
         personalService.updateUserInfo(nickname, motto, session);
         return ResultResponse.success(UserReturnCode.USER_PERSONAL_UPDATE_USER_INFO_YES_00018);
     }

@@ -19,8 +19,8 @@ import java.util.List;
 /**
  * 定时任务
  *
- * @author : langhai
- * @date : 2023-01-16 17:20
+ * @author langhai
+ * @date 2023-01-16 17:20
  */
 @Configuration
 @EnableScheduling
@@ -37,10 +37,9 @@ public class ScheduleTask {
 
     /**
      * 删除前七天的访问次数 23:23:23执行
-     *
      */
     @Scheduled(cron = "23 23 23 * * ?")
-    private void deleteVisitTask(){
+    private void deleteVisitTask() {
         // 获取前七天的时间
         DateTime dateTime = DateUtil.offsetDay(new Date(), -7);
         String[] split = dateTime.toString().split(" ");

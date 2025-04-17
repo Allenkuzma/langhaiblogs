@@ -106,7 +106,7 @@
 
 	</body>
 	<script>
-		$(function(){
+		$(function() {
 			// 登录校验
 			$("#loginVerify").click(function () {
 				$.ajax({
@@ -115,12 +115,12 @@
 					type: "POST",
 					data: $('#loginForm').serialize(),
 					success: function (data) {
-						if(data.code == 200){
+						if(data.code == 200) {
 							$("#vCodeStatus").html("登录成功，1秒后为你跳转到首页。");
-							setTimeout(function(){
+							setTimeout(function() {
 								window.location.href = "/";
 							}, 1000);
-						}else {
+						} else {
 							$("#vCodeStatus").html(data.message);
 						}
 					}
@@ -133,25 +133,25 @@
 			})
 
 			// 验证码刷新
-			$("#verifyCode").click(function (){
+			$("#verifyCode").click(function () {
 				$("#verifyCode").attr("src", "/user/verifyCode?" + new Date().getTime());
 			})
 
 			// 回车键监听登录
-			$(document).keyup(function(event){
-				if(event.keyCode == 13){
+			$(document).keyup(function(event) {
+				if(event.keyCode == 13) {
 					$.ajax({
 						url: "/user/loginEnter",
 						async: true,
 						type: "POST",
 						data: $('#loginForm').serialize(),
 						success: function (data) {
-							if(data.code == 200){
+							if(data.code == 200) {
 								$("#vCodeStatus").html("登录成功，1秒后为你跳转到首页。");
 								setTimeout(function(){
 									window.location.href = "/";
 								}, 1000);
-							}else {
+							} else {
 								$("#vCodeStatus").html(data.message);
 							}
 						}

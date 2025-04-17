@@ -11,14 +11,14 @@ public interface ReturnCode {
     /**
      * 获取状态码
      *
-     * @return
+     * @return 状态码
      */
     Integer getCode();
 
     /**
      * 获取详细消息
      *
-     * @return
+     * @return 响应消息
      */
     String getMessage();
 }

@@ -287,7 +287,7 @@ public class ArticleController {
      */
     @GetMapping("/articleSearchPageNew")
     public String articleSearchPageNew(Model model, @RequestParam(defaultValue = "1") Integer page,
-                                       @RequestParam(defaultValue = "10") Integer size, String searchArticleStr, Long labelId){
+                                       @RequestParam(defaultValue = "10") Integer size, String searchArticleStr, Long labelId) {
         PageInfo<Article> pageInfo = articleService.search(page, size, searchArticleStr, labelId);
         List<Article> topArticle = articleService.topArticle(page, searchArticleStr, labelId);
         List<Article> pageInfoList = pageInfo.getList();

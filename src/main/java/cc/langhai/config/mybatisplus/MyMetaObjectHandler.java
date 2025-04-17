@@ -1,6 +1,5 @@
 package cc.langhai.config.mybatisplus;
 
-
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;

@@ -139,7 +139,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
         this.verifyUsername(username);
         // 对用户密码进行合法校验，用户密码（6到18位的字符组合）。
-        if(password.length() < 6 || password.length() > 18){
+        if(password.length() < 6 || password.length() > 18) {
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
         }
         // 构建
@@ -147,7 +147,7 @@ public class RegisterServiceImpl implements RegisterService {
         // 加密为16进制表示
         String encryptHexPassword = aes.encryptHex(password);
         // 对昵称进行合法校验，昵称（1到12位的字符组合）。
-        if(nickname.length() < 1 || nickname.length() > 12){
+        if(nickname.length() < 1 || nickname.length() > 12) {
             throw new BusinessException(UserReturnCode.USER_REGISTER_PARAM_VERIFY_00012);
         }
         // 对邮箱地址合法校验
@@ -204,7 +204,7 @@ public class RegisterServiceImpl implements RegisterService {
     public void loginEnter(String username, String password, String verifyCodeText,
                            HttpSession session, String remember, HttpServletResponse response) {
         // 对用户登录信息进行非空校验
-        if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(verifyCodeText)){
+        if(StrUtil.isBlank(username) || StrUtil.isBlank(password) || StrUtil.isBlank(verifyCodeText)) {
             throw new BusinessException(UserReturnCode.USER_LOGIN_PARAM_NULL_00015);
         }
         // 仅限管理员登录
@@ -213,7 +213,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
         // 判断用户是否处于锁定状态
         String userLockFlag = redisTemplate.opsForValue().get("user:lock:" + username);
-        if("lock".equals(userLockFlag)){
+        if("lock".equals(userLockFlag)) {
             throw new BusinessException(UserReturnCode.USER_LOGIN_LOCK_STATUS_00021);
         }
         // 构建AES加密工具
@@ -274,12 +274,21 @@ public class RegisterServiceImpl implements RegisterService {
             return;
         }
         // 覆盖掉带秘钥的cookie
-        Cookie cookie = new Cookie("userLoginCipher" + user.getUsername(), "");
+        Cookie cookie = new Cookie("userLoginCipher" + user.getNickname(), "");
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         // 删除session用户信息
         session.removeAttribute("user");
+        // 删除当前登录用户已绑定的HttpSession map中的remove方法返回删除value值
+        HttpSession sessionMap = LonginUserSessionConfig.USER_SESSION.remove(user.getNickname());
+        if (sessionMap != null) {
+            // 删除已登录的sessionId绑定的用户
+            sessionMap.removeAttribute("user");
+            // 当前session销毁时删除当前session绑定的用户信息
+            // 同时删除当前session绑定用户的HttpSession
+            LonginUserSessionConfig.SESSION_ID_USER.remove(sessionMap.getId());
+        }
         UserContext.remove();
     }
 

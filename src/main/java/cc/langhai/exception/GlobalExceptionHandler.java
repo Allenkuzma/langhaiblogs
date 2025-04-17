@@ -22,13 +22,13 @@ public class GlobalExceptionHandler {
     /**
      * 捕捉的是自定义异常
      *
-     * @param exception
-     * @return
+     * @param exception 异常信息
+     * @return ResultResponse
      */
     @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
-    public ResultResponse businessException(Exception exception){
-        if(exception instanceof BusinessException){
+    public ResultResponse businessException(Exception exception) {
+        if(exception instanceof BusinessException) {
             BusinessException businessException = (BusinessException) exception;
             ReturnCode returnCode = businessException.getReturnCode();
             if (ObjectUtil.isNull(returnCode)) {
@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
      * @return ModelAndView 异常页面
      */
     @ExceptionHandler(value = Exception.class)
-    public ModelAndView exception(Exception exception){
+    public ModelAndView exception(Exception exception) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/error");
         // 添加错误详细信息

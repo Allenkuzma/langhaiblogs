@@ -69,7 +69,7 @@ public enum UserReturnCode implements ReturnCode {
 
     private String message;
 
-    UserReturnCode(Integer code, String message){
+    UserReturnCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

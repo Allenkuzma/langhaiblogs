@@ -16,7 +16,7 @@ public class BusinessException extends RuntimeException {
 
     private ReturnCode returnCode;
 
-    public BusinessException(ReturnCode returnCode){
+    public BusinessException(ReturnCode returnCode) {
         super();
         this.returnCode = returnCode;
     }

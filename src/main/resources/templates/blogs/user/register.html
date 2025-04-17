@@ -139,12 +139,12 @@
 					type: "POST",
 					data: $('#registerForm').serialize(),
 					success: function (data) {
-						if(data.code == 200){
+						if(data.code == 200) {
 							$("#vCodeStatus").html("注册成功，3秒后为你进行自动登录。");
-							setTimeout(function(){
+							setTimeout(function() {
 								window.location.href = "/";
 							}, 3000);
-						}else {
+						} else {
 							$("#vCodeStatus").html(data.message);
 						}
 					}
@@ -162,7 +162,7 @@
 			})
 
 			// 用户名唯一校验
-			$("#username").blur(function (){
+			$("#username").blur(function () {
 				$.ajax({
 					url: "/user/verifyUsername",
 					async: true,

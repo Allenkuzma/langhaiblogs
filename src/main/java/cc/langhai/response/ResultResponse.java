@@ -35,20 +35,20 @@ public class ResultResponse<T> {
     /**
      * 响应成功 不带响应数据
      *
-     * @return
-     * @param <T>
+     * @return 成功响应结果
+     * @param <T> 响应参数类型
      */
-    public static <T> ResultResponse<T> success(){
+    public static <T> ResultResponse<T> success() {
         return new ResultResponse<>(200, "响应成功", null);
     }
 
     /**
      * 响应成功 不带响应数据
      *
-     * @return
-     * @param <T>
+     * @return 成功响应结果
+     * @param <T> 响应参数类型
      */
-    public static <T> ResultResponse<T> success(ReturnCode returnCode){
+    public static <T> ResultResponse<T> success(ReturnCode returnCode) {
         return new ResultResponse<>(returnCode.getCode(), returnCode.getMessage(), null);
     }
 
@@ -58,27 +58,27 @@ public class ResultResponse<T> {
      * @return 统一封装结果集
      * @param <T> 响应参数类型
      */
-    public static <T> ResultResponse<T> success(ReturnCode returnCode, T object){
+    public static <T> ResultResponse<T> success(ReturnCode returnCode, T object) {
         return new ResultResponse<>(returnCode.getCode(), returnCode.getMessage(), object);
     }
 
     /**
      * 响应失败 不带响应数据
      *
-     * @return
-     * @param <T>
+     * @return 失败响应结果
+     * @param <T> 响应参数类型
      */
-    public static <T> ResultResponse<T> fail(){
+    public static <T> ResultResponse<T> fail() {
         return new ResultResponse<>(500, "响应失败", null);
     }
 
     /**
      * 响应失败 不带响应数据
      *
-     * @return
-     * @param <T>
+     * @return 失败响应结果
+     * @param <T> 响应参数类型
      */
-    public static <T> ResultResponse<T> fail(ReturnCode returnCode){
+    public static <T> ResultResponse<T> fail(ReturnCode returnCode) {
         return new ResultResponse<>(returnCode.getCode(), returnCode.getMessage(), null);
     }
 }

@@ -18,7 +18,7 @@ public enum SystemReturnCode implements ReturnCode {
     private Integer code;
     private String message;
 
-    SystemReturnCode(Integer code, String message){
+    SystemReturnCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

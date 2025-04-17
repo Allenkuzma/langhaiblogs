@@ -49,7 +49,7 @@ public class RegisterController {
     /**
      * 校验用户名的唯一性
      *
-     * @return 用户名
+     * @return 检验用户名唯一性结果
      */
     @ResponseBody
     @PostMapping("/verifyUsername")
@@ -65,10 +65,8 @@ public class RegisterController {
      */
     @ResponseBody
     @PostMapping("/register")
-    public ResultResponse<Void> register(@RequestParam("username") String username,
-                                   @RequestParam("password") String password,
-                                   @RequestParam("nickname") String nickname,
-                                   @RequestParam("email") String email,
+    public ResultResponse<Void> register(@RequestParam("username") String username, @RequestParam("password") String password,
+                                   @RequestParam("nickname") String nickname, @RequestParam("email") String email,
                                    @RequestParam("verifyCodeText") String verifyCodeText, HttpSession session, HttpServletResponse response) {
         registerService.register(username, password, nickname, email, verifyCodeText, session, response);
         return ResultResponse.success(UserReturnCode.USER_REGISTER_SUCCESS_00010);

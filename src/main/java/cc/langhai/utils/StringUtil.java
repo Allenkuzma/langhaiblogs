@@ -17,7 +17,7 @@ public class StringUtil {
      * @param s 需要判断的字符串
      * @return 结果
      */
-    public static boolean isAlphaNumeric(String s){
+    public static boolean isAlphaNumeric(String s) {
         Matcher m = Pattern.compile("[0-9a-zA-Z]{1,}").matcher(s);
         return m.matches();
     }

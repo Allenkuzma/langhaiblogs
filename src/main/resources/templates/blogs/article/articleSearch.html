@@ -98,7 +98,7 @@
 		<script src="/blogs/assets/js/main.js"></script>
 	</body>
 	<script>
-		$(function(){
+		$(function() {
 
 			var page = [[${page}]];
 			var pages = [[${pages}]];
@@ -130,9 +130,9 @@
 
 			// 指定页数
 			$("#pageButton").click(function () {
-				if($.isNumeric($("#pageInput").val())){
+				if($.isNumeric($("#pageInput").val())) {
 					window.location.href = "/article/articleSearchPage?page=" + $("#pageInput").val() + "&searchArticleStr=" + $("#searchArticleInp").val();
-				}else {
+				} else {
 					alert("输入页数有误！！！")
 				}
 			})

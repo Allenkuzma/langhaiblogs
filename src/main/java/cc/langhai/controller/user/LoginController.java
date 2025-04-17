@@ -75,8 +75,7 @@ public class LoginController {
      */
     @ResponseBody
     @PostMapping("/loginEnter")
-    public ResultResponse<Void> loginEnter(@RequestParam("username") String username,
-                                           @RequestParam("password") String password,
+    public ResultResponse<Void> loginEnter(@RequestParam("username") String username, @RequestParam("password") String password,
                                            @RequestParam("verifyCodeText") String verifyCodeText,
                                            @RequestParam(value = "remember", required = false) String remember,
                                            HttpSession session, HttpServletResponse response) {

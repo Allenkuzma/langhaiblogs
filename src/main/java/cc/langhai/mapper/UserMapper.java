@@ -26,8 +26,8 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 查询用户信息 注册时间为当天
      *
-     * @param date
-     * @return
+     * @param date 当天时间
+     * @return 用户信息实体类集合
      */
     List<User> getUserListByDay(String date);
 

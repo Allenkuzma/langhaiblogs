@@ -42,7 +42,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Integer insertUser(User user) {
         Integer integer = userMapper.insertUser(user);
-
         return integer;
     }
 
